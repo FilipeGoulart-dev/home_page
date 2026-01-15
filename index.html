@@ -1157,6 +1157,60 @@
             0%, 100% { background-color: rgba(234, 179, 8, 0.2); }
             50% { background-color: rgba(234, 179, 8, 0.3); }
         }
+
+        /* Sound Wave Animation */
+        .sound-wave {
+            display: inline-flex;
+            align-items: center;
+            gap: 2px;
+            height: 12px;
+        }
+
+        .sound-wave span {
+            width: 3px;
+            height: 100%;
+            background: #22c55e;
+            border-radius: 2px;
+            animation: soundWave 0.8s ease-in-out infinite;
+        }
+
+        .sound-wave span:nth-child(1) { animation-delay: 0s; }
+        .sound-wave span:nth-child(2) { animation-delay: 0.1s; }
+        .sound-wave span:nth-child(3) { animation-delay: 0.2s; }
+        .sound-wave span:nth-child(4) { animation-delay: 0.3s; }
+
+        @keyframes soundWave {
+            0%, 100% { transform: scaleY(0.3); }
+            50% { transform: scaleY(1); }
+        }
+
+        .sound-wave.paused span {
+            animation-play-state: paused;
+            transform: scaleY(0.3);
+        }
+
+        /* Progress bar click */
+        .progress-container {
+            cursor: pointer;
+            position: relative;
+        }
+
+        .progress-container:hover .progress-handle {
+            opacity: 1;
+        }
+
+        .progress-handle {
+            position: absolute;
+            right: -4px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 8px;
+            height: 8px;
+            background: white;
+            border-radius: 50%;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
     </style>
 </head>
 <body class="min-h-screen text-white overflow-x-hidden">
@@ -1490,6 +1544,24 @@
                             <div id="userPlaylists" class="flex flex-wrap gap-1 justify-center max-h-24 overflow-y-auto">
                             </div>
                         </div>
+                        
+                        <!-- Player Status -->
+                        <div id="playerStatus" class="hidden text-xs text-center py-1 px-2 rounded mt-2 bg-green-500/30 text-green-300"></div>
+                        
+                        <!-- Device Info -->
+                        <div id="deviceInfo" class="mt-3 pt-3 border-t border-white/10">
+                            <div class="flex items-center justify-center gap-2 text-xs">
+                                <div id="soundWave" class="sound-wave paused">
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                </div>
+                                <span class="opacity-70">Tocando no:</span>
+                                <span id="activeDevice" class="text-green-400 font-medium">🚀 Dashboard do Filipe</span>
+                            </div>
+                            <p class="text-center text-[10px] opacity-40 mt-1">O áudio toca diretamente nesta página</p>
+                        </div>
                     </div>
                     
                     <div id="spotifyEmbedSection" class="hidden">
@@ -1712,10 +1784,20 @@
                 <div class="bg-yellow-500/20 border border-yellow-500/30 rounded-xl p-4">
                     <h4 class="font-semibold mb-2 text-yellow-400"><i class="fas fa-exclamation-triangle mr-2"></i>Importante</h4>
                     <ul class="list-disc list-inside space-y-1 opacity-80 text-xs">
-                        <li>O controle de reprodução requer <strong>Spotify Premium</strong></li>
-                        <li>Você precisa ter o Spotify aberto em algum dispositivo</li>
+                        <li>Requer <strong>Spotify Premium</strong> para reprodução</li>
+                        <li>O áudio tocará <strong>diretamente nesta página</strong> (Web Playback)</li>
+                        <li>Sua página aparecerá como dispositivo "Dashboard do Filipe" no Spotify</li>
                         <li>Seu Client ID fica salvo apenas no seu navegador</li>
                     </ul>
+                </div>
+                
+                <div class="bg-green-500/20 border border-green-500/30 rounded-xl p-4">
+                    <h4 class="font-semibold mb-2 text-green-400"><i class="fas fa-headphones mr-2"></i>Web Playback SDK</h4>
+                    <p class="text-xs opacity-80">
+                        Com esta integração, sua página se torna um <strong>dispositivo Spotify real</strong>! 
+                        Você pode selecionar "Dashboard do Filipe" como saída de áudio no app do Spotify 
+                        (celular, desktop, etc.) e a música tocará aqui.
+                    </p>
                 </div>
                 
                 <div id="spotifyStatus" class="hidden bg-green-500/20 border border-green-500/30 rounded-xl p-4">
@@ -2434,8 +2516,13 @@
             'user-modify-playback-state',
             'user-read-currently-playing',
             'playlist-read-private',
-            'playlist-read-collaborative'
+            'playlist-read-collaborative',
+            'streaming'
         ].join(' ');
+        
+        // Web Playback SDK
+        let spotifyPlayer = null;
+        let deviceId = null;
         
         let spotifyAccessToken = localStorage.getItem('spotifyAccessToken');
         let spotifyTokenExpiry = localStorage.getItem('spotifyTokenExpiry');
@@ -2507,6 +2594,11 @@
             spotifyTokenExpiry = null;
             if (playbackInterval) clearInterval(playbackInterval);
             if (tokenCheckInterval) clearInterval(tokenCheckInterval);
+            if (spotifyPlayer) {
+                spotifyPlayer.disconnect();
+                spotifyPlayer = null;
+                deviceId = null;
+            }
             updateSpotifyUI();
         }
 
@@ -2667,18 +2759,30 @@
         }
 
         async function spotifyPlayPause() {
-            await spotifyApiCall(currentPlaybackState?.is_playing ? '/me/player/pause' : '/me/player/play', 'PUT');
-            setTimeout(fetchCurrentPlayback, 300);
+            if (spotifyPlayer) {
+                await spotifyPlayer.togglePlay();
+            } else {
+                await spotifyApiCall(currentPlaybackState?.is_playing ? '/me/player/pause' : '/me/player/play', 'PUT');
+                setTimeout(fetchCurrentPlayback, 300);
+            }
         }
 
         async function spotifyNext() {
-            await spotifyApiCall('/me/player/next', 'POST');
-            setTimeout(fetchCurrentPlayback, 300);
+            if (spotifyPlayer) {
+                await spotifyPlayer.nextTrack();
+            } else {
+                await spotifyApiCall('/me/player/next', 'POST');
+                setTimeout(fetchCurrentPlayback, 300);
+            }
         }
 
         async function spotifyPrevious() {
-            await spotifyApiCall('/me/player/previous', 'POST');
-            setTimeout(fetchCurrentPlayback, 300);
+            if (spotifyPlayer) {
+                await spotifyPlayer.previousTrack();
+            } else {
+                await spotifyApiCall('/me/player/previous', 'POST');
+                setTimeout(fetchCurrentPlayback, 300);
+            }
         }
 
         async function toggleShuffle() {
@@ -2694,6 +2798,9 @@
         }
 
         async function setVolume(value) {
+            if (spotifyPlayer) {
+                await spotifyPlayer.setVolume(value / 100);
+            }
             await spotifyApiCall(`/me/player/volume?volume_percent=${value}`, 'PUT');
         }
 
@@ -2732,6 +2839,10 @@
             if (isSpotifyConnected()) {
                 await fetchUserProfile();
                 await fetchUserPlaylists();
+                
+                // Initialize Web Playback SDK
+                await initWebPlaybackSDK();
+                
                 await fetchCurrentPlayback();
                 
                 // Set up playback polling
@@ -2740,9 +2851,147 @@
                 
                 // Set up token expiry checking
                 if (tokenCheckInterval) clearInterval(tokenCheckInterval);
-                tokenCheckInterval = setInterval(checkTokenExpiry, 30000); // Check every 30 seconds
-                checkTokenExpiry(); // Check immediately
+                tokenCheckInterval = setInterval(checkTokenExpiry, 30000);
+                checkTokenExpiry();
             }
+        }
+        
+        // Initialize Spotify Web Playback SDK
+        async function initWebPlaybackSDK() {
+            return new Promise((resolve) => {
+                // Load the SDK script if not already loaded
+                if (!window.Spotify) {
+                    const script = document.createElement('script');
+                    script.src = 'https://sdk.scdn.co/spotify-player.js';
+                    script.async = true;
+                    document.body.appendChild(script);
+                    
+                    window.onSpotifyWebPlaybackSDKReady = () => {
+                        createSpotifyPlayer().then(resolve);
+                    };
+                } else {
+                    createSpotifyPlayer().then(resolve);
+                }
+            });
+        }
+        
+        async function createSpotifyPlayer() {
+            if (spotifyPlayer) {
+                spotifyPlayer.disconnect();
+            }
+            
+            spotifyPlayer = new Spotify.Player({
+                name: '🚀 Dashboard do Filipe',
+                getOAuthToken: cb => { cb(spotifyAccessToken); },
+                volume: 0.5
+            });
+            
+            // Error handling
+            spotifyPlayer.addListener('initialization_error', ({ message }) => {
+                console.error('Initialization Error:', message);
+                showPlayerStatus('Erro ao inicializar player', 'error');
+            });
+            
+            spotifyPlayer.addListener('authentication_error', ({ message }) => {
+                console.error('Authentication Error:', message);
+                showPlayerStatus('Erro de autenticação', 'error');
+                disconnectSpotify();
+            });
+            
+            spotifyPlayer.addListener('account_error', ({ message }) => {
+                console.error('Account Error:', message);
+                showPlayerStatus('Requer Spotify Premium', 'warning');
+            });
+            
+            spotifyPlayer.addListener('playback_error', ({ message }) => {
+                console.error('Playback Error:', message);
+            });
+            
+            // Playback status updates
+            spotifyPlayer.addListener('player_state_changed', state => {
+                if (state) {
+                    updatePlayerState(state);
+                }
+            });
+            
+            // Ready
+            spotifyPlayer.addListener('ready', ({ device_id }) => {
+                console.log('Ready with Device ID', device_id);
+                deviceId = device_id;
+                showPlayerStatus('Player conectado! 🎵', 'success');
+                
+                // Transfer playback to this device
+                transferPlayback(device_id);
+            });
+            
+            // Not Ready
+            spotifyPlayer.addListener('not_ready', ({ device_id }) => {
+                console.log('Device ID has gone offline', device_id);
+                showPlayerStatus('Player offline', 'warning');
+            });
+            
+            // Connect to the player
+            const connected = await spotifyPlayer.connect();
+            if (connected) {
+                console.log('Spotify Web Playback SDK connected!');
+            }
+            
+            return spotifyPlayer;
+        }
+        
+        function showPlayerStatus(message, type) {
+            const statusDiv = document.getElementById('playerStatus');
+            if (statusDiv) {
+                statusDiv.textContent = message;
+                statusDiv.className = `text-xs text-center py-1 px-2 rounded mt-2 ${
+                    type === 'success' ? 'bg-green-500/30 text-green-300' :
+                    type === 'error' ? 'bg-red-500/30 text-red-300' :
+                    'bg-yellow-500/30 text-yellow-300'
+                }`;
+                statusDiv.classList.remove('hidden');
+                
+                if (type === 'success') {
+                    setTimeout(() => statusDiv.classList.add('hidden'), 3000);
+                }
+            }
+        }
+        
+        async function transferPlayback(deviceId) {
+            await spotifyApiCall('/me/player', 'PUT', {
+                device_ids: [deviceId],
+                play: false
+            });
+        }
+        
+        function updatePlayerState(state) {
+            if (!state) return;
+            
+            const track = state.track_window.current_track;
+            document.getElementById('trackName').textContent = track.name;
+            document.getElementById('trackArtist').textContent = track.artists.map(a => a.name).join(', ');
+            document.getElementById('trackImage').src = track.album.images[0]?.url || 'https://via.placeholder.com/56/1DB954/ffffff?text=♪';
+            
+            const progress = state.position;
+            const duration = state.duration;
+            document.getElementById('progressBar').style.width = `${(progress / duration) * 100}%`;
+            document.getElementById('trackProgress').textContent = formatTime(progress);
+            document.getElementById('trackDuration').textContent = formatTime(duration);
+            
+            document.getElementById('playPauseIcon').className = state.paused ? 'fas fa-play' : 'fas fa-pause';
+            document.getElementById('shuffleBtn').classList.toggle('text-green-400', state.shuffle);
+            document.getElementById('repeatBtn').classList.toggle('text-green-400', state.repeat_mode !== 0);
+            
+            // Update sound wave animation
+            const soundWave = document.getElementById('soundWave');
+            if (soundWave) {
+                soundWave.classList.toggle('paused', state.paused);
+            }
+            
+            currentPlaybackState = {
+                is_playing: !state.paused,
+                shuffle_state: state.shuffle,
+                repeat_state: state.repeat_mode === 0 ? 'off' : state.repeat_mode === 1 ? 'context' : 'track'
+            };
         }
 
         function extractSpotifyId(url) {
