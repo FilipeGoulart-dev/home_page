@@ -1,0 +1,2658 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard do Filipe</title>
+    <meta name="description" content="Dashboard pessoal do Filipe">
+    <meta name="theme-color" content="#1e1b4b">
+    
+    <!-- PWA -->
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
+    
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .title-font {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        /* ===== JARVIS SPLASH SCREEN ===== */
+        .splash-screen {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(ellipse at center, #0a1628 0%, #020817 50%, #000000 100%);
+            transition: opacity 1.2s ease, visibility 1.2s ease;
+            overflow: hidden;
+        }
+
+        .splash-screen.fade-out {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        /* Jarvis Background Grid */
+        .jarvis-grid {
+            position: absolute;
+            inset: 0;
+            background-image: 
+                linear-gradient(rgba(6, 182, 212, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(6, 182, 212, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridPulse 4s ease-in-out infinite;
+        }
+
+        @keyframes gridPulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.6; }
+        }
+
+        /* Floating Particles */
+        .jarvis-particles {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: #22d3ee;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #22d3ee, 0 0 20px #22d3ee;
+            animation: particleFloat 8s linear infinite;
+        }
+
+        .particle:nth-child(1) { left: 10%; animation-delay: 0s; animation-duration: 12s; }
+        .particle:nth-child(2) { left: 20%; animation-delay: 1s; animation-duration: 10s; }
+        .particle:nth-child(3) { left: 30%; animation-delay: 2s; animation-duration: 14s; }
+        .particle:nth-child(4) { left: 40%; animation-delay: 0.5s; animation-duration: 11s; }
+        .particle:nth-child(5) { left: 50%; animation-delay: 1.5s; animation-duration: 13s; }
+        .particle:nth-child(6) { left: 60%; animation-delay: 2.5s; animation-duration: 9s; }
+        .particle:nth-child(7) { left: 70%; animation-delay: 0.8s; animation-duration: 15s; }
+        .particle:nth-child(8) { left: 80%; animation-delay: 1.8s; animation-duration: 10s; }
+        .particle:nth-child(9) { left: 90%; animation-delay: 3s; animation-duration: 12s; }
+        .particle:nth-child(10) { left: 15%; animation-delay: 0.3s; animation-duration: 11s; }
+        .particle:nth-child(11) { left: 35%; animation-delay: 1.2s; animation-duration: 13s; }
+        .particle:nth-child(12) { left: 55%; animation-delay: 2.2s; animation-duration: 14s; }
+        .particle:nth-child(13) { left: 75%; animation-delay: 0.7s; animation-duration: 10s; }
+        .particle:nth-child(14) { left: 85%; animation-delay: 1.7s; animation-duration: 12s; }
+        .particle:nth-child(15) { left: 25%; animation-delay: 2.8s; animation-duration: 15s; }
+
+        @keyframes particleFloat {
+            0% { 
+                transform: translateY(100vh) scale(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+                transform: translateY(90vh) scale(1);
+            }
+            90% {
+                opacity: 1;
+            }
+            100% { 
+                transform: translateY(-10vh) scale(0);
+                opacity: 0;
+            }
+        }
+
+        /* Central Hologram Container */
+        .jarvis-hologram {
+            position: relative;
+            width: 350px;
+            height: 350px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Rotating Circles */
+        .jarvis-circle {
+            position: absolute;
+            border-radius: 50%;
+            border: 2px solid transparent;
+        }
+
+        .jarvis-circle-1 {
+            width: 100%;
+            height: 100%;
+            border-color: rgba(6, 182, 212, 0.3);
+            border-top-color: #22d3ee;
+            border-right-color: #22d3ee;
+            animation: rotate 4s linear infinite;
+            box-shadow: 0 0 30px rgba(34, 211, 238, 0.2), inset 0 0 30px rgba(34, 211, 238, 0.1);
+        }
+
+        .jarvis-circle-2 {
+            width: 85%;
+            height: 85%;
+            border-color: rgba(59, 130, 246, 0.3);
+            border-bottom-color: #3b82f6;
+            border-left-color: #3b82f6;
+            animation: rotateReverse 3s linear infinite;
+            box-shadow: 0 0 25px rgba(59, 130, 246, 0.2), inset 0 0 25px rgba(59, 130, 246, 0.1);
+        }
+
+        .jarvis-circle-3 {
+            width: 70%;
+            height: 70%;
+            border-color: rgba(168, 85, 247, 0.3);
+            border-top-color: #a855f7;
+            animation: rotate 5s linear infinite;
+            box-shadow: 0 0 20px rgba(168, 85, 247, 0.2), inset 0 0 20px rgba(168, 85, 247, 0.1);
+        }
+
+        .jarvis-circle-4 {
+            width: 55%;
+            height: 55%;
+            border-color: rgba(6, 182, 212, 0.4);
+            border-right-color: #22d3ee;
+            border-bottom-color: #22d3ee;
+            animation: rotateReverse 2.5s linear infinite;
+        }
+
+        .jarvis-circle-5 {
+            width: 40%;
+            height: 40%;
+            border-width: 3px;
+            border-color: rgba(34, 211, 238, 0.6);
+            animation: pulse 2s ease-in-out infinite;
+            box-shadow: 0 0 40px rgba(34, 211, 238, 0.4), inset 0 0 40px rgba(34, 211, 238, 0.2);
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes rotateReverse {
+            from { transform: rotate(360deg); }
+            to { transform: rotate(0deg); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { 
+                transform: scale(1);
+                opacity: 0.8;
+            }
+            50% { 
+                transform: scale(1.1);
+                opacity: 1;
+            }
+        }
+
+        /* Arc Segments */
+        .jarvis-arc {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+        }
+
+        .jarvis-arc::before,
+        .jarvis-arc::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 3px solid transparent;
+        }
+
+        .jarvis-arc-1::before {
+            border-top-color: #22d3ee;
+            animation: arcRotate1 3s ease-in-out infinite;
+        }
+
+        .jarvis-arc-2::after {
+            border-bottom-color: #3b82f6;
+            animation: arcRotate2 4s ease-in-out infinite;
+        }
+
+        @keyframes arcRotate1 {
+            0% { transform: rotate(0deg); }
+            50% { transform: rotate(180deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes arcRotate2 {
+            0% { transform: rotate(180deg); }
+            50% { transform: rotate(360deg); }
+            100% { transform: rotate(540deg); }
+        }
+
+        /* Scan Line */
+        .jarvis-scan {
+            position: absolute;
+            width: 50%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #22d3ee, transparent);
+            top: 50%;
+            left: 50%;
+            transform-origin: left center;
+            animation: scan 3s linear infinite;
+            box-shadow: 0 0 20px #22d3ee;
+        }
+
+        @keyframes scan {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Data Points */
+        .jarvis-data-points {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .data-point {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #22d3ee;
+            border-radius: 50%;
+            box-shadow: 0 0 15px #22d3ee, 0 0 30px #22d3ee;
+        }
+
+        .data-point::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border: 1px solid rgba(34, 211, 238, 0.5);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: dataPointPulse 2s ease-out infinite;
+        }
+
+        @keyframes dataPointPulse {
+            0% { 
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 1;
+            }
+            100% { 
+                transform: translate(-50%, -50%) scale(3);
+                opacity: 0;
+            }
+        }
+
+        .data-point:nth-child(1) { top: 5%; left: 50%; transform: translateX(-50%); animation: dataFloat 3s ease-in-out infinite; }
+        .data-point:nth-child(2) { top: 50%; right: 5%; transform: translateY(-50%); animation: dataFloat 3s ease-in-out infinite 0.5s; }
+        .data-point:nth-child(3) { bottom: 5%; left: 50%; transform: translateX(-50%); animation: dataFloat 3s ease-in-out infinite 1s; }
+        .data-point:nth-child(4) { top: 50%; left: 5%; transform: translateY(-50%); animation: dataFloat 3s ease-in-out infinite 1.5s; }
+        .data-point:nth-child(5) { top: 15%; left: 15%; animation: dataFloat 3s ease-in-out infinite 0.3s; }
+        .data-point:nth-child(6) { top: 15%; right: 15%; animation: dataFloat 3s ease-in-out infinite 0.8s; }
+        .data-point:nth-child(7) { bottom: 15%; right: 15%; animation: dataFloat 3s ease-in-out infinite 1.3s; }
+        .data-point:nth-child(8) { bottom: 15%; left: 15%; animation: dataFloat 3s ease-in-out infinite 1.8s; }
+
+        @keyframes dataFloat {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        /* Connection Lines */
+        .jarvis-connections {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .connection-line {
+            position: absolute;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(34, 211, 238, 0.5), transparent);
+            transform-origin: center;
+            animation: linePulse 2s ease-in-out infinite;
+        }
+
+        .connection-line:nth-child(1) { width: 40%; top: 50%; left: 5%; animation-delay: 0s; }
+        .connection-line:nth-child(2) { width: 40%; top: 50%; right: 5%; animation-delay: 0.3s; }
+        .connection-line:nth-child(3) { width: 100%; top: 25%; left: 0; animation-delay: 0.6s; }
+        .connection-line:nth-child(4) { width: 100%; top: 75%; left: 0; animation-delay: 0.9s; }
+
+        @keyframes linePulse {
+            0%, 100% { opacity: 0.2; }
+            50% { opacity: 0.8; }
+        }
+
+        /* HUD Corners */
+        .hud-corner {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border-color: #22d3ee;
+            border-style: solid;
+            border-width: 0;
+            opacity: 0.7;
+        }
+
+        .hud-corner-tl { top: 0; left: 0; border-top-width: 3px; border-left-width: 3px; }
+        .hud-corner-tr { top: 0; right: 0; border-top-width: 3px; border-right-width: 3px; }
+        .hud-corner-bl { bottom: 0; left: 0; border-bottom-width: 3px; border-left-width: 3px; }
+        .hud-corner-br { bottom: 0; right: 0; border-bottom-width: 3px; border-right-width: 3px; }
+
+        /* Text Content */
+        .jarvis-content {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+        }
+
+        .splash-greeting {
+            font-size: 1.2rem;
+            color: #22d3ee;
+            margin-bottom: 0.5rem;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: jarvisTextIn 0.8s ease forwards 0.5s;
+            text-shadow: 0 0 20px rgba(34, 211, 238, 0.8);
+            letter-spacing: 4px;
+            text-transform: uppercase;
+        }
+
+        .splash-name {
+            font-size: 4rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #22d3ee 0%, #3b82f6 50%, #a855f7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            opacity: 0;
+            transform: scale(0.5);
+            animation: jarvisNameIn 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 0.8s;
+            filter: drop-shadow(0 0 30px rgba(34, 211, 238, 0.5));
+        }
+
+        .splash-tagline {
+            font-size: 0.9rem;
+            color: rgba(34, 211, 238, 0.7);
+            margin-top: 1rem;
+            opacity: 0;
+            animation: jarvisTextIn 0.8s ease forwards 1.5s;
+            letter-spacing: 2px;
+        }
+
+        @keyframes jarvisTextIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes jarvisNameIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.5);
+                filter: drop-shadow(0 0 0px rgba(34, 211, 238, 0));
+            }
+            50% {
+                filter: drop-shadow(0 0 60px rgba(34, 211, 238, 0.8));
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+                filter: drop-shadow(0 0 30px rgba(34, 211, 238, 0.5));
+            }
+        }
+
+        /* Loading Bar */
+        .jarvis-loader {
+            position: absolute;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            opacity: 0;
+            animation: jarvisTextIn 0.5s ease forwards 2s;
+        }
+
+        .loader-bar {
+            height: 4px;
+            background: rgba(34, 211, 238, 0.2);
+            border-radius: 2px;
+            overflow: hidden;
+            border: 1px solid rgba(34, 211, 238, 0.3);
+        }
+
+        .loader-progress {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #22d3ee, #3b82f6, #a855f7);
+            border-radius: 2px;
+            animation: loaderProgress 2s ease-out forwards 2.2s;
+            box-shadow: 0 0 20px #22d3ee;
+        }
+
+        @keyframes loaderProgress {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+
+        .loader-text {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 0.75rem;
+            color: rgba(34, 211, 238, 0.7);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        .loader-percentage {
+            font-family: 'Space Grotesk', monospace;
+            font-size: 0.85rem;
+            color: #22d3ee;
+        }
+
+        /* Status Indicators */
+        .jarvis-status {
+            position: absolute;
+            bottom: 150px;
+            display: flex;
+            gap: 30px;
+            opacity: 0;
+            animation: jarvisTextIn 0.5s ease forwards 1.8s;
+        }
+
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.7rem;
+            color: rgba(34, 211, 238, 0.7);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #22c55e;
+            border-radius: 50%;
+            animation: statusBlink 1.5s ease-in-out infinite;
+            box-shadow: 0 0 10px #22c55e;
+        }
+
+        .status-dot.loading {
+            background: #eab308;
+            box-shadow: 0 0 10px #eab308;
+        }
+
+        @keyframes statusBlink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        /* Hexagon Background Pattern */
+        .hexagon-pattern {
+            position: absolute;
+            inset: 0;
+            opacity: 0.05;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='49' viewBox='0 0 28 49'%3E%3Cg fill-rule='evenodd'%3E%3Cg fill='%2322d3ee' fill-rule='nonzero'%3E%3Cpath d='M13.99 9.25l13 7.5v15l-13 7.5L1 31.75v-15l12.99-7.5zM3 17.9v12.7l10.99 6.34 11-6.35V17.9l-11-6.34L3 17.9z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes nameReveal {
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes loading {
+            0% { transform: translateX(-100%); }
+            50% { transform: translateX(250%); }
+            100% { transform: translateX(-100%); }
+        }
+
+        /* Parallax Background */
+        body {
+            transition: background 1s ease-in-out;
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            overflow-x: hidden;
+        }
+
+        .parallax-bg {
+            position: fixed;
+            inset: 0;
+            z-index: -2;
+            background-size: cover;
+            background-position: center;
+            transform: translateZ(0);
+            will-change: transform;
+        }
+
+        .parallax-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            background: rgba(0,0,0,0.4);
+        }
+
+        /* Page Enter Animation */
+        .main-content {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .main-content.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .glass-dark {
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Post-it Styles */
+        .post-it {
+            transform: rotate(var(--rotation));
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            box-shadow: 5px 5px 15px rgba(0,0,0,0.3);
+            cursor: grab;
+        }
+
+        .post-it:hover {
+            transform: rotate(0deg) scale(1.05);
+            z-index: 100;
+            box-shadow: 10px 10px 25px rgba(0,0,0,0.4);
+        }
+
+        .post-it.dragging {
+            cursor: grabbing;
+            transform: rotate(0deg) scale(1.1);
+            z-index: 1000;
+            box-shadow: 15px 15px 35px rgba(0,0,0,0.5);
+        }
+
+        .post-it-yellow { background: linear-gradient(135deg, #fef08a 0%, #fde047 100%); }
+        .post-it-pink { background: linear-gradient(135deg, #fbcfe8 0%, #f9a8d4 100%); }
+        .post-it-blue { background: linear-gradient(135deg, #bae6fd 0%, #7dd3fc 100%); }
+        .post-it-green { background: linear-gradient(135deg, #bbf7d0 0%, #86efac 100%); }
+        .post-it-orange { background: linear-gradient(135deg, #fed7aa 0%, #fdba74 100%); }
+        .post-it-purple { background: linear-gradient(135deg, #e9d5ff 0%, #d8b4fe 100%); }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(var(--rotation)); }
+            50% { transform: translateY(-5px) rotate(var(--rotation)); }
+        }
+
+        .post-it.floating {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .post-it:hover {
+            animation: none;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.8) rotate(var(--rotation)); }
+            to { opacity: 1; transform: scale(1) rotate(var(--rotation)); }
+        }
+
+        .post-it-new {
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        /* Priority Indicators */
+        .priority-high { border-left: 4px solid #ef4444 !important; }
+        .priority-medium { border-left: 4px solid #f59e0b !important; }
+        .priority-low { border-left: 4px solid #22c55e !important; }
+
+        /* Due Date Warning */
+        .due-soon {
+            animation: duePulse 2s ease-in-out infinite;
+        }
+
+        @keyframes duePulse {
+            0%, 100% { box-shadow: 5px 5px 15px rgba(0,0,0,0.3); }
+            50% { box-shadow: 5px 5px 15px rgba(239, 68, 68, 0.5), 0 0 20px rgba(239, 68, 68, 0.3); }
+        }
+
+        .overdue {
+            border: 2px solid #ef4444 !important;
+        }
+
+        /* Category Tag */
+        .category-tag {
+            font-size: 0.65rem;
+            padding: 2px 6px;
+            border-radius: 10px;
+            background: rgba(0,0,0,0.15);
+        }
+
+        .pomodoro-progress {
+            transition: stroke-dashoffset 1s linear;
+        }
+
+        /* Link Styles */
+        .link-item {
+            transition: all 0.2s ease;
+            cursor: grab;
+        }
+
+        .link-item:hover {
+            transform: translateY(-3px);
+        }
+
+        .link-item.dragging {
+            cursor: grabbing;
+            opacity: 0.8;
+            transform: scale(1.1);
+        }
+
+        .link-folder {
+            background: rgba(255,255,255,0.05);
+            border: 1px dashed rgba(255,255,255,0.2);
+        }
+
+        .search-bar {
+            transition: all 0.3s ease;
+        }
+
+        .search-bar:focus-within {
+            transform: scale(1.02);
+            box-shadow: 0 0 30px rgba(255,255,255,0.2);
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.3);
+            border-radius: 10px;
+        }
+
+        .spotify-gradient {
+            background: linear-gradient(135deg, #1DB954 0%, #191414 100%);
+        }
+
+        /* Quote Animation */
+        .quote-fade {
+            animation: quoteFade 0.5s ease;
+        }
+
+        @keyframes quoteFade {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ===== ANIMATED WEATHER ICONS ===== */
+        .weather-icon {
+            width: 80px;
+            height: 80px;
+            position: relative;
+            margin: 0 auto;
+        }
+
+        /* Sun */
+        .weather-sun {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #FFD93D 0%, #FF9500 100%);
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 30px rgba(255, 217, 61, 0.6), 0 0 60px rgba(255, 149, 0, 0.3);
+            animation: sunPulse 3s ease-in-out infinite;
+        }
+
+        .weather-sun::before {
+            content: '';
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 12px;
+            background: #FFD93D;
+            border-radius: 2px;
+            box-shadow: 
+                0 63px 0 #FFD93D,
+                -31px 31px 0 #FFD93D,
+                31px 31px 0 #FFD93D,
+                -31px -31px 0 #FFD93D,
+                31px -31px 0 #FFD93D,
+                -44px 0 0 #FFD93D,
+                44px 0 0 #FFD93D;
+            animation: sunRays 3s linear infinite;
+        }
+
+        @keyframes sunPulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.05); }
+        }
+
+        @keyframes sunRays {
+            0% { transform: translateX(-50%) rotate(0deg); }
+            100% { transform: translateX(-50%) rotate(360deg); }
+        }
+
+        /* Cloud */
+        .weather-cloud {
+            position: absolute;
+            width: 50px;
+            height: 20px;
+            background: linear-gradient(135deg, #f0f0f0 0%, #d4d4d4 100%);
+            border-radius: 20px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: cloudFloat 4s ease-in-out infinite;
+        }
+
+        .weather-cloud::before {
+            content: '';
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            background: linear-gradient(135deg, #f0f0f0 0%, #d4d4d4 100%);
+            border-radius: 50%;
+            top: -15px;
+            left: 8px;
+        }
+
+        .weather-cloud::after {
+            content: '';
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            background: linear-gradient(135deg, #f0f0f0 0%, #d4d4d4 100%);
+            border-radius: 50%;
+            top: -10px;
+            left: 25px;
+        }
+
+        @keyframes cloudFloat {
+            0%, 100% { transform: translate(-50%, -50%) translateX(0); }
+            50% { transform: translate(-50%, -50%) translateX(5px); }
+        }
+
+        /* Partly Cloudy */
+        .weather-partly-cloudy .weather-sun {
+            width: 35px;
+            height: 35px;
+            top: 35%;
+            left: 35%;
+        }
+
+        .weather-partly-cloudy .weather-sun::before {
+            width: 3px;
+            height: 8px;
+            top: -10px;
+            box-shadow: 
+                0 47px 0 #FFD93D,
+                -23px 23px 0 #FFD93D,
+                23px 23px 0 #FFD93D,
+                -23px -23px 0 #FFD93D,
+                23px -23px 0 #FFD93D,
+                -32px 0 0 #FFD93D,
+                32px 0 0 #FFD93D;
+        }
+
+        .weather-partly-cloudy .weather-cloud {
+            top: 60%;
+            left: 55%;
+            width: 45px;
+            height: 18px;
+        }
+
+        .weather-partly-cloudy .weather-cloud::before {
+            width: 22px;
+            height: 22px;
+            top: -13px;
+            left: 6px;
+        }
+
+        .weather-partly-cloudy .weather-cloud::after {
+            width: 16px;
+            height: 16px;
+            top: -8px;
+            left: 22px;
+        }
+
+        /* Cloudy */
+        .weather-cloudy .weather-cloud {
+            background: linear-gradient(135deg, #b0b0b0 0%, #888 100%);
+        }
+
+        .weather-cloudy .weather-cloud::before,
+        .weather-cloudy .weather-cloud::after {
+            background: linear-gradient(135deg, #b0b0b0 0%, #888 100%);
+        }
+
+        .weather-cloudy .cloud-back {
+            position: absolute;
+            width: 40px;
+            height: 16px;
+            background: linear-gradient(135deg, #d0d0d0 0%, #aaa 100%);
+            border-radius: 16px;
+            top: 30%;
+            left: 30%;
+            animation: cloudFloat 5s ease-in-out infinite reverse;
+        }
+
+        .weather-cloudy .cloud-back::before {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: linear-gradient(135deg, #d0d0d0 0%, #aaa 100%);
+            border-radius: 50%;
+            top: -12px;
+            left: 6px;
+        }
+
+        /* Rain */
+        .weather-rain .weather-cloud {
+            background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+            top: 35%;
+        }
+
+        .weather-rain .weather-cloud::before,
+        .weather-rain .weather-cloud::after {
+            background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+        }
+
+        .weather-rain .rain-drops {
+            position: absolute;
+            top: 55%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 30px;
+        }
+
+        .weather-rain .drop {
+            position: absolute;
+            width: 3px;
+            height: 10px;
+            background: linear-gradient(180deg, transparent 0%, #60a5fa 100%);
+            border-radius: 0 0 3px 3px;
+            animation: rainFall 0.8s linear infinite;
+        }
+
+        .weather-rain .drop:nth-child(1) { left: 5px; animation-delay: 0s; }
+        .weather-rain .drop:nth-child(2) { left: 15px; animation-delay: 0.2s; }
+        .weather-rain .drop:nth-child(3) { left: 25px; animation-delay: 0.4s; }
+        .weather-rain .drop:nth-child(4) { left: 35px; animation-delay: 0.1s; }
+        .weather-rain .drop:nth-child(5) { left: 10px; animation-delay: 0.5s; }
+        .weather-rain .drop:nth-child(6) { left: 30px; animation-delay: 0.3s; }
+
+        @keyframes rainFall {
+            0% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(25px); opacity: 0; }
+        }
+
+        /* Storm */
+        .weather-storm .weather-cloud {
+            background: linear-gradient(135deg, #374151 0%, #1f2937 100%);
+            top: 30%;
+        }
+
+        .weather-storm .weather-cloud::before,
+        .weather-storm .weather-cloud::after {
+            background: linear-gradient(135deg, #374151 0%, #1f2937 100%);
+        }
+
+        .weather-storm .lightning {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-top: 25px solid #fbbf24;
+            animation: lightningFlash 2s ease-in-out infinite;
+            filter: drop-shadow(0 0 10px #fbbf24);
+        }
+
+        .weather-storm .lightning::before {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: -3px;
+            width: 0;
+            height: 0;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-bottom: 15px solid #fbbf24;
+        }
+
+        @keyframes lightningFlash {
+            0%, 89%, 91%, 93%, 100% { opacity: 0; }
+            90%, 92% { opacity: 1; }
+        }
+
+        .weather-storm .rain-drops {
+            position: absolute;
+            top: 55%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 30px;
+        }
+
+        .weather-storm .drop {
+            position: absolute;
+            width: 2px;
+            height: 12px;
+            background: linear-gradient(180deg, transparent 0%, #93c5fd 100%);
+            border-radius: 0 0 2px 2px;
+            animation: rainFall 0.5s linear infinite;
+        }
+
+        .weather-storm .drop:nth-child(1) { left: 5px; animation-delay: 0s; }
+        .weather-storm .drop:nth-child(2) { left: 12px; animation-delay: 0.15s; }
+        .weather-storm .drop:nth-child(3) { left: 20px; animation-delay: 0.3s; }
+        .weather-storm .drop:nth-child(4) { left: 28px; animation-delay: 0.1s; }
+        .weather-storm .drop:nth-child(5) { left: 36px; animation-delay: 0.25s; }
+        .weather-storm .drop:nth-child(6) { left: 44px; animation-delay: 0.05s; }
+
+        /* Snow */
+        .weather-snow .weather-cloud {
+            background: linear-gradient(135deg, #9ca3af 0%, #6b7280 100%);
+            top: 35%;
+        }
+
+        .weather-snow .weather-cloud::before,
+        .weather-snow .weather-cloud::after {
+            background: linear-gradient(135deg, #9ca3af 0%, #6b7280 100%);
+        }
+
+        .weather-snow .snowflakes {
+            position: absolute;
+            top: 55%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 30px;
+        }
+
+        .weather-snow .flake {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: white;
+            border-radius: 50%;
+            animation: snowFall 2s linear infinite;
+            box-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
+        }
+
+        .weather-snow .flake:nth-child(1) { left: 5px; animation-delay: 0s; }
+        .weather-snow .flake:nth-child(2) { left: 15px; animation-delay: 0.5s; }
+        .weather-snow .flake:nth-child(3) { left: 25px; animation-delay: 1s; }
+        .weather-snow .flake:nth-child(4) { left: 35px; animation-delay: 0.3s; }
+        .weather-snow .flake:nth-child(5) { left: 10px; animation-delay: 1.2s; }
+        .weather-snow .flake:nth-child(6) { left: 30px; animation-delay: 0.7s; }
+
+        @keyframes snowFall {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(30px) rotate(360deg); opacity: 0; }
+        }
+
+        /* Night */
+        .weather-night .moon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #fef3c7 0%, #fcd34d 100%);
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 20px rgba(253, 211, 77, 0.4), 0 0 40px rgba(253, 211, 77, 0.2);
+            animation: moonGlow 4s ease-in-out infinite;
+        }
+
+        .weather-night .moon::before {
+            content: '';
+            position: absolute;
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border-radius: 50%;
+            top: -5px;
+            left: -8px;
+        }
+
+        @keyframes moonGlow {
+            0%, 100% { box-shadow: 0 0 20px rgba(253, 211, 77, 0.4), 0 0 40px rgba(253, 211, 77, 0.2); }
+            50% { box-shadow: 0 0 30px rgba(253, 211, 77, 0.6), 0 0 60px rgba(253, 211, 77, 0.3); }
+        }
+
+        .weather-night .stars {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .weather-night .star {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: white;
+            border-radius: 50%;
+            animation: starTwinkle 2s ease-in-out infinite;
+        }
+
+        .weather-night .star:nth-child(1) { top: 10px; left: 10px; animation-delay: 0s; }
+        .weather-night .star:nth-child(2) { top: 15px; right: 15px; animation-delay: 0.5s; }
+        .weather-night .star:nth-child(3) { bottom: 20px; left: 20px; animation-delay: 1s; }
+        .weather-night .star:nth-child(4) { top: 25px; left: 60px; animation-delay: 0.3s; }
+        .weather-night .star:nth-child(5) { bottom: 15px; right: 10px; animation-delay: 0.8s; }
+
+        @keyframes starTwinkle {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        /* Mist */
+        .weather-mist .fog-line {
+            position: absolute;
+            height: 4px;
+            background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.6) 50%, transparent 100%);
+            border-radius: 2px;
+            animation: fogMove 3s ease-in-out infinite;
+        }
+
+        .weather-mist .fog-line:nth-child(1) { top: 25%; left: 10%; width: 60%; animation-delay: 0s; }
+        .weather-mist .fog-line:nth-child(2) { top: 40%; left: 20%; width: 50%; animation-delay: 0.5s; }
+        .weather-mist .fog-line:nth-child(3) { top: 55%; left: 5%; width: 70%; animation-delay: 1s; }
+        .weather-mist .fog-line:nth-child(4) { top: 70%; left: 15%; width: 55%; animation-delay: 1.5s; }
+
+        @keyframes fogMove {
+            0%, 100% { transform: translateX(0); opacity: 0.5; }
+            50% { transform: translateX(10px); opacity: 0.8; }
+        }
+
+        /* Drag & Drop Placeholder */
+        .drag-placeholder {
+            border: 2px dashed rgba(255,255,255,0.4);
+            background: rgba(255,255,255,0.1);
+            border-radius: 12px;
+        }
+
+        /* Task Search Highlight */
+        .search-highlight {
+            background: rgba(251, 191, 36, 0.4);
+            padding: 0 2px;
+            border-radius: 2px;
+        }
+    </style>
+</head>
+<body class="min-h-screen text-white overflow-x-hidden">
+    <!-- Splash Screen - Jarvis Style -->
+    <div id="splashScreen" class="splash-screen">
+        <!-- Background Effects -->
+        <div class="jarvis-grid"></div>
+        <div class="hexagon-pattern"></div>
+        
+        <!-- Floating Particles -->
+        <div class="jarvis-particles">
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+        </div>
+
+        <!-- Central Hologram -->
+        <div class="jarvis-hologram">
+            <!-- HUD Corners -->
+            <div class="hud-corner hud-corner-tl"></div>
+            <div class="hud-corner hud-corner-tr"></div>
+            <div class="hud-corner hud-corner-bl"></div>
+            <div class="hud-corner hud-corner-br"></div>
+            
+            <!-- Rotating Circles -->
+            <div class="jarvis-circle jarvis-circle-1"></div>
+            <div class="jarvis-circle jarvis-circle-2"></div>
+            <div class="jarvis-circle jarvis-circle-3"></div>
+            <div class="jarvis-circle jarvis-circle-4"></div>
+            <div class="jarvis-circle jarvis-circle-5"></div>
+            
+            <!-- Arc Segments -->
+            <div class="jarvis-arc jarvis-arc-1"></div>
+            <div class="jarvis-arc jarvis-arc-2"></div>
+            
+            <!-- Scan Line -->
+            <div class="jarvis-scan"></div>
+            
+            <!-- Data Points -->
+            <div class="jarvis-data-points">
+                <div class="data-point"></div>
+                <div class="data-point"></div>
+                <div class="data-point"></div>
+                <div class="data-point"></div>
+                <div class="data-point"></div>
+                <div class="data-point"></div>
+                <div class="data-point"></div>
+                <div class="data-point"></div>
+            </div>
+            
+            <!-- Connection Lines -->
+            <div class="jarvis-connections">
+                <div class="connection-line"></div>
+                <div class="connection-line"></div>
+                <div class="connection-line"></div>
+                <div class="connection-line"></div>
+            </div>
+            
+            <!-- Text Content -->
+            <div class="jarvis-content">
+                <p class="splash-greeting title-font" id="splashGreeting">Bom dia,</p>
+                <h1 class="splash-name title-font">FILIPE</h1>
+                <p class="splash-tagline">Iniciando sistema...</p>
+            </div>
+        </div>
+
+        <!-- Status Indicators -->
+        <div class="jarvis-status">
+            <div class="status-item">
+                <div class="status-dot"></div>
+                <span>Sistema</span>
+            </div>
+            <div class="status-item">
+                <div class="status-dot loading"></div>
+                <span>Dados</span>
+            </div>
+            <div class="status-item">
+                <div class="status-dot"></div>
+                <span>Conexão</span>
+            </div>
+        </div>
+
+        <!-- Loading Bar -->
+        <div class="jarvis-loader">
+            <div class="loader-bar">
+                <div class="loader-progress"></div>
+            </div>
+            <div class="loader-text">
+                Carregando dashboard... <span class="loader-percentage" id="loaderPercentage">0%</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Parallax Background -->
+    <div id="parallaxBg" class="parallax-bg"></div>
+    <div class="parallax-overlay"></div>
+
+    <!-- Main Container -->
+    <div id="mainContent" class="main-content min-h-screen p-4 md:p-6">
+        <!-- Motivational Quote -->
+        <div class="flex justify-center mb-3">
+            <div id="quoteContainer" class="glass-dark rounded-xl px-6 py-2 text-center max-w-2xl">
+                <p id="quoteText" class="text-sm italic text-white/80 quote-fade">"Carregando frase..."</p>
+                <p id="quoteAuthor" class="text-xs text-white/50 mt-1"></p>
+            </div>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="flex justify-center mb-4">
+            <div class="search-bar glass-dark rounded-2xl p-2 w-full max-w-2xl flex items-center gap-3">
+                <i class="fas fa-search text-white/60 ml-4"></i>
+                <input type="text" id="searchInput" placeholder="Pesquisar no Google..." 
+                    class="bg-transparent border-none outline-none text-white placeholder-white/50 w-full py-2 text-lg">
+                <button onclick="search()" class="bg-white/20 hover:bg-white/30 px-6 py-2 rounded-xl transition">
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Links Section -->
+        <div class="mb-6">
+            <div id="linksContainer" class="glass-dark rounded-2xl p-4 max-w-5xl mx-auto">
+                <div class="flex justify-between items-center mb-3">
+                    <h3 class="title-font font-semibold text-white/80"><i class="fas fa-bookmark mr-2"></i>Links Favoritos</h3>
+                    <div class="flex gap-2">
+                        <select id="linkFolderFilter" onchange="filterLinksByFolder()" class="bg-white/20 hover:bg-white/30 px-3 py-1 rounded-lg text-sm outline-none cursor-pointer">
+                            <option value="all">Todas Pastas</option>
+                        </select>
+                        <button onclick="openAddFolderModal()" class="bg-white/20 hover:bg-white/30 px-3 py-1 rounded-lg text-sm transition">
+                            <i class="fas fa-folder-plus mr-1"></i>Pasta
+                        </button>
+                        <button onclick="openAddLinkModal()" class="bg-white/20 hover:bg-white/30 px-3 py-1 rounded-lg text-sm transition">
+                            <i class="fas fa-plus mr-1"></i>Adicionar
+                        </button>
+                        <button onclick="toggleLinks()" id="expandBtn" class="bg-white/20 hover:bg-white/30 px-3 py-1 rounded-lg text-sm transition">
+                            <i class="fas fa-chevron-down mr-1"></i>Expandir
+                        </button>
+                    </div>
+                </div>
+                <div id="linksGrid" class="grid grid-cols-3 sm:grid-cols-5 md:grid-cols-9 gap-3 overflow-hidden transition-all duration-300" style="max-height: 100px;">
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+            <!-- Left Sidebar -->
+            <div class="lg:col-span-3 space-y-4">
+                <!-- Clock & Date -->
+                <div class="glass-dark rounded-2xl p-5">
+                    <div class="text-center">
+                        <div id="clock" class="title-font text-5xl font-bold mb-2">00:00</div>
+                        <div id="seconds" class="text-2xl text-white/60 mb-2">00</div>
+                        <div id="date" class="text-lg text-white/80"></div>
+                    </div>
+                </div>
+
+                <!-- Weather -->
+                <div class="glass-dark rounded-2xl p-5">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="title-font font-semibold"><i class="fas fa-cloud-sun mr-2"></i>Clima</h3>
+                        <span class="text-sm text-white/60">Itatiaiuçu</span>
+                    </div>
+                    <div id="weatherInfo" class="text-center">
+                        <div id="weatherIconContainer" class="weather-icon mb-4">
+                            <div class="weather-sun"></div>
+                        </div>
+                        <div id="temperature" class="text-4xl font-bold title-font">--°C</div>
+                        <div id="weatherDesc" class="text-white/70 capitalize mt-1">Carregando...</div>
+                        <div class="grid grid-cols-2 gap-2 mt-4 text-sm">
+                            <div class="bg-white/10 rounded-lg p-2">
+                                <i class="fas fa-tint text-blue-300"></i>
+                                <span id="humidity" class="ml-1">--%</span>
+                            </div>
+                            <div class="bg-white/10 rounded-lg p-2">
+                                <i class="fas fa-wind text-gray-300"></i>
+                                <span id="wind" class="ml-1">-- km/h</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pomodoro -->
+                <div class="glass-dark rounded-2xl p-5">
+                    <h3 class="title-font font-semibold mb-4"><i class="fas fa-clock mr-2"></i>Pomodoro</h3>
+                    <div class="flex justify-center mb-4">
+                        <div class="relative">
+                            <svg class="w-32 h-32 transform -rotate-90">
+                                <circle cx="64" cy="64" r="58" stroke="rgba(255,255,255,0.1)" stroke-width="8" fill="none"/>
+                                <circle id="pomodoroProgress" cx="64" cy="64" r="58" stroke="#ef4444" stroke-width="8" fill="none"
+                                    stroke-dasharray="364.42" stroke-dashoffset="0" class="pomodoro-progress"/>
+                            </svg>
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <span id="pomodoroTime" class="text-3xl font-bold title-font">25:00</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex justify-center gap-2 mb-3">
+                        <button onclick="startPomodoro()" id="pomodoroStart" class="bg-green-500/80 hover:bg-green-500 px-4 py-2 rounded-lg transition">
+                            <i class="fas fa-play"></i>
+                        </button>
+                        <button onclick="pausePomodoro()" class="bg-yellow-500/80 hover:bg-yellow-500 px-4 py-2 rounded-lg transition">
+                            <i class="fas fa-pause"></i>
+                        </button>
+                        <button onclick="resetPomodoro()" class="bg-red-500/80 hover:bg-red-500 px-4 py-2 rounded-lg transition">
+                            <i class="fas fa-redo"></i>
+                        </button>
+                    </div>
+                    <div class="flex justify-center gap-2 text-sm">
+                        <button onclick="setPomodoro(25)" class="bg-white/20 hover:bg-white/30 px-3 py-1 rounded-lg transition">25min</button>
+                        <button onclick="setPomodoro(5)" class="bg-white/20 hover:bg-white/30 px-3 py-1 rounded-lg transition">5min</button>
+                        <button onclick="setPomodoro(15)" class="bg-white/20 hover:bg-white/30 px-3 py-1 rounded-lg transition">15min</button>
+                    </div>
+                    <div class="text-center mt-3 text-sm text-white/60">
+                        <span id="pomodoroMode">Modo: Foco</span> | <span id="pomodoroCount">Sessões: 0</span>
+                    </div>
+                </div>
+
+                <!-- Spotify -->
+                <div class="glass-dark rounded-2xl p-5 spotify-gradient">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="title-font font-semibold"><i class="fab fa-spotify mr-2"></i>Spotify</h3>
+                        <button onclick="openSpotifySettings()" class="bg-white/20 hover:bg-white/30 w-8 h-8 rounded-full text-sm transition" title="Configurações">
+                            <i class="fas fa-cog"></i>
+                        </button>
+                    </div>
+                    
+                    <div id="spotifyNotConnected" class="text-center py-4">
+                        <div class="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-3">
+                            <i class="fab fa-spotify text-4xl"></i>
+                        </div>
+                        <p class="text-sm opacity-70 mb-3">Conecte sua conta do Spotify</p>
+                        <button onclick="connectSpotify()" class="bg-green-500 hover:bg-green-600 px-6 py-2 rounded-full text-sm font-medium transition">
+                            <i class="fas fa-link mr-2"></i>Conectar Conta
+                        </button>
+                    </div>
+                    
+                    <div id="spotifyConnected" class="hidden">
+                        <div id="spotifyUserInfo" class="flex items-center gap-3 mb-4 bg-white/10 rounded-xl p-3">
+                            <img id="spotifyUserImage" src="" alt="User" class="w-10 h-10 rounded-full">
+                            <div class="flex-1 text-left">
+                                <p id="spotifyUserName" class="font-medium text-sm"></p>
+                                <p class="text-xs opacity-60">Conta conectada</p>
+                            </div>
+                            <button onclick="disconnectSpotify()" class="bg-white/20 hover:bg-red-500/50 px-2 py-1 rounded text-xs transition" title="Desconectar">
+                                <i class="fas fa-sign-out-alt"></i>
+                            </button>
+                        </div>
+                        
+                        <div id="nowPlaying" class="bg-white/10 rounded-xl p-4 mb-4">
+                            <div class="flex items-center gap-3">
+                                <img id="trackImage" src="" alt="Album" class="w-14 h-14 rounded-lg shadow-lg">
+                                <div class="flex-1 min-w-0">
+                                    <p id="trackName" class="font-medium text-sm truncate">Nenhuma música</p>
+                                    <p id="trackArtist" class="text-xs opacity-70 truncate">-</p>
+                                    <div class="flex items-center gap-2 mt-1">
+                                        <span id="trackProgress" class="text-xs opacity-50">0:00</span>
+                                        <div class="flex-1 h-1 bg-white/20 rounded-full overflow-hidden">
+                                            <div id="progressBar" class="h-full bg-green-500 rounded-full transition-all" style="width: 0%"></div>
+                                        </div>
+                                        <span id="trackDuration" class="text-xs opacity-50">0:00</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center justify-center gap-3 mb-4">
+                            <button onclick="spotifyPrevious()" class="bg-white/20 hover:bg-white/30 w-10 h-10 rounded-full transition" title="Anterior">
+                                <i class="fas fa-step-backward"></i>
+                            </button>
+                            <button onclick="spotifyPlayPause()" id="playPauseBtn" class="bg-green-500 hover:bg-green-600 w-14 h-14 rounded-full transition text-xl" title="Play/Pause">
+                                <i class="fas fa-play" id="playPauseIcon"></i>
+                            </button>
+                            <button onclick="spotifyNext()" class="bg-white/20 hover:bg-white/30 w-10 h-10 rounded-full transition" title="Próxima">
+                                <i class="fas fa-step-forward"></i>
+                            </button>
+                        </div>
+                        
+                        <div class="flex items-center justify-center gap-4 mb-4">
+                            <button onclick="toggleShuffle()" id="shuffleBtn" class="opacity-50 hover:opacity-100 transition" title="Aleatório">
+                                <i class="fas fa-random"></i>
+                            </button>
+                            <div class="flex items-center gap-2">
+                                <i class="fas fa-volume-down text-sm opacity-70"></i>
+                                <input type="range" id="volumeSlider" min="0" max="100" value="50" 
+                                    class="w-20 h-1 accent-green-500 cursor-pointer" onchange="setVolume(this.value)">
+                            </div>
+                            <button onclick="toggleRepeat()" id="repeatBtn" class="opacity-50 hover:opacity-100 transition" title="Repetir">
+                                <i class="fas fa-redo"></i>
+                            </button>
+                        </div>
+                        
+                        <div class="border-t border-white/10 pt-3">
+                            <p class="text-xs opacity-60 mb-2">Suas Playlists:</p>
+                            <div id="userPlaylists" class="flex flex-wrap gap-1 justify-center max-h-24 overflow-y-auto">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="spotifyEmbedSection" class="hidden">
+                        <div class="border-t border-white/10 pt-3 mt-3">
+                            <p class="text-xs opacity-60 mb-2">Ou cole um link:</p>
+                            <div class="flex gap-2">
+                                <input type="text" id="spotifyLink" placeholder="Link do Spotify..." 
+                                    class="flex-1 bg-white/20 border-none rounded-lg px-3 py-2 text-sm placeholder-white/50 outline-none">
+                                <button onclick="loadSpotifyEmbed()" class="bg-green-500/80 hover:bg-green-500 px-3 py-2 rounded-lg text-sm transition">
+                                    <i class="fas fa-play"></i>
+                                </button>
+                            </div>
+                            <iframe id="spotifyEmbed" class="hidden w-full rounded-xl mt-2" height="80" frameBorder="0" 
+                                allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy">
+                            </iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Notes Section -->
+            <div class="lg:col-span-9">
+                <div class="glass-dark rounded-2xl p-5 min-h-[600px]">
+                    <!-- Tasks Header -->
+                    <div class="flex flex-wrap justify-between items-center gap-3 mb-4">
+                        <div class="flex items-center gap-3">
+                            <h3 class="title-font font-semibold text-xl"><i class="fas fa-sticky-note mr-2"></i>Minhas Tarefas</h3>
+                            <div id="taskCounter" class="text-sm text-white/60 bg-white/10 px-3 py-1 rounded-full">
+                                <span id="pendingCount">0</span> pendentes | <span id="completedCount">0</span> concluídas
+                            </div>
+                        </div>
+                        <button onclick="openAddNoteModal()" class="bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 px-4 py-2 rounded-xl transition font-medium">
+                            <i class="fas fa-plus mr-2"></i>Nova Tarefa
+                        </button>
+                    </div>
+                    
+                    <!-- Task Filters -->
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <div class="flex-1 min-w-[200px]">
+                            <div class="relative">
+                                <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-white/40"></i>
+                                <input type="text" id="taskSearch" placeholder="Buscar tarefas..." 
+                                    oninput="filterTasks()"
+                                    class="w-full bg-white/10 border border-white/20 rounded-lg pl-10 pr-4 py-2 text-sm outline-none focus:border-white/40 transition">
+                            </div>
+                        </div>
+                        <select id="filterCategory" onchange="filterTasks()" class="bg-white/10 border border-white/20 rounded-lg px-3 py-2 text-sm outline-none cursor-pointer">
+                            <option value="all">Todas Categorias</option>
+                            <option value="trabalho">💼 Trabalho</option>
+                            <option value="pessoal">🏠 Pessoal</option>
+                            <option value="estudos">📚 Estudos</option>
+                            <option value="saude">❤️ Saúde</option>
+                            <option value="financeiro">💰 Financeiro</option>
+                            <option value="outros">📌 Outros</option>
+                        </select>
+                        <select id="filterPriority" onchange="filterTasks()" class="bg-white/10 border border-white/20 rounded-lg px-3 py-2 text-sm outline-none cursor-pointer">
+                            <option value="all">Todas Prioridades</option>
+                            <option value="high">🔴 Alta</option>
+                            <option value="medium">🟡 Média</option>
+                            <option value="low">🟢 Baixa</option>
+                        </select>
+                        <select id="filterStatus" onchange="filterTasks()" class="bg-white/10 border border-white/20 rounded-lg px-3 py-2 text-sm outline-none cursor-pointer">
+                            <option value="all">Todos Status</option>
+                            <option value="pending">⏳ Pendentes</option>
+                            <option value="completed">✅ Concluídas</option>
+                        </select>
+                        <select id="filterColor" onchange="filterTasks()" class="bg-white/10 border border-white/20 rounded-lg px-3 py-2 text-sm outline-none cursor-pointer">
+                            <option value="all">Todas Cores</option>
+                            <option value="yellow">🟡 Amarelo</option>
+                            <option value="pink">🩷 Rosa</option>
+                            <option value="blue">🔵 Azul</option>
+                            <option value="green">🟢 Verde</option>
+                            <option value="orange">🟠 Laranja</option>
+                            <option value="purple">🟣 Roxo</option>
+                        </select>
+                    </div>
+                    
+                    <div id="notesContainer" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6 p-4">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Link Modal -->
+    <div id="linkModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm hidden items-center justify-center z-50">
+        <div class="glass-dark rounded-2xl p-6 w-full max-w-md mx-4">
+            <h3 class="title-font text-xl font-bold mb-4"><i class="fas fa-link mr-2"></i>Adicionar Link</h3>
+            <input type="text" id="linkName" placeholder="Nome do site" 
+                class="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 mb-3 outline-none focus:border-white/40 transition">
+            <input type="url" id="linkUrl" placeholder="https://..." oninput="previewFavicon()"
+                class="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 mb-3 outline-none focus:border-white/40 transition">
+            <div id="faviconPreview" class="hidden items-center gap-2 mb-3 bg-white/10 rounded-lg p-3">
+                <img id="faviconImg" src="" class="w-6 h-6 rounded">
+                <span class="text-sm text-white/70">Favicon detectado</span>
+            </div>
+            <select id="linkFolder" class="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 mb-4 outline-none cursor-pointer">
+                <option value="">Sem pasta</option>
+            </select>
+            <div class="flex gap-3">
+                <button onclick="closeLinkModal()" class="flex-1 bg-white/20 hover:bg-white/30 py-3 rounded-lg transition">Cancelar</button>
+                <button onclick="addLink()" class="flex-1 bg-blue-500 hover:bg-blue-600 py-3 rounded-lg transition font-medium">Adicionar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Folder Modal -->
+    <div id="folderModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm hidden items-center justify-center z-50">
+        <div class="glass-dark rounded-2xl p-6 w-full max-w-md mx-4">
+            <h3 class="title-font text-xl font-bold mb-4"><i class="fas fa-folder-plus mr-2"></i>Nova Pasta</h3>
+            <input type="text" id="folderName" placeholder="Nome da pasta" 
+                class="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 mb-4 outline-none focus:border-white/40 transition">
+            <div class="flex gap-3">
+                <button onclick="closeFolderModal()" class="flex-1 bg-white/20 hover:bg-white/30 py-3 rounded-lg transition">Cancelar</button>
+                <button onclick="addFolder()" class="flex-1 bg-blue-500 hover:bg-blue-600 py-3 rounded-lg transition font-medium">Criar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Note Modal -->
+    <div id="noteModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm hidden items-center justify-center z-50">
+        <div class="glass-dark rounded-2xl p-6 w-full max-w-md mx-4 max-h-[90vh] overflow-y-auto">
+            <h3 class="title-font text-xl font-bold mb-4"><i class="fas fa-sticky-note mr-2"></i>Nova Tarefa</h3>
+            <input type="text" id="noteTitle" placeholder="Título da tarefa" 
+                class="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 mb-3 outline-none focus:border-white/40 transition">
+            <textarea id="noteContent" placeholder="Descrição..." rows="3"
+                class="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 mb-3 outline-none focus:border-white/40 transition resize-none"></textarea>
+            
+            <!-- Category -->
+            <div class="mb-3">
+                <p class="text-sm text-white/60 mb-2">Categoria:</p>
+                <select id="noteCategory" class="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 outline-none cursor-pointer">
+                    <option value="outros">📌 Outros</option>
+                    <option value="trabalho">💼 Trabalho</option>
+                    <option value="pessoal">🏠 Pessoal</option>
+                    <option value="estudos">📚 Estudos</option>
+                    <option value="saude">❤️ Saúde</option>
+                    <option value="financeiro">💰 Financeiro</option>
+                </select>
+            </div>
+            
+            <!-- Priority -->
+            <div class="mb-3">
+                <p class="text-sm text-white/60 mb-2">Prioridade:</p>
+                <div class="flex gap-2">
+                    <button type="button" onclick="selectPriority('low')" class="flex-1 py-2 rounded-lg transition priority-btn bg-white/10 hover:bg-green-500/50" data-priority="low">
+                        🟢 Baixa
+                    </button>
+                    <button type="button" onclick="selectPriority('medium')" class="flex-1 py-2 rounded-lg transition priority-btn bg-white/10 hover:bg-yellow-500/50" data-priority="medium">
+                        🟡 Média
+                    </button>
+                    <button type="button" onclick="selectPriority('high')" class="flex-1 py-2 rounded-lg transition priority-btn bg-white/10 hover:bg-red-500/50" data-priority="high">
+                        🔴 Alta
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Due Date -->
+            <div class="mb-3">
+                <p class="text-sm text-white/60 mb-2">Data de Vencimento:</p>
+                <input type="date" id="noteDueDate" 
+                    class="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 outline-none focus:border-white/40 transition text-white">
+            </div>
+            
+            <!-- Color -->
+            <div class="mb-4">
+                <p class="text-sm text-white/60 mb-2">Cor do post-it:</p>
+                <div class="flex gap-2">
+                    <button onclick="selectNoteColor('yellow')" class="w-8 h-8 rounded-full bg-yellow-300 border-2 border-transparent hover:border-white color-btn" data-color="yellow"></button>
+                    <button onclick="selectNoteColor('pink')" class="w-8 h-8 rounded-full bg-pink-300 border-2 border-transparent hover:border-white color-btn" data-color="pink"></button>
+                    <button onclick="selectNoteColor('blue')" class="w-8 h-8 rounded-full bg-blue-300 border-2 border-transparent hover:border-white color-btn" data-color="blue"></button>
+                    <button onclick="selectNoteColor('green')" class="w-8 h-8 rounded-full bg-green-300 border-2 border-transparent hover:border-white color-btn" data-color="green"></button>
+                    <button onclick="selectNoteColor('orange')" class="w-8 h-8 rounded-full bg-orange-300 border-2 border-transparent hover:border-white color-btn" data-color="orange"></button>
+                    <button onclick="selectNoteColor('purple')" class="w-8 h-8 rounded-full bg-purple-300 border-2 border-transparent hover:border-white color-btn" data-color="purple"></button>
+                </div>
+            </div>
+            <div class="flex gap-3">
+                <button onclick="closeNoteModal()" class="flex-1 bg-white/20 hover:bg-white/30 py-3 rounded-lg transition">Cancelar</button>
+                <button onclick="addNote()" class="flex-1 bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 py-3 rounded-lg transition font-medium">Criar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Spotify Settings Modal -->
+    <div id="spotifySettingsModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm hidden items-center justify-center z-50">
+        <div class="glass-dark rounded-2xl p-6 w-full max-w-lg mx-4 max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="title-font text-xl font-bold"><i class="fab fa-spotify mr-2 text-green-500"></i>Configurar Spotify</h3>
+                <button onclick="closeSpotifySettings()" class="bg-white/20 hover:bg-white/30 w-8 h-8 rounded-full transition">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="space-y-4 text-sm">
+                <div class="bg-white/10 rounded-xl p-4">
+                    <h4 class="font-semibold mb-2 text-green-400"><i class="fas fa-info-circle mr-2"></i>Como Configurar</h4>
+                    <ol class="list-decimal list-inside space-y-2 opacity-80">
+                        <li>Acesse <a href="https://developer.spotify.com/dashboard" target="_blank" class="text-green-400 underline">developer.spotify.com/dashboard</a></li>
+                        <li>Faça login com sua conta do Spotify</li>
+                        <li>Clique em <strong>"Create App"</strong></li>
+                        <li>Preencha:
+                            <ul class="list-disc list-inside ml-4 mt-1 opacity-70">
+                                <li>App name: <strong>Meu Dashboard</strong></li>
+                                <li>App description: <strong>Dashboard pessoal</strong></li>
+                                <li>Redirect URI: <strong id="redirectUri" class="text-green-400 select-all"></strong></li>
+                                <li>Marque <strong>Web API</strong></li>
+                            </ul>
+                        </li>
+                        <li>Após criar, copie o <strong>Client ID</strong></li>
+                        <li>Cole abaixo e clique em "Salvar"</li>
+                    </ol>
+                </div>
+                
+                <div>
+                    <label class="block text-white/70 mb-2">Client ID do Spotify:</label>
+                    <input type="text" id="spotifyClientId" placeholder="Cole seu Client ID aqui..." 
+                        class="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 outline-none focus:border-green-500 transition font-mono text-xs">
+                </div>
+                
+                <div class="bg-yellow-500/20 border border-yellow-500/30 rounded-xl p-4">
+                    <h4 class="font-semibold mb-2 text-yellow-400"><i class="fas fa-exclamation-triangle mr-2"></i>Importante</h4>
+                    <ul class="list-disc list-inside space-y-1 opacity-80 text-xs">
+                        <li>O controle de reprodução requer <strong>Spotify Premium</strong></li>
+                        <li>Você precisa ter o Spotify aberto em algum dispositivo</li>
+                        <li>Seu Client ID fica salvo apenas no seu navegador</li>
+                    </ul>
+                </div>
+                
+                <div id="spotifyStatus" class="hidden bg-green-500/20 border border-green-500/30 rounded-xl p-4">
+                    <p class="text-green-400"><i class="fas fa-check-circle mr-2"></i>Configurado com sucesso!</p>
+                </div>
+            </div>
+            
+            <div class="flex gap-3 mt-6">
+                <button onclick="closeSpotifySettings()" class="flex-1 bg-white/20 hover:bg-white/30 py-3 rounded-lg transition">Cancelar</button>
+                <button onclick="saveSpotifySettings()" class="flex-1 bg-green-500 hover:bg-green-600 py-3 rounded-lg transition font-medium">
+                    <i class="fas fa-save mr-2"></i>Salvar e Conectar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ===== DATA STORAGE =====
+        let links = JSON.parse(localStorage.getItem('dashboardLinks')) || [
+            { name: 'Google', url: 'https://google.com', icon: 'fab fa-google', folder: '' },
+            { name: 'YouTube', url: 'https://youtube.com', icon: 'fab fa-youtube', folder: '' },
+            { name: 'GitHub', url: 'https://github.com', icon: 'fab fa-github', folder: '' },
+            { name: 'Gmail', url: 'https://gmail.com', icon: 'fas fa-envelope', folder: '' },
+            { name: 'Twitter', url: 'https://twitter.com', icon: 'fab fa-twitter', folder: '' },
+            { name: 'LinkedIn', url: 'https://linkedin.com', icon: 'fab fa-linkedin', folder: '' },
+            { name: 'Netflix', url: 'https://netflix.com', icon: 'fas fa-film', folder: '' },
+            { name: 'Spotify', url: 'https://spotify.com', icon: 'fab fa-spotify', folder: '' },
+            { name: 'WhatsApp', url: 'https://web.whatsapp.com', icon: 'fab fa-whatsapp', folder: '' }
+        ];
+
+        let folders = JSON.parse(localStorage.getItem('dashboardFolders')) || [];
+        let notes = JSON.parse(localStorage.getItem('dashboardNotes')) || [];
+        let selectedNoteColor = 'yellow';
+        let selectedPriority = 'medium';
+        let linksExpanded = false;
+        let draggedElement = null;
+        let draggedIndex = null;
+
+        // ===== MOTIVATIONAL QUOTES =====
+        const quotes = [
+            { text: "O sucesso é a soma de pequenos esforços repetidos dia após dia.", author: "Robert Collier" },
+            { text: "A única maneira de fazer um excelente trabalho é amar o que você faz.", author: "Steve Jobs" },
+            { text: "Acredite que você pode, assim você já está no meio do caminho.", author: "Theodore Roosevelt" },
+            { text: "O futuro pertence àqueles que acreditam na beleza de seus sonhos.", author: "Eleanor Roosevelt" },
+            { text: "Não espere por oportunidades, crie-as.", author: "George Bernard Shaw" },
+            { text: "A persistência é o caminho do êxito.", author: "Charles Chaplin" },
+            { text: "Grandes realizações são possíveis quando se dá importância aos pequenos começos.", author: "Lao Tsé" },
+            { text: "O único modo de fazer um ótimo trabalho é amando o que você faz.", author: "Steve Jobs" },
+            { text: "Você é mais corajoso do que acredita, mais forte do que parece e mais inteligente do que pensa.", author: "A.A. Milne" },
+            { text: "A vida é 10% o que acontece comigo e 90% como eu reajo a isso.", author: "Charles Swindoll" },
+            { text: "Tudo o que você sempre quis está do outro lado do medo.", author: "George Addair" },
+            { text: "Comece de onde você está. Use o que você tem. Faça o que você pode.", author: "Arthur Ashe" },
+            { text: "O segredo de progredir é começar.", author: "Mark Twain" },
+            { text: "Cada dia é uma nova chance de mudar sua vida.", author: "Desconhecido" },
+            { text: "Foco na jornada, não no destino. A alegria não está em terminar, mas em fazer.", author: "Greg Anderson" }
+        ];
+
+        function showRandomQuote() {
+            const quote = quotes[Math.floor(Math.random() * quotes.length)];
+            const quoteText = document.getElementById('quoteText');
+            const quoteAuthor = document.getElementById('quoteAuthor');
+            
+            quoteText.classList.remove('quote-fade');
+            void quoteText.offsetWidth;
+            quoteText.classList.add('quote-fade');
+            
+            quoteText.textContent = `"${quote.text}"`;
+            quoteAuthor.textContent = `— ${quote.author}`;
+        }
+
+        // ===== SPLASH SCREEN =====
+        function showSplashScreen() {
+            const hour = new Date().getHours();
+            let greeting = 'Boa noite,';
+            if (hour >= 5 && hour < 12) greeting = 'Bom dia,';
+            else if (hour >= 12 && hour < 18) greeting = 'Boa tarde,';
+            
+            document.getElementById('splashGreeting').textContent = greeting;
+            
+            // Animate loader percentage
+            const percentageEl = document.getElementById('loaderPercentage');
+            let progress = 0;
+            const progressInterval = setInterval(() => {
+                progress += Math.random() * 15 + 5;
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(progressInterval);
+                }
+                percentageEl.textContent = Math.floor(progress) + '%';
+            }, 200);
+            
+            // Fade out after animation
+            setTimeout(() => {
+                document.getElementById('splashScreen').classList.add('fade-out');
+                document.getElementById('mainContent').classList.add('visible');
+            }, 4500);
+        }
+
+        // ===== PARALLAX EFFECT =====
+        function initParallax() {
+            let ticking = false;
+            
+            window.addEventListener('scroll', () => {
+                if (!ticking) {
+                    window.requestAnimationFrame(() => {
+                        const scrolled = window.pageYOffset;
+                        const parallaxBg = document.getElementById('parallaxBg');
+                        parallaxBg.style.transform = `translateY(${scrolled * 0.5}px)`;
+                        ticking = false;
+                    });
+                    ticking = true;
+                }
+            });
+
+            window.addEventListener('mousemove', (e) => {
+                const parallaxBg = document.getElementById('parallaxBg');
+                const moveX = (e.clientX - window.innerWidth / 2) * 0.01;
+                const moveY = (e.clientY - window.innerHeight / 2) * 0.01;
+                parallaxBg.style.transform = `translate(${moveX}px, ${moveY}px)`;
+            });
+        }
+
+        // ===== POMODORO VARIABLES =====
+        let pomodoroTime = 25 * 60;
+        let pomodoroInitialTime = 25 * 60;
+        let pomodoroInterval = null;
+        let pomodoroRunning = false;
+        let pomodoroSessions = parseInt(localStorage.getItem('pomodoroSessions')) || 0;
+        let isBreak = false;
+
+        // ===== BACKGROUND IMAGES =====
+        const backgrounds = {
+            morning: {
+                clear: 'https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?w=1920',
+                clouds: 'https://images.unsplash.com/photo-1534088568595-a066f410bcda?w=1920',
+                rain: 'https://images.unsplash.com/photo-1428592953211-077101b2021b?w=1920',
+                storm: 'https://images.unsplash.com/photo-1605727216801-e27ce1d0cc28?w=1920'
+            },
+            afternoon: {
+                clear: 'https://images.unsplash.com/photo-1517483000871-1dbf64a6e1c6?w=1920',
+                clouds: 'https://images.unsplash.com/photo-1534088568595-a066f410bcda?w=1920',
+                rain: 'https://images.unsplash.com/photo-1433863448220-78aaa064ff47?w=1920',
+                storm: 'https://images.unsplash.com/photo-1605727216801-e27ce1d0cc28?w=1920'
+            },
+            evening: {
+                clear: 'https://images.unsplash.com/photo-1495344517868-8ebaf0a2044a?w=1920',
+                clouds: 'https://images.unsplash.com/photo-1485470733090-0aae1788d5af?w=1920',
+                rain: 'https://images.unsplash.com/photo-1501691223387-dd0500403074?w=1920',
+                storm: 'https://images.unsplash.com/photo-1605727216801-e27ce1d0cc28?w=1920'
+            },
+            night: {
+                clear: 'https://images.unsplash.com/photo-1507400492013-162706c8c05e?w=1920',
+                clouds: 'https://images.unsplash.com/photo-1505506874110-6a7a69069a08?w=1920',
+                rain: 'https://images.unsplash.com/photo-1501691223387-dd0500403074?w=1920',
+                storm: 'https://images.unsplash.com/photo-1605727216801-e27ce1d0cc28?w=1920'
+            }
+        };
+
+        // ===== CLOCK & DATE =====
+        function updateClock() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            
+            document.getElementById('clock').textContent = `${hours}:${minutes}`;
+            document.getElementById('seconds').textContent = seconds;
+            
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('date').textContent = now.toLocaleDateString('pt-BR', options);
+        }
+
+        // ===== WEATHER =====
+        let currentWeather = 'clear';
+        
+        async function fetchWeather() {
+            try {
+                const response = await fetch('https://api.open-meteo.com/v1/forecast?latitude=-20.2&longitude=-44.4&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&timezone=America/Sao_Paulo');
+                const data = await response.json();
+                
+                const temp = Math.round(data.current.temperature_2m);
+                const humidity = data.current.relative_humidity_2m;
+                const windSpeed = Math.round(data.current.wind_speed_10m);
+                const weatherCode = data.current.weather_code;
+                
+                document.getElementById('temperature').textContent = `${temp}°C`;
+                document.getElementById('humidity').textContent = `${humidity}%`;
+                document.getElementById('wind').textContent = `${windSpeed} km/h`;
+                
+                const weatherInfo = getWeatherInfo(weatherCode);
+                document.getElementById('weatherIconContainer').innerHTML = weatherInfo.iconHtml;
+                document.getElementById('weatherDesc').textContent = weatherInfo.desc;
+                currentWeather = weatherInfo.type;
+                
+                updateBackground();
+            } catch (error) {
+                console.error('Error fetching weather:', error);
+                document.getElementById('weatherDesc').textContent = 'Erro ao carregar';
+                updateBackground();
+            }
+        }
+
+        function getWeatherInfo(code) {
+            const hour = new Date().getHours();
+            const isNight = hour < 6 || hour >= 20;
+            
+            if (code === 0) {
+                return { 
+                    iconHtml: isNight ? getWeatherIconHtml('night') : getWeatherIconHtml('clear'), 
+                    desc: isNight ? 'Noite limpa' : 'Céu limpo', 
+                    type: 'clear' 
+                };
+            }
+            if (code <= 3) return { iconHtml: getWeatherIconHtml('partly-cloudy'), desc: 'Parcialmente nublado', type: 'clouds' };
+            if (code <= 48) return { iconHtml: getWeatherIconHtml('cloudy'), desc: 'Nublado', type: 'clouds' };
+            if (code <= 49) return { iconHtml: getWeatherIconHtml('mist'), desc: 'Neblina', type: 'clouds' };
+            if (code <= 69) return { iconHtml: getWeatherIconHtml('rain'), desc: 'Chuva', type: 'rain' };
+            if (code <= 79) return { iconHtml: getWeatherIconHtml('snow'), desc: 'Neve', type: 'rain' };
+            if (code <= 82) return { iconHtml: getWeatherIconHtml('rain'), desc: 'Pancadas de chuva', type: 'rain' };
+            if (code <= 99) return { iconHtml: getWeatherIconHtml('storm'), desc: 'Tempestade', type: 'storm' };
+            return { iconHtml: getWeatherIconHtml('clear'), desc: 'Céu limpo', type: 'clear' };
+        }
+
+        function getWeatherIconHtml(type) {
+            const icons = {
+                'clear': `<div class="weather-sun"></div>`,
+                'night': `<div class="weather-night"><div class="stars"><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div></div><div class="moon"></div></div>`,
+                'partly-cloudy': `<div class="weather-partly-cloudy"><div class="weather-sun"></div><div class="weather-cloud"></div></div>`,
+                'cloudy': `<div class="weather-cloudy"><div class="cloud-back"></div><div class="weather-cloud"></div></div>`,
+                'rain': `<div class="weather-rain"><div class="weather-cloud"></div><div class="rain-drops"><div class="drop"></div><div class="drop"></div><div class="drop"></div><div class="drop"></div><div class="drop"></div><div class="drop"></div></div></div>`,
+                'storm': `<div class="weather-storm"><div class="weather-cloud"></div><div class="lightning"></div><div class="rain-drops"><div class="drop"></div><div class="drop"></div><div class="drop"></div><div class="drop"></div><div class="drop"></div><div class="drop"></div></div></div>`,
+                'snow': `<div class="weather-snow"><div class="weather-cloud"></div><div class="snowflakes"><div class="flake"></div><div class="flake"></div><div class="flake"></div><div class="flake"></div><div class="flake"></div><div class="flake"></div></div></div>`,
+                'mist': `<div class="weather-mist"><div class="fog-line"></div><div class="fog-line"></div><div class="fog-line"></div><div class="fog-line"></div></div>`
+            };
+            return icons[type] || icons['clear'];
+        }
+
+        function getTimeOfDay() {
+            const hour = new Date().getHours();
+            if (hour >= 5 && hour < 12) return 'morning';
+            if (hour >= 12 && hour < 17) return 'afternoon';
+            if (hour >= 17 && hour < 20) return 'evening';
+            return 'night';
+        }
+
+        function updateBackground() {
+            const timeOfDay = getTimeOfDay();
+            const bgUrl = backgrounds[timeOfDay][currentWeather] || backgrounds[timeOfDay].clear;
+            document.getElementById('parallaxBg').style.backgroundImage = `url('${bgUrl}')`;
+        }
+
+        // ===== SEARCH =====
+        function search() {
+            const query = document.getElementById('searchInput').value.trim();
+            if (query) {
+                window.open(`https://www.google.com/search?q=${encodeURIComponent(query)}`, '_blank');
+            }
+        }
+
+        document.getElementById('searchInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') search();
+        });
+
+        // ===== FAVICON =====
+        function getFaviconUrl(url) {
+            try {
+                const domain = new URL(url).hostname;
+                return `https://www.google.com/s2/favicons?domain=${domain}&sz=64`;
+            } catch {
+                return null;
+            }
+        }
+
+        function previewFavicon() {
+            const url = document.getElementById('linkUrl').value;
+            const faviconUrl = getFaviconUrl(url);
+            const preview = document.getElementById('faviconPreview');
+            const img = document.getElementById('faviconImg');
+            
+            if (faviconUrl) {
+                img.src = faviconUrl;
+                preview.classList.remove('hidden');
+                preview.classList.add('flex');
+            } else {
+                preview.classList.add('hidden');
+                preview.classList.remove('flex');
+            }
+        }
+
+        // ===== LINKS =====
+        function renderLinks() {
+            const container = document.getElementById('linksGrid');
+            const folderFilter = document.getElementById('linkFolderFilter').value;
+            
+            let filteredLinks = links;
+            if (folderFilter !== 'all') {
+                filteredLinks = links.filter(link => link.folder === folderFilter);
+            }
+            
+            container.innerHTML = filteredLinks.map((link, index) => {
+                const originalIndex = links.indexOf(link);
+                const faviconUrl = getFaviconUrl(link.url);
+                return `
+                    <a href="${link.url}" target="_blank" class="link-item glass rounded-xl p-3 text-center group relative"
+                        draggable="true" ondragstart="dragLinkStart(event, ${originalIndex})" ondragend="dragLinkEnd(event)"
+                        ondragover="dragLinkOver(event)" ondrop="dropLink(event, ${originalIndex})">
+                        ${faviconUrl ? `<img src="${faviconUrl}" class="w-6 h-6 mx-auto mb-1 rounded" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">` : ''}
+                        <i class="${link.icon || 'fas fa-link'} text-2xl mb-1 ${faviconUrl ? 'hidden' : 'block'}"></i>
+                        <span class="text-xs truncate block">${link.name}</span>
+                        ${link.folder ? `<span class="text-[10px] text-white/40 block truncate">📁 ${link.folder}</span>` : ''}
+                        <button onclick="event.preventDefault(); deleteLink(${originalIndex})" 
+                            class="absolute -top-2 -right-2 bg-red-500 w-5 h-5 rounded-full text-xs opacity-0 group-hover:opacity-100 transition">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </a>
+                `;
+            }).join('');
+            
+            updateFolderOptions();
+            saveLinks();
+        }
+
+        function updateFolderOptions() {
+            const filterSelect = document.getElementById('linkFolderFilter');
+            const linkFolderSelect = document.getElementById('linkFolder');
+            
+            // Update filter
+            filterSelect.innerHTML = '<option value="all">Todas Pastas</option>' + 
+                folders.map(f => `<option value="${f}">${f}</option>`).join('');
+            
+            // Update add link modal
+            linkFolderSelect.innerHTML = '<option value="">Sem pasta</option>' + 
+                folders.map(f => `<option value="${f}">${f}</option>`).join('');
+        }
+
+        function filterLinksByFolder() {
+            renderLinks();
+        }
+
+        // Link Drag & Drop
+        function dragLinkStart(e, index) {
+            draggedIndex = index;
+            e.target.classList.add('dragging');
+        }
+
+        function dragLinkEnd(e) {
+            e.target.classList.remove('dragging');
+        }
+
+        function dragLinkOver(e) {
+            e.preventDefault();
+        }
+
+        function dropLink(e, targetIndex) {
+            e.preventDefault();
+            if (draggedIndex !== null && draggedIndex !== targetIndex) {
+                const draggedItem = links[draggedIndex];
+                links.splice(draggedIndex, 1);
+                links.splice(targetIndex, 0, draggedItem);
+                renderLinks();
+            }
+            draggedIndex = null;
+        }
+
+        function toggleLinks() {
+            const grid = document.getElementById('linksGrid');
+            const btn = document.getElementById('expandBtn');
+            linksExpanded = !linksExpanded;
+            grid.style.maxHeight = linksExpanded ? '500px' : '100px';
+            btn.innerHTML = linksExpanded ? '<i class="fas fa-chevron-up mr-1"></i>Recolher' : '<i class="fas fa-chevron-down mr-1"></i>Expandir';
+        }
+
+        function openAddLinkModal() {
+            document.getElementById('linkModal').classList.remove('hidden');
+            document.getElementById('linkModal').classList.add('flex');
+            updateFolderOptions();
+        }
+
+        function closeLinkModal() {
+            document.getElementById('linkModal').classList.add('hidden');
+            document.getElementById('linkModal').classList.remove('flex');
+            document.getElementById('linkName').value = '';
+            document.getElementById('linkUrl').value = '';
+            document.getElementById('faviconPreview').classList.add('hidden');
+        }
+
+        function addLink() {
+            const name = document.getElementById('linkName').value.trim();
+            const url = document.getElementById('linkUrl').value.trim();
+            const folder = document.getElementById('linkFolder').value;
+            if (name && url) {
+                links.push({ name, url, icon: 'fas fa-link', folder });
+                renderLinks();
+                closeLinkModal();
+            }
+        }
+
+        function deleteLink(index) {
+            links.splice(index, 1);
+            renderLinks();
+        }
+
+        function saveLinks() {
+            localStorage.setItem('dashboardLinks', JSON.stringify(links));
+        }
+
+        // ===== FOLDERS =====
+        function openAddFolderModal() {
+            document.getElementById('folderModal').classList.remove('hidden');
+            document.getElementById('folderModal').classList.add('flex');
+        }
+
+        function closeFolderModal() {
+            document.getElementById('folderModal').classList.add('hidden');
+            document.getElementById('folderModal').classList.remove('flex');
+            document.getElementById('folderName').value = '';
+        }
+
+        function addFolder() {
+            const name = document.getElementById('folderName').value.trim();
+            if (name && !folders.includes(name)) {
+                folders.push(name);
+                localStorage.setItem('dashboardFolders', JSON.stringify(folders));
+                updateFolderOptions();
+                closeFolderModal();
+            }
+        }
+
+        // ===== NOTES =====
+        const categoryEmojis = {
+            trabalho: '💼',
+            pessoal: '🏠',
+            estudos: '📚',
+            saude: '❤️',
+            financeiro: '💰',
+            outros: '📌'
+        };
+
+        function getDueDateStatus(dueDate) {
+            if (!dueDate) return { class: '', text: '' };
+            
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            const due = new Date(dueDate + 'T00:00:00');
+            const diffDays = Math.ceil((due - today) / (1000 * 60 * 60 * 24));
+            
+            if (diffDays < 0) return { class: 'overdue', text: `⚠️ Atrasada ${Math.abs(diffDays)} dia(s)` };
+            if (diffDays === 0) return { class: 'due-soon', text: '🔥 Vence hoje!' };
+            if (diffDays === 1) return { class: 'due-soon', text: '⏰ Vence amanhã' };
+            if (diffDays <= 3) return { class: 'due-soon', text: `📅 ${diffDays} dias restantes` };
+            return { class: '', text: `📅 ${due.toLocaleDateString('pt-BR')}` };
+        }
+
+        function updateTaskCounter() {
+            const pending = notes.filter(n => !n.completed).length;
+            const completed = notes.filter(n => n.completed).length;
+            document.getElementById('pendingCount').textContent = pending;
+            document.getElementById('completedCount').textContent = completed;
+        }
+
+        function renderNotes(filteredNotes = null) {
+            const container = document.getElementById('notesContainer');
+            const notesToRender = filteredNotes || notes;
+            
+            container.innerHTML = notesToRender.map((note, index) => {
+                const originalIndex = notes.indexOf(note);
+                const rotation = (Math.random() * 6 - 3).toFixed(2);
+                const dueStatus = getDueDateStatus(note.dueDate);
+                
+                return `
+                    <div class="post-it post-it-${note.color} post-it-new floating rounded-xl p-4 text-gray-800 relative min-h-[200px] priority-${note.priority || 'medium'} ${dueStatus.class}" 
+                        style="--rotation: ${rotation}deg" 
+                        draggable="true"
+                        ondragstart="dragNoteStart(event, ${originalIndex})"
+                        ondragend="dragNoteEnd(event)"
+                        ondragover="dragNoteOver(event)"
+                        ondrop="dropNote(event, ${originalIndex})"
+                        ondblclick="toggleNoteComplete(${originalIndex})">
+                        <button onclick="deleteNote(${originalIndex})" 
+                            class="absolute top-2 right-2 w-6 h-6 bg-black/20 hover:bg-black/40 rounded-full text-sm transition">
+                            <i class="fas fa-times"></i>
+                        </button>
+                        
+                        <div class="flex items-center gap-1 mb-2">
+                            <span class="category-tag">${categoryEmojis[note.category] || '📌'} ${note.category || 'outros'}</span>
+                        </div>
+                        
+                        <h4 class="font-bold text-lg mb-2 pr-6 ${note.completed ? 'line-through opacity-60' : ''}">${highlightSearchTerm(note.title)}</h4>
+                        <p class="text-sm opacity-80 ${note.completed ? 'line-through opacity-40' : ''}">${highlightSearchTerm(note.content)}</p>
+                        
+                        ${dueStatus.text ? `<div class="text-xs mt-2 ${dueStatus.class === 'overdue' ? 'text-red-600 font-bold' : 'opacity-70'}">${dueStatus.text}</div>` : ''}
+                        
+                        ${note.completed ? '<div class="absolute bottom-2 right-2 text-green-600"><i class="fas fa-check-circle text-xl"></i></div>' : ''}
+                        <div class="absolute bottom-2 left-4 text-xs opacity-50">${note.date}</div>
+                    </div>
+                `;
+            }).join('');
+            
+            updateTaskCounter();
+            if (!filteredNotes) saveNotes();
+        }
+
+        function highlightSearchTerm(text) {
+            const searchTerm = document.getElementById('taskSearch').value.trim().toLowerCase();
+            if (!searchTerm || !text) return text;
+            
+            const regex = new RegExp(`(${searchTerm})`, 'gi');
+            return text.replace(regex, '<span class="search-highlight">$1</span>');
+        }
+
+        function filterTasks() {
+            const search = document.getElementById('taskSearch').value.toLowerCase();
+            const category = document.getElementById('filterCategory').value;
+            const priority = document.getElementById('filterPriority').value;
+            const status = document.getElementById('filterStatus').value;
+            const color = document.getElementById('filterColor').value;
+            
+            let filtered = notes.filter(note => {
+                const matchSearch = !search || 
+                    note.title.toLowerCase().includes(search) || 
+                    note.content.toLowerCase().includes(search);
+                const matchCategory = category === 'all' || note.category === category;
+                const matchPriority = priority === 'all' || note.priority === priority;
+                const matchStatus = status === 'all' || 
+                    (status === 'completed' && note.completed) || 
+                    (status === 'pending' && !note.completed);
+                const matchColor = color === 'all' || note.color === color;
+                
+                return matchSearch && matchCategory && matchPriority && matchStatus && matchColor;
+            });
+            
+            renderNotes(filtered);
+        }
+
+        // Note Drag & Drop
+        let draggedNoteIndex = null;
+
+        function dragNoteStart(e, index) {
+            draggedNoteIndex = index;
+            e.target.classList.add('dragging');
+            e.target.style.animation = 'none';
+        }
+
+        function dragNoteEnd(e) {
+            e.target.classList.remove('dragging');
+        }
+
+        function dragNoteOver(e) {
+            e.preventDefault();
+        }
+
+        function dropNote(e, targetIndex) {
+            e.preventDefault();
+            if (draggedNoteIndex !== null && draggedNoteIndex !== targetIndex) {
+                const draggedItem = notes[draggedNoteIndex];
+                notes.splice(draggedNoteIndex, 1);
+                notes.splice(targetIndex, 0, draggedItem);
+                renderNotes();
+            }
+            draggedNoteIndex = null;
+        }
+
+        function selectNoteColor(color) {
+            selectedNoteColor = color;
+            document.querySelectorAll('.color-btn').forEach(btn => {
+                btn.classList.remove('border-white');
+                btn.classList.add('border-transparent');
+            });
+            document.querySelector(`[data-color="${color}"]`).classList.remove('border-transparent');
+            document.querySelector(`[data-color="${color}"]`).classList.add('border-white');
+        }
+
+        function selectPriority(priority) {
+            selectedPriority = priority;
+            document.querySelectorAll('.priority-btn').forEach(btn => {
+                btn.classList.remove('ring-2', 'ring-white');
+            });
+            document.querySelector(`[data-priority="${priority}"]`).classList.add('ring-2', 'ring-white');
+        }
+
+        function openAddNoteModal() {
+            document.getElementById('noteModal').classList.remove('hidden');
+            document.getElementById('noteModal').classList.add('flex');
+            selectNoteColor('yellow');
+            selectPriority('medium');
+        }
+
+        function closeNoteModal() {
+            document.getElementById('noteModal').classList.add('hidden');
+            document.getElementById('noteModal').classList.remove('flex');
+            document.getElementById('noteTitle').value = '';
+            document.getElementById('noteContent').value = '';
+            document.getElementById('noteDueDate').value = '';
+        }
+
+        function addNote() {
+            const title = document.getElementById('noteTitle').value.trim();
+            const content = document.getElementById('noteContent').value.trim();
+            const category = document.getElementById('noteCategory').value;
+            const dueDate = document.getElementById('noteDueDate').value;
+            
+            if (title) {
+                const now = new Date();
+                notes.unshift({
+                    title,
+                    content,
+                    color: selectedNoteColor,
+                    category,
+                    priority: selectedPriority,
+                    dueDate,
+                    completed: false,
+                    date: now.toLocaleDateString('pt-BR')
+                });
+                renderNotes();
+                closeNoteModal();
+            }
+        }
+
+        function deleteNote(index) {
+            notes.splice(index, 1);
+            renderNotes();
+        }
+
+        function toggleNoteComplete(index) {
+            notes[index].completed = !notes[index].completed;
+            renderNotes();
+        }
+
+        function saveNotes() {
+            localStorage.setItem('dashboardNotes', JSON.stringify(notes));
+        }
+
+        // ===== POMODORO =====
+        function updatePomodoroDisplay() {
+            const minutes = Math.floor(pomodoroTime / 60);
+            const seconds = pomodoroTime % 60;
+            document.getElementById('pomodoroTime').textContent = 
+                `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+            
+            const progress = document.getElementById('pomodoroProgress');
+            const circumference = 364.42;
+            const offset = circumference - (pomodoroTime / pomodoroInitialTime) * circumference;
+            progress.style.strokeDashoffset = offset;
+            progress.style.stroke = isBreak ? '#22c55e' : '#ef4444';
+        }
+
+        function startPomodoro() {
+            if (!pomodoroRunning) {
+                pomodoroRunning = true;
+                pomodoroInterval = setInterval(() => {
+                    if (pomodoroTime > 0) {
+                        pomodoroTime--;
+                        updatePomodoroDisplay();
+                    } else {
+                        clearInterval(pomodoroInterval);
+                        pomodoroRunning = false;
+                        playNotification();
+                        if (!isBreak) {
+                            pomodoroSessions++;
+                            localStorage.setItem('pomodoroSessions', pomodoroSessions);
+                            document.getElementById('pomodoroCount').textContent = `Sessões: ${pomodoroSessions}`;
+                            isBreak = true;
+                            document.getElementById('pomodoroMode').textContent = 'Modo: Descanso';
+                            setPomodoro(5);
+                        } else {
+                            isBreak = false;
+                            document.getElementById('pomodoroMode').textContent = 'Modo: Foco';
+                            setPomodoro(25);
+                        }
+                    }
+                }, 1000);
+            }
+        }
+
+        function pausePomodoro() {
+            pomodoroRunning = false;
+            clearInterval(pomodoroInterval);
+        }
+
+        function resetPomodoro() {
+            pausePomodoro();
+            pomodoroTime = pomodoroInitialTime;
+            updatePomodoroDisplay();
+        }
+
+        function setPomodoro(minutes) {
+            pausePomodoro();
+            pomodoroTime = minutes * 60;
+            pomodoroInitialTime = minutes * 60;
+            updatePomodoroDisplay();
+        }
+
+        function playNotification() {
+            try {
+                const audio = new AudioContext();
+                const oscillator = audio.createOscillator();
+                const gain = audio.createGain();
+                oscillator.connect(gain);
+                gain.connect(audio.destination);
+                oscillator.frequency.value = 800;
+                gain.gain.value = 0.3;
+                oscillator.start();
+                setTimeout(() => oscillator.stop(), 500);
+            } catch (e) {}
+            
+            if (Notification.permission === 'granted') {
+                new Notification('Pomodoro', { body: isBreak ? 'Hora do descanso!' : 'Hora de focar!' });
+            }
+        }
+
+        // ===== SPOTIFY API =====
+        const SPOTIFY_SCOPES = [
+            'user-read-private',
+            'user-read-email',
+            'user-read-playback-state',
+            'user-modify-playback-state',
+            'user-read-currently-playing',
+            'playlist-read-private',
+            'playlist-read-collaborative'
+        ].join(' ');
+        
+        let spotifyAccessToken = localStorage.getItem('spotifyAccessToken');
+        let spotifyTokenExpiry = localStorage.getItem('spotifyTokenExpiry');
+        let spotifyClientId = localStorage.getItem('spotifyClientId');
+        let currentPlaybackState = null;
+        let playbackInterval = null;
+
+        function getRedirectUri() {
+            return window.location.origin + window.location.pathname;
+        }
+
+        function openSpotifySettings() {
+            document.getElementById('spotifySettingsModal').classList.remove('hidden');
+            document.getElementById('spotifySettingsModal').classList.add('flex');
+            document.getElementById('redirectUri').textContent = getRedirectUri();
+            if (spotifyClientId) {
+                document.getElementById('spotifyClientId').value = spotifyClientId;
+            }
+        }
+
+        function closeSpotifySettings() {
+            document.getElementById('spotifySettingsModal').classList.add('hidden');
+            document.getElementById('spotifySettingsModal').classList.remove('flex');
+        }
+
+        function saveSpotifySettings() {
+            const clientId = document.getElementById('spotifyClientId').value.trim();
+            if (!clientId) {
+                alert('Por favor, insira o Client ID!');
+                return;
+            }
+            localStorage.setItem('spotifyClientId', clientId);
+            spotifyClientId = clientId;
+            document.getElementById('spotifyStatus').classList.remove('hidden');
+            setTimeout(() => {
+                closeSpotifySettings();
+                connectSpotify();
+            }, 1000);
+        }
+
+        function connectSpotify() {
+            if (!spotifyClientId) {
+                openSpotifySettings();
+                return;
+            }
+            const authUrl = new URL('https://accounts.spotify.com/authorize');
+            authUrl.searchParams.append('client_id', spotifyClientId);
+            authUrl.searchParams.append('response_type', 'token');
+            authUrl.searchParams.append('redirect_uri', getRedirectUri());
+            authUrl.searchParams.append('scope', SPOTIFY_SCOPES);
+            authUrl.searchParams.append('show_dialog', 'true');
+            window.location.href = authUrl.toString();
+        }
+
+        function disconnectSpotify() {
+            localStorage.removeItem('spotifyAccessToken');
+            localStorage.removeItem('spotifyTokenExpiry');
+            spotifyAccessToken = null;
+            spotifyTokenExpiry = null;
+            if (playbackInterval) clearInterval(playbackInterval);
+            updateSpotifyUI();
+        }
+
+        function handleSpotifyCallback() {
+            const hash = window.location.hash;
+            if (hash && hash.includes('access_token')) {
+                const params = new URLSearchParams(hash.substring(1));
+                const accessToken = params.get('access_token');
+                const expiresIn = params.get('expires_in');
+                if (accessToken) {
+                    spotifyAccessToken = accessToken;
+                    spotifyTokenExpiry = Date.now() + (parseInt(expiresIn) * 1000);
+                    localStorage.setItem('spotifyAccessToken', accessToken);
+                    localStorage.setItem('spotifyTokenExpiry', spotifyTokenExpiry);
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                    initSpotifyPlayer();
+                }
+            }
+        }
+
+        function isSpotifyConnected() {
+            return spotifyAccessToken && spotifyTokenExpiry && Date.now() < parseInt(spotifyTokenExpiry);
+        }
+
+        async function spotifyApiCall(endpoint, method = 'GET', body = null) {
+            if (!isSpotifyConnected()) {
+                disconnectSpotify();
+                return null;
+            }
+            try {
+                const options = {
+                    method,
+                    headers: {
+                        'Authorization': `Bearer ${spotifyAccessToken}`,
+                        'Content-Type': 'application/json'
+                    }
+                };
+                if (body) options.body = JSON.stringify(body);
+                const response = await fetch(`https://api.spotify.com/v1${endpoint}`, options);
+                if (response.status === 401) {
+                    disconnectSpotify();
+                    return null;
+                }
+                if (response.status === 204) return {};
+                return await response.json();
+            } catch (error) {
+                console.error('Spotify API error:', error);
+                return null;
+            }
+        }
+
+        async function fetchUserProfile() {
+            const user = await spotifyApiCall('/me');
+            if (user) {
+                document.getElementById('spotifyUserName').textContent = user.display_name || user.id;
+                document.getElementById('spotifyUserImage').src = user.images?.[0]?.url || 'https://via.placeholder.com/40/1DB954/ffffff?text=♪';
+            }
+        }
+
+        async function fetchUserPlaylists() {
+            const data = await spotifyApiCall('/me/playlists?limit=10');
+            if (data && data.items) {
+                const container = document.getElementById('userPlaylists');
+                container.innerHTML = data.items.map(playlist => `
+                    <button onclick="playPlaylist('${playlist.uri}')" 
+                        class="bg-white/10 hover:bg-white/20 px-2 py-1 rounded text-xs transition truncate max-w-[120px]" 
+                        title="${playlist.name}">
+                        📋 ${playlist.name}
+                    </button>
+                `).join('');
+            }
+        }
+
+        async function fetchCurrentPlayback() {
+            const data = await spotifyApiCall('/me/player');
+            if (data && data.item) {
+                currentPlaybackState = data;
+                updateNowPlaying(data);
+            } else {
+                document.getElementById('trackName').textContent = 'Nenhuma música';
+                document.getElementById('trackArtist').textContent = 'Abra o Spotify em algum dispositivo';
+                document.getElementById('trackImage').src = 'https://via.placeholder.com/56/1DB954/ffffff?text=♪';
+                document.getElementById('progressBar').style.width = '0%';
+            }
+        }
+
+        function updateNowPlaying(data) {
+            const track = data.item;
+            document.getElementById('trackName').textContent = track.name;
+            document.getElementById('trackArtist').textContent = track.artists.map(a => a.name).join(', ');
+            document.getElementById('trackImage').src = track.album.images[0]?.url || 'https://via.placeholder.com/56/1DB954/ffffff?text=♪';
+            const progress = data.progress_ms || 0;
+            const duration = track.duration_ms;
+            document.getElementById('progressBar').style.width = `${(progress / duration) * 100}%`;
+            document.getElementById('trackProgress').textContent = formatTime(progress);
+            document.getElementById('trackDuration').textContent = formatTime(duration);
+            document.getElementById('playPauseIcon').className = data.is_playing ? 'fas fa-pause' : 'fas fa-play';
+            document.getElementById('shuffleBtn').classList.toggle('text-green-400', data.shuffle_state);
+            document.getElementById('repeatBtn').classList.toggle('text-green-400', data.repeat_state !== 'off');
+            if (data.device) document.getElementById('volumeSlider').value = data.device.volume_percent;
+        }
+
+        function formatTime(ms) {
+            const seconds = Math.floor(ms / 1000);
+            return `${Math.floor(seconds / 60)}:${(seconds % 60).toString().padStart(2, '0')}`;
+        }
+
+        async function spotifyPlayPause() {
+            await spotifyApiCall(currentPlaybackState?.is_playing ? '/me/player/pause' : '/me/player/play', 'PUT');
+            setTimeout(fetchCurrentPlayback, 300);
+        }
+
+        async function spotifyNext() {
+            await spotifyApiCall('/me/player/next', 'POST');
+            setTimeout(fetchCurrentPlayback, 300);
+        }
+
+        async function spotifyPrevious() {
+            await spotifyApiCall('/me/player/previous', 'POST');
+            setTimeout(fetchCurrentPlayback, 300);
+        }
+
+        async function toggleShuffle() {
+            await spotifyApiCall(`/me/player/shuffle?state=${!currentPlaybackState?.shuffle_state}`, 'PUT');
+            setTimeout(fetchCurrentPlayback, 300);
+        }
+
+        async function toggleRepeat() {
+            const states = ['off', 'context', 'track'];
+            const newState = states[(states.indexOf(currentPlaybackState?.repeat_state || 'off') + 1) % 3];
+            await spotifyApiCall(`/me/player/repeat?state=${newState}`, 'PUT');
+            setTimeout(fetchCurrentPlayback, 300);
+        }
+
+        async function setVolume(value) {
+            await spotifyApiCall(`/me/player/volume?volume_percent=${value}`, 'PUT');
+        }
+
+        async function playPlaylist(uri) {
+            await spotifyApiCall('/me/player/play', 'PUT', { context_uri: uri });
+            setTimeout(fetchCurrentPlayback, 500);
+        }
+
+        function updateSpotifyUI() {
+            const connected = isSpotifyConnected();
+            document.getElementById('spotifyNotConnected').classList.toggle('hidden', connected);
+            document.getElementById('spotifyConnected').classList.toggle('hidden', !connected);
+            document.getElementById('spotifyEmbedSection').classList.toggle('hidden', connected);
+        }
+
+        async function initSpotifyPlayer() {
+            updateSpotifyUI();
+            if (isSpotifyConnected()) {
+                await fetchUserProfile();
+                await fetchUserPlaylists();
+                await fetchCurrentPlayback();
+                if (playbackInterval) clearInterval(playbackInterval);
+                playbackInterval = setInterval(fetchCurrentPlayback, 3000);
+            }
+        }
+
+        function extractSpotifyId(url) {
+            const match = url.match(/spotify\.com\/(track|playlist|album|artist|episode|show)\/([a-zA-Z0-9]+)/);
+            return match ? { type: match[1], id: match[2] } : null;
+        }
+
+        function loadSpotifyEmbed() {
+            const link = document.getElementById('spotifyLink').value.trim();
+            const data = extractSpotifyId(link);
+            if (!data) return alert('Link inválido!');
+            const embed = document.getElementById('spotifyEmbed');
+            embed.src = `https://open.spotify.com/embed/${data.type}/${data.id}?utm_source=generator&theme=0`;
+            embed.classList.remove('hidden');
+        }
+
+        function initSpotify() {
+            handleSpotifyCallback();
+            initSpotifyPlayer();
+        }
+
+        // ===== PWA & SERVICE WORKER =====
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js')
+                    .then(reg => console.log('Service Worker registrado'))
+                    .catch(err => console.log('Erro ao registrar SW:', err));
+            });
+        }
+
+        // ===== INITIALIZATION =====
+        function init() {
+            showSplashScreen();
+            initParallax();
+            
+            if ('Notification' in window && Notification.permission === 'default') {
+                Notification.requestPermission();
+            }
+
+            updateClock();
+            setInterval(updateClock, 1000);
+
+            fetchWeather();
+            setInterval(fetchWeather, 600000);
+            setInterval(updateBackground, 60000);
+
+            showRandomQuote();
+            setInterval(showRandomQuote, 60000);
+
+            renderLinks();
+            renderNotes();
+            updatePomodoroDisplay();
+            initSpotify();
+
+            document.getElementById('pomodoroCount').textContent = `Sessões: ${pomodoroSessions}`;
+        }
+
+        init();
+    </script>
+</body>
+</html>
