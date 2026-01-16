@@ -533,21 +533,43 @@
             background-position: center;
             background-attachment: fixed;
             overflow-x: hidden;
+            min-height: 100vh;
         }
 
         .parallax-bg {
             position: fixed;
-            inset: 0;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
             z-index: -2;
             background-size: cover;
             background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
             transform: translateZ(0);
             will-change: transform;
         }
 
+        /* Garantir cobertura total mesmo com scroll */
+        .parallax-bg::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 200%;
+            background: inherit;
+            background-size: cover;
+            background-position: center;
+        }
+
         .parallax-overlay {
             position: fixed;
-            inset: 0;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
             z-index: -1;
             background: rgba(0,0,0,0.4);
         }
@@ -701,10 +723,6 @@
             border-radius: 10px;
         }
 
-        .spotify-gradient {
-            background: linear-gradient(135deg, #1DB954 0%, #191414 100%);
-        }
-
         /* Quote Animation */
         .quote-fade {
             animation: quoteFade 0.5s ease;
@@ -715,7 +733,7 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* ===== ANIMATED WEATHER ICONS ===== */
+        /* ===== REALISTIC WEATHER ICONS ===== */
         .weather-icon {
             width: 80px;
             height: 80px;
@@ -723,247 +741,307 @@
             margin: 0 auto;
         }
 
-        /* Sun */
+        /* === REALISTIC SUN === */
         .weather-sun {
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(135deg, #FFD93D 0%, #FF9500 100%);
-            border-radius: 50%;
             position: absolute;
+            width: 44px;
+            height: 44px;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            box-shadow: 0 0 30px rgba(255, 217, 61, 0.6), 0 0 60px rgba(255, 149, 0, 0.3);
-            animation: sunPulse 3s ease-in-out infinite;
         }
 
         .weather-sun::before {
             content: '';
             position: absolute;
-            top: -15px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 4px;
-            height: 12px;
-            background: #FFD93D;
-            border-radius: 2px;
-            box-shadow: 
-                0 63px 0 #FFD93D,
-                -31px 31px 0 #FFD93D,
-                31px 31px 0 #FFD93D,
-                -31px -31px 0 #FFD93D,
-                31px -31px 0 #FFD93D,
-                -44px 0 0 #FFD93D,
-                44px 0 0 #FFD93D;
-            animation: sunRays 3s linear infinite;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, #fcd34d 0%, #f59e0b 60%, #d97706 100%);
+            border-radius: 50%;
+            box-shadow: 0 0 20px #fcd34d, 0 0 40px rgba(251, 191, 36, 0.5), 0 0 60px rgba(245, 158, 11, 0.3);
+            animation: sunPulse 3s ease-in-out infinite;
         }
 
-        @keyframes sunPulse {
-            0%, 100% { transform: translate(-50%, -50%) scale(1); }
-            50% { transform: translate(-50%, -50%) scale(1.05); }
-        }
-
-        @keyframes sunRays {
-            0% { transform: translateX(-50%) rotate(0deg); }
-            100% { transform: translateX(-50%) rotate(360deg); }
-        }
-
-        /* Cloud */
-        .weather-cloud {
+        /* Sun rays */
+        .weather-sun .sun-rays {
             position: absolute;
-            width: 50px;
-            height: 20px;
-            background: linear-gradient(135deg, #f0f0f0 0%, #d4d4d4 100%);
-            border-radius: 20px;
+            width: 70px;
+            height: 70px;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            animation: cloudFloat 4s ease-in-out infinite;
+            animation: sunRaysRotate 20s linear infinite;
+        }
+
+        .weather-sun .sun-rays::before,
+        .weather-sun .sun-rays::after {
+            content: '';
+            position: absolute;
+            background: linear-gradient(to bottom, #fcd34d, transparent);
+            width: 4px;
+            height: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+
+        .weather-sun .sun-rays::before {
+            top: 0;
+            box-shadow: 
+                0 58px 0 #fcd34d,
+                -29px 29px 0 #fcd34d,
+                29px 29px 0 #fcd34d,
+                -33px 0 0 #fcd34d,
+                33px 0 0 #fcd34d,
+                -29px -29px 0 #fcd34d,
+                29px -29px 0 #fcd34d;
+        }
+
+        .weather-sun .sun-core {
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: radial-gradient(circle, #fef3c7 0%, #fcd34d 100%);
+            border-radius: 50%;
+            animation: sunCoreGlow 2s ease-in-out infinite;
+        }
+
+        @keyframes sunPulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 20px #fcd34d, 0 0 40px rgba(251, 191, 36, 0.5); }
+            50% { transform: scale(1.05); box-shadow: 0 0 30px #fcd34d, 0 0 60px rgba(251, 191, 36, 0.6); }
+        }
+
+        @keyframes sunRaysRotate {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        @keyframes sunCoreGlow {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; }
+        }
+
+        /* === REALISTIC CLOUD === */
+        .weather-cloud {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 55px;
+            height: 28px;
         }
 
         .weather-cloud::before {
             content: '';
             position: absolute;
-            width: 25px;
-            height: 25px;
-            background: linear-gradient(135deg, #f0f0f0 0%, #d4d4d4 100%);
-            border-radius: 50%;
-            top: -15px;
-            left: 8px;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, #f8fafc 0%, #e2e8f0 50%, #cbd5e1 100%);
+            border-radius: 28px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2), inset 0 -3px 10px rgba(0, 0, 0, 0.1);
+            animation: cloudFloat 4s ease-in-out infinite;
         }
 
         .weather-cloud::after {
             content: '';
             position: absolute;
-            width: 18px;
-            height: 18px;
-            background: linear-gradient(135deg, #f0f0f0 0%, #d4d4d4 100%);
+            width: 26px;
+            height: 26px;
+            background: linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%);
             border-radius: 50%;
-            top: -10px;
-            left: 25px;
+            top: -14px;
+            left: 10px;
+            box-shadow: 
+                22px 6px 0 4px #e2e8f0,
+                22px 6px 0 4px #f1f5f9,
+                0 3px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        .weather-cloud .cloud-scan {
+            display: none;
         }
 
         @keyframes cloudFloat {
-            0%, 100% { transform: translate(-50%, -50%) translateX(0); }
-            50% { transform: translate(-50%, -50%) translateX(5px); }
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(3px); }
         }
 
-        /* Partly Cloudy */
+        /* === REALISTIC PARTLY CLOUDY === */
         .weather-partly-cloudy .weather-sun {
-            width: 35px;
-            height: 35px;
-            top: 35%;
-            left: 35%;
+            width: 32px;
+            height: 32px;
+            top: 25%;
+            left: 25%;
+            transform: translate(-50%, -50%);
         }
 
-        .weather-partly-cloudy .weather-sun::before {
-            width: 3px;
-            height: 8px;
-            top: -10px;
-            box-shadow: 
-                0 47px 0 #FFD93D,
-                -23px 23px 0 #FFD93D,
-                23px 23px 0 #FFD93D,
-                -23px -23px 0 #FFD93D,
-                23px -23px 0 #FFD93D,
-                -32px 0 0 #FFD93D,
-                32px 0 0 #FFD93D;
+        .weather-partly-cloudy .weather-sun .sun-rays {
+            width: 50px;
+            height: 50px;
+        }
+
+        .weather-partly-cloudy .weather-sun .sun-core {
+            width: 16px;
+            height: 16px;
         }
 
         .weather-partly-cloudy .weather-cloud {
             top: 60%;
-            left: 55%;
-            width: 45px;
-            height: 18px;
-        }
-
-        .weather-partly-cloudy .weather-cloud::before {
-            width: 22px;
-            height: 22px;
-            top: -13px;
-            left: 6px;
+            left: 60%;
+            width: 48px;
+            height: 24px;
+            z-index: 2;
         }
 
         .weather-partly-cloudy .weather-cloud::after {
-            width: 16px;
-            height: 16px;
-            top: -8px;
-            left: 22px;
+            width: 22px;
+            height: 22px;
+            top: -12px;
+            left: 8px;
         }
 
-        /* Cloudy */
+        /* === REALISTIC CLOUDY === */
         .weather-cloudy .weather-cloud {
-            background: linear-gradient(135deg, #b0b0b0 0%, #888 100%);
-        }
-
-        .weather-cloudy .weather-cloud::before,
-        .weather-cloudy .weather-cloud::after {
-            background: linear-gradient(135deg, #b0b0b0 0%, #888 100%);
+            z-index: 2;
         }
 
         .weather-cloudy .cloud-back {
             position: absolute;
-            width: 40px;
-            height: 16px;
-            background: linear-gradient(135deg, #d0d0d0 0%, #aaa 100%);
-            border-radius: 16px;
-            top: 30%;
-            left: 30%;
-            animation: cloudFloat 5s ease-in-out infinite reverse;
+            width: 42px;
+            height: 22px;
+            top: 20%;
+            left: 20%;
+            background: linear-gradient(180deg, #94a3b8 0%, #64748b 100%);
+            border-radius: 22px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+            animation: cloudFloatBack 5s ease-in-out infinite;
         }
 
-        .weather-cloudy .cloud-back::before {
+        .weather-cloudy .cloud-back::after {
             content: '';
             position: absolute;
-            width: 20px;
-            height: 20px;
-            background: linear-gradient(135deg, #d0d0d0 0%, #aaa 100%);
+            width: 18px;
+            height: 18px;
+            background: linear-gradient(180deg, #94a3b8 0%, #64748b 100%);
             border-radius: 50%;
-            top: -12px;
-            left: 6px;
+            top: -10px;
+            left: 10px;
+            box-shadow: 16px 4px 0 2px #94a3b8;
         }
 
-        /* Rain */
+        @keyframes cloudFloatBack {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(-4px); }
+        }
+
+        /* === REALISTIC RAIN === */
         .weather-rain .weather-cloud {
-            background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
-            top: 35%;
+            top: 25%;
         }
 
-        .weather-rain .weather-cloud::before,
+        .weather-rain .weather-cloud::before {
+            background: linear-gradient(180deg, #94a3b8 0%, #64748b 50%, #475569 100%);
+        }
+
         .weather-rain .weather-cloud::after {
-            background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+            background: linear-gradient(180deg, #94a3b8 0%, #64748b 100%);
+            box-shadow: 22px 6px 0 4px #64748b;
         }
 
         .weather-rain .rain-drops {
             position: absolute;
-            top: 55%;
+            top: 50%;
             left: 50%;
             transform: translateX(-50%);
-            width: 40px;
-            height: 30px;
+            width: 50px;
+            height: 40px;
         }
 
         .weather-rain .drop {
             position: absolute;
             width: 3px;
-            height: 10px;
-            background: linear-gradient(180deg, transparent 0%, #60a5fa 100%);
+            height: 14px;
+            background: linear-gradient(180deg, transparent 0%, #60a5fa 30%, #3b82f6 100%);
             border-radius: 0 0 3px 3px;
-            animation: rainFall 0.8s linear infinite;
+            animation: rainFall 0.7s linear infinite;
         }
 
-        .weather-rain .drop:nth-child(1) { left: 5px; animation-delay: 0s; }
-        .weather-rain .drop:nth-child(2) { left: 15px; animation-delay: 0.2s; }
-        .weather-rain .drop:nth-child(3) { left: 25px; animation-delay: 0.4s; }
-        .weather-rain .drop:nth-child(4) { left: 35px; animation-delay: 0.1s; }
-        .weather-rain .drop:nth-child(5) { left: 10px; animation-delay: 0.5s; }
-        .weather-rain .drop:nth-child(6) { left: 30px; animation-delay: 0.3s; }
+        .weather-rain .drop:nth-child(1) { left: 6px; animation-delay: 0s; }
+        .weather-rain .drop:nth-child(2) { left: 14px; animation-delay: 0.2s; }
+        .weather-rain .drop:nth-child(3) { left: 22px; animation-delay: 0.1s; }
+        .weather-rain .drop:nth-child(4) { left: 30px; animation-delay: 0.35s; }
+        .weather-rain .drop:nth-child(5) { left: 38px; animation-delay: 0.15s; }
+        .weather-rain .drop:nth-child(6) { left: 10px; animation-delay: 0.45s; }
 
         @keyframes rainFall {
-            0% { transform: translateY(0); opacity: 1; }
-            100% { transform: translateY(25px); opacity: 0; }
+            0% { transform: translateY(-5px); opacity: 0; }
+            20% { opacity: 1; }
+            100% { transform: translateY(35px); opacity: 0; }
         }
 
-        /* Storm */
+        /* === REALISTIC STORM === */
         .weather-storm .weather-cloud {
-            background: linear-gradient(135deg, #374151 0%, #1f2937 100%);
-            top: 30%;
+            top: 20%;
         }
 
-        .weather-storm .weather-cloud::before,
+        .weather-storm .weather-cloud::before {
+            background: linear-gradient(180deg, #64748b 0%, #475569 50%, #334155 100%);
+        }
+
         .weather-storm .weather-cloud::after {
-            background: linear-gradient(135deg, #374151 0%, #1f2937 100%);
+            background: linear-gradient(180deg, #64748b 0%, #475569 100%);
+            box-shadow: 22px 6px 0 4px #475569;
         }
 
         .weather-storm .lightning {
             position: absolute;
-            top: 50%;
+            top: 42%;
             left: 50%;
             transform: translateX(-50%);
-            width: 0;
-            height: 0;
-            border-left: 8px solid transparent;
-            border-right: 8px solid transparent;
-            border-top: 25px solid #fbbf24;
-            animation: lightningFlash 2s ease-in-out infinite;
-            filter: drop-shadow(0 0 10px #fbbf24);
+            width: 20px;
+            height: 35px;
+            z-index: 3;
         }
 
         .weather-storm .lightning::before {
             content: '';
             position: absolute;
-            top: -5px;
-            left: -3px;
+            width: 0;
+            height: 0;
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-top: 18px solid #fbbf24;
+            left: 4px;
+            filter: drop-shadow(0 0 8px #fbbf24) drop-shadow(0 0 15px #f59e0b);
+            animation: lightningFlash 3s ease-in-out infinite;
+        }
+
+        .weather-storm .lightning::after {
+            content: '';
+            position: absolute;
             width: 0;
             height: 0;
             border-left: 5px solid transparent;
             border-right: 5px solid transparent;
-            border-bottom: 15px solid #fbbf24;
+            border-top: 14px solid #fcd34d;
+            left: 7px;
+            top: 14px;
+            filter: drop-shadow(0 0 8px #fbbf24);
+            animation: lightningFlash 3s ease-in-out infinite;
         }
 
         @keyframes lightningFlash {
-            0%, 89%, 91%, 93%, 100% { opacity: 0; }
-            90%, 92% { opacity: 1; }
+            0%, 100% { opacity: 0; }
+            10% { opacity: 1; }
+            12% { opacity: 0; }
+            14% { opacity: 1; }
+            16% { opacity: 0; }
+            50% { opacity: 0; }
+            52% { opacity: 1; }
+            54% { opacity: 0; }
         }
 
         .weather-storm .rain-drops {
@@ -971,96 +1049,124 @@
             top: 55%;
             left: 50%;
             transform: translateX(-50%);
-            width: 50px;
-            height: 30px;
+            width: 55px;
+            height: 35px;
         }
 
         .weather-storm .drop {
             position: absolute;
             width: 2px;
             height: 12px;
-            background: linear-gradient(180deg, transparent 0%, #93c5fd 100%);
+            background: linear-gradient(180deg, transparent 0%, #60a5fa 30%, #3b82f6 100%);
             border-radius: 0 0 2px 2px;
             animation: rainFall 0.5s linear infinite;
         }
 
         .weather-storm .drop:nth-child(1) { left: 5px; animation-delay: 0s; }
-        .weather-storm .drop:nth-child(2) { left: 12px; animation-delay: 0.15s; }
-        .weather-storm .drop:nth-child(3) { left: 20px; animation-delay: 0.3s; }
-        .weather-storm .drop:nth-child(4) { left: 28px; animation-delay: 0.1s; }
-        .weather-storm .drop:nth-child(5) { left: 36px; animation-delay: 0.25s; }
-        .weather-storm .drop:nth-child(6) { left: 44px; animation-delay: 0.05s; }
+        .weather-storm .drop:nth-child(2) { left: 12px; animation-delay: 0.1s; }
+        .weather-storm .drop:nth-child(3) { left: 20px; animation-delay: 0.2s; }
+        .weather-storm .drop:nth-child(4) { left: 28px; animation-delay: 0.05s; }
+        .weather-storm .drop:nth-child(5) { left: 36px; animation-delay: 0.15s; }
+        .weather-storm .drop:nth-child(6) { left: 44px; animation-delay: 0.25s; }
 
-        /* Snow */
+        /* === REALISTIC SNOW === */
         .weather-snow .weather-cloud {
-            background: linear-gradient(135deg, #9ca3af 0%, #6b7280 100%);
-            top: 35%;
+            top: 25%;
         }
 
-        .weather-snow .weather-cloud::before,
+        .weather-snow .weather-cloud::before {
+            background: linear-gradient(180deg, #f1f5f9 0%, #e2e8f0 50%, #cbd5e1 100%);
+        }
+
         .weather-snow .weather-cloud::after {
-            background: linear-gradient(135deg, #9ca3af 0%, #6b7280 100%);
+            background: linear-gradient(180deg, #f1f5f9 0%, #e2e8f0 100%);
+            box-shadow: 22px 6px 0 4px #e2e8f0;
         }
 
         .weather-snow .snowflakes {
             position: absolute;
-            top: 55%;
+            top: 48%;
             left: 50%;
             transform: translateX(-50%);
-            width: 40px;
-            height: 30px;
+            width: 50px;
+            height: 40px;
         }
 
         .weather-snow .flake {
             position: absolute;
-            width: 6px;
-            height: 6px;
-            background: white;
+            width: 8px;
+            height: 8px;
+            background: radial-gradient(circle, #ffffff 0%, #e0f2fe 100%);
             border-radius: 50%;
-            animation: snowFall 2s linear infinite;
             box-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
+            animation: snowFall 2s linear infinite;
         }
 
-        .weather-snow .flake:nth-child(1) { left: 5px; animation-delay: 0s; }
-        .weather-snow .flake:nth-child(2) { left: 15px; animation-delay: 0.5s; }
-        .weather-snow .flake:nth-child(3) { left: 25px; animation-delay: 1s; }
-        .weather-snow .flake:nth-child(4) { left: 35px; animation-delay: 0.3s; }
-        .weather-snow .flake:nth-child(5) { left: 10px; animation-delay: 1.2s; }
-        .weather-snow .flake:nth-child(6) { left: 30px; animation-delay: 0.7s; }
+        .weather-snow .flake::before,
+        .weather-snow .flake::after {
+            display: none;
+        }
+
+        .weather-snow .flake:nth-child(1) { left: 5px; animation-delay: 0s; width: 6px; height: 6px; }
+        .weather-snow .flake:nth-child(2) { left: 15px; animation-delay: 0.4s; width: 8px; height: 8px; }
+        .weather-snow .flake:nth-child(3) { left: 25px; animation-delay: 0.8s; width: 5px; height: 5px; }
+        .weather-snow .flake:nth-child(4) { left: 35px; animation-delay: 0.2s; width: 7px; height: 7px; }
+        .weather-snow .flake:nth-child(5) { left: 10px; animation-delay: 1s; width: 6px; height: 6px; }
+        .weather-snow .flake:nth-child(6) { left: 30px; animation-delay: 0.6s; width: 5px; height: 5px; }
 
         @keyframes snowFall {
-            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(30px) rotate(360deg); opacity: 0; }
+            0% { transform: translateY(-5px) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(35px) rotate(360deg); opacity: 0; }
         }
 
-        /* Night */
+        /* === REALISTIC NIGHT === */
         .weather-night .moon {
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(135deg, #fef3c7 0%, #fcd34d 100%);
-            border-radius: 50%;
             position: absolute;
+            width: 38px;
+            height: 38px;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            box-shadow: 0 0 20px rgba(253, 211, 77, 0.4), 0 0 40px rgba(253, 211, 77, 0.2);
-            animation: moonGlow 4s ease-in-out infinite;
         }
 
         .weather-night .moon::before {
             content: '';
             position: absolute;
-            width: 32px;
-            height: 32px;
-            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #fef9c3 0%, #fde68a 50%, #fcd34d 100%);
             border-radius: 50%;
-            top: -5px;
-            left: -8px;
+            box-shadow: 0 0 20px rgba(253, 224, 71, 0.5), 0 0 40px rgba(253, 224, 71, 0.3);
+            animation: moonGlow 4s ease-in-out infinite;
+        }
+
+        .weather-night .moon::after {
+            content: '';
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background: radial-gradient(circle at 30% 30%, transparent 0%, rgba(0, 0, 0, 0.05) 100%);
+            border-radius: 50%;
+            top: 4px;
+            left: 4px;
+        }
+
+        .weather-night .moon .moon-inner {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            top: 8px;
+            left: 10px;
+            background: rgba(251, 191, 36, 0.3);
+            border-radius: 50%;
+            box-shadow: 12px 8px 0 3px rgba(251, 191, 36, 0.2), 5px 18px 0 2px rgba(251, 191, 36, 0.25);
         }
 
         @keyframes moonGlow {
-            0%, 100% { box-shadow: 0 0 20px rgba(253, 211, 77, 0.4), 0 0 40px rgba(253, 211, 77, 0.2); }
-            50% { box-shadow: 0 0 30px rgba(253, 211, 77, 0.6), 0 0 60px rgba(253, 211, 77, 0.3); }
+            0%, 100% { box-shadow: 0 0 20px rgba(253, 224, 71, 0.5), 0 0 40px rgba(253, 224, 71, 0.3); }
+            50% { box-shadow: 0 0 30px rgba(253, 224, 71, 0.6), 0 0 50px rgba(253, 224, 71, 0.4); }
         }
 
         .weather-night .stars {
@@ -1071,41 +1177,56 @@
 
         .weather-night .star {
             position: absolute;
-            width: 3px;
-            height: 3px;
-            background: white;
+            width: 4px;
+            height: 4px;
+            background: #ffffff;
             border-radius: 50%;
+            box-shadow: 0 0 4px #ffffff;
             animation: starTwinkle 2s ease-in-out infinite;
         }
 
-        .weather-night .star:nth-child(1) { top: 10px; left: 10px; animation-delay: 0s; }
-        .weather-night .star:nth-child(2) { top: 15px; right: 15px; animation-delay: 0.5s; }
-        .weather-night .star:nth-child(3) { bottom: 20px; left: 20px; animation-delay: 1s; }
-        .weather-night .star:nth-child(4) { top: 25px; left: 60px; animation-delay: 0.3s; }
-        .weather-night .star:nth-child(5) { bottom: 15px; right: 10px; animation-delay: 0.8s; }
+        .weather-night .star::before,
+        .weather-night .star::after {
+            display: none;
+        }
+
+        .weather-night .star:nth-child(1) { top: 8px; left: 12px; animation-delay: 0s; width: 3px; height: 3px; }
+        .weather-night .star:nth-child(2) { top: 12px; right: 8px; animation-delay: 0.5s; width: 4px; height: 4px; }
+        .weather-night .star:nth-child(3) { bottom: 15px; left: 8px; animation-delay: 1s; width: 3px; height: 3px; }
+        .weather-night .star:nth-child(4) { top: 25px; left: 65px; animation-delay: 0.3s; width: 2px; height: 2px; }
+        .weather-night .star:nth-child(5) { bottom: 8px; right: 12px; animation-delay: 0.8s; width: 3px; height: 3px; }
 
         @keyframes starTwinkle {
-            0%, 100% { opacity: 0.3; transform: scale(1); }
+            0%, 100% { opacity: 0.4; transform: scale(0.8); }
             50% { opacity: 1; transform: scale(1.2); }
         }
 
-        /* Mist */
-        .weather-mist .fog-line {
-            position: absolute;
-            height: 4px;
-            background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.6) 50%, transparent 100%);
-            border-radius: 2px;
-            animation: fogMove 3s ease-in-out infinite;
+        /* === REALISTIC MIST === */
+        .weather-mist {
+            overflow: hidden;
         }
 
-        .weather-mist .fog-line:nth-child(1) { top: 25%; left: 10%; width: 60%; animation-delay: 0s; }
-        .weather-mist .fog-line:nth-child(2) { top: 40%; left: 20%; width: 50%; animation-delay: 0.5s; }
-        .weather-mist .fog-line:nth-child(3) { top: 55%; left: 5%; width: 70%; animation-delay: 1s; }
-        .weather-mist .fog-line:nth-child(4) { top: 70%; left: 15%; width: 55%; animation-delay: 1.5s; }
+        .weather-mist .fog-line {
+            position: absolute;
+            height: 8px;
+            background: linear-gradient(90deg, transparent 0%, rgba(226, 232, 240, 0.6) 20%, rgba(203, 213, 225, 0.8) 50%, rgba(226, 232, 240, 0.6) 80%, transparent 100%);
+            border-radius: 4px;
+            animation: fogDrift 4s ease-in-out infinite;
+        }
 
-        @keyframes fogMove {
-            0%, 100% { transform: translateX(0); opacity: 0.5; }
-            50% { transform: translateX(10px); opacity: 0.8; }
+        .weather-mist .fog-line:nth-child(1) { top: 15%; left: -10%; width: 80%; animation-delay: 0s; height: 6px; }
+        .weather-mist .fog-line:nth-child(2) { top: 35%; left: 10%; width: 70%; animation-delay: 1s; height: 10px; }
+        .weather-mist .fog-line:nth-child(3) { top: 55%; left: -5%; width: 85%; animation-delay: 2s; height: 8px; }
+        .weather-mist .fog-line:nth-child(4) { top: 75%; left: 5%; width: 75%; animation-delay: 3s; height: 6px; }
+
+        .weather-mist .fog-circle {
+            display: none;
+        }
+
+        @keyframes fogDrift {
+            0% { transform: translateX(0); opacity: 0.5; }
+            50% { transform: translateX(15px); opacity: 0.9; }
+            100% { transform: translateX(0); opacity: 0.5; }
         }
 
         /* Drag & Drop Placeholder */
@@ -1122,94 +1243,89 @@
             border-radius: 2px;
         }
 
-        /* Spotify Connection Status */
-        .spotify-connected-status {
+        /* ===== WATER TRACKER STYLES ===== */
+        .water-wave {
+            position: absolute;
+            width: 200%;
+            height: 100%;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120'%3E%3Cpath fill='rgba(255,255,255,0.3)' d='M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z'/%3E%3C/svg%3E") repeat-x;
+            animation: waveMove 2s linear infinite;
+            left: 0;
+            top: -5px;
+        }
+
+        @keyframes waveMove {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        .water-btn:active {
+            transform: scale(0.95);
+        }
+
+        .water-splash {
+            animation: splash 0.5s ease-out;
+        }
+
+        @keyframes splash {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        /* ===== MOOD TRACKER STYLES ===== */
+        .mood-emoji {
+            transition: transform 0.3s ease;
+        }
+
+        .mood-emoji.bounce {
+            animation: moodBounce 0.5s ease;
+        }
+
+        @keyframes moodBounce {
+            0%, 100% { transform: scale(1); }
+            25% { transform: scale(1.3) rotate(-10deg); }
+            50% { transform: scale(1.1) rotate(10deg); }
+            75% { transform: scale(1.2) rotate(-5deg); }
+        }
+
+        .mood-btn {
+            transition: all 0.2s ease;
+        }
+
+        .mood-btn:hover {
+            transform: translateY(-3px);
+        }
+
+        .mood-btn.selected {
+            transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+        }
+
+        .mood-btn[data-mood="terrible"].selected { background: rgba(239, 68, 68, 0.4); }
+        .mood-btn[data-mood="bad"].selected { background: rgba(249, 115, 22, 0.4); }
+        .mood-btn[data-mood="okay"].selected { background: rgba(234, 179, 8, 0.4); }
+        .mood-btn[data-mood="good"].selected { background: rgba(34, 197, 94, 0.4); }
+        .mood-btn[data-mood="great"].selected { background: rgba(16, 185, 129, 0.4); }
+
+        .mood-history-dot {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
             display: flex;
             align-items: center;
-            gap: 4px;
+            justify-content: center;
+            font-size: 14px;
+            background: rgba(255, 255, 255, 0.1);
+            transition: transform 0.2s ease;
         }
 
-        .spotify-pulse {
-            animation: spotifyPulse 2s ease-in-out infinite;
+        .mood-history-dot:hover {
+            transform: scale(1.2);
         }
 
-        @keyframes spotifyPulse {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.5; transform: scale(0.9); }
-        }
-
-        /* Quick Reconnect Button Animation */
-        .quick-reconnect-btn {
-            animation: reconnectGlow 2s ease-in-out infinite;
-        }
-
-        @keyframes reconnectGlow {
-            0%, 100% { box-shadow: 0 0 5px rgba(34, 197, 94, 0.3); }
-            50% { box-shadow: 0 0 20px rgba(34, 197, 94, 0.6); }
-        }
-
-        /* Spotify Expiring Warning Animation */
-        .expiry-warning {
-            animation: expiryPulse 2s ease-in-out infinite;
-        }
-
-        @keyframes expiryPulse {
-            0%, 100% { background-color: rgba(234, 179, 8, 0.2); }
-            50% { background-color: rgba(234, 179, 8, 0.3); }
-        }
-
-        /* Sound Wave Animation */
-        .sound-wave {
-            display: inline-flex;
-            align-items: center;
-            gap: 2px;
-            height: 12px;
-        }
-
-        .sound-wave span {
-            width: 3px;
-            height: 100%;
-            background: #22c55e;
-            border-radius: 2px;
-            animation: soundWave 0.8s ease-in-out infinite;
-        }
-
-        .sound-wave span:nth-child(1) { animation-delay: 0s; }
-        .sound-wave span:nth-child(2) { animation-delay: 0.1s; }
-        .sound-wave span:nth-child(3) { animation-delay: 0.2s; }
-        .sound-wave span:nth-child(4) { animation-delay: 0.3s; }
-
-        @keyframes soundWave {
-            0%, 100% { transform: scaleY(0.3); }
-            50% { transform: scaleY(1); }
-        }
-
-        .sound-wave.paused span {
-            animation-play-state: paused;
-            transform: scaleY(0.3);
-        }
-
-        /* Progress bar click */
-        .progress-container {
-            cursor: pointer;
-            position: relative;
-        }
-
-        .progress-container:hover .progress-handle {
-            opacity: 1;
-        }
-
-        .progress-handle {
-            position: absolute;
-            right: -4px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 8px;
-            height: 8px;
-            background: white;
-            border-radius: 50%;
-            opacity: 0;
-            transition: opacity 0.2s;
+        .mood-history-dot.today {
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
         }
 
         /* ===== KANBAN STYLES ===== */
@@ -1570,29 +1686,6 @@
                 padding: 0.5rem 0.75rem;
             }
             
-            /* Spotify */
-            .spotify-gradient {
-                padding: 1rem;
-            }
-            
-            #nowPlaying {
-                padding: 0.75rem;
-            }
-            
-            #trackImage {
-                width: 48px;
-                height: 48px;
-            }
-            
-            #trackName {
-                font-size: 0.8rem;
-            }
-            
-            #userPlaylists button {
-                font-size: 0.65rem;
-                max-width: 100px;
-            }
-            
             /* Modals */
             .fixed.inset-0 > div {
                 margin: 1rem;
@@ -1674,22 +1767,6 @@
             
             .flex.flex-wrap.gap-2.mb-4 > div:first-child {
                 grid-column: 1 / -1;
-            }
-            
-            /* Spotify controls smaller */
-            #playPauseBtn {
-                width: 3rem;
-                height: 3rem;
-            }
-            
-            .spotify-gradient button.w-10 {
-                width: 2.25rem;
-                height: 2.25rem;
-            }
-            
-            /* Hide volume slider on very small screens */
-            #volumeSlider {
-                width: 60px;
             }
             
             /* Quote */
@@ -1793,6 +1870,221 @@
                 padding-left: max(1rem, env(safe-area-inset-left));
                 padding-right: max(1rem, env(safe-area-inset-right));
                 padding-bottom: max(1rem, env(safe-area-inset-bottom));
+            }
+        }
+
+        /* ===== TOAST NOTIFICATIONS ===== */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            pointer-events: none;
+        }
+
+        .toast {
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 14px 20px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 280px;
+            max-width: 400px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+            transform: translateX(120%);
+            animation: toastSlideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            pointer-events: auto;
+        }
+
+        .toast.hiding {
+            animation: toastSlideOut 0.3s ease forwards;
+        }
+
+        @keyframes toastSlideIn {
+            from { transform: translateX(120%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes toastSlideOut {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(120%); opacity: 0; }
+        }
+
+        .toast-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            flex-shrink: 0;
+        }
+
+        .toast-success .toast-icon { background: #22c55e; }
+        .toast-error .toast-icon { background: #ef4444; }
+        .toast-warning .toast-icon { background: #f59e0b; }
+        .toast-info .toast-icon { background: #3b82f6; }
+
+        .toast-content {
+            flex: 1;
+        }
+
+        .toast-title {
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 2px;
+        }
+
+        .toast-message {
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+
+        .toast-close {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+            color: white;
+        }
+
+        .toast-close:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .toast-progress {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 0 0 12px 12px;
+            animation: toastProgress 4s linear forwards;
+        }
+
+        @keyframes toastProgress {
+            from { width: 100%; }
+            to { width: 0%; }
+        }
+
+        /* ===== CONFIRM MODAL ===== */
+        .confirm-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10001;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+
+        .confirm-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .confirm-modal-content {
+            background: rgba(30, 30, 50, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 24px;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            transform: scale(0.9);
+            transition: transform 0.3s;
+        }
+
+        .confirm-modal.active .confirm-modal-content {
+            transform: scale(1);
+        }
+
+        .confirm-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: rgba(239, 68, 68, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            font-size: 24px;
+        }
+
+        .confirm-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .confirm-message {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+            margin-bottom: 24px;
+        }
+
+        .confirm-buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        .confirm-btn {
+            flex: 1;
+            padding: 12px;
+            border-radius: 10px;
+            font-weight: 500;
+            transition: all 0.2s;
+            cursor: pointer;
+            border: none;
+        }
+
+        .confirm-btn-cancel {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .confirm-btn-cancel:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .confirm-btn-confirm {
+            background: #ef4444;
+            color: white;
+        }
+
+        .confirm-btn-confirm:hover {
+            background: #dc2626;
+        }
+
+        /* Mobile Toast */
+        @media (max-width: 480px) {
+            .toast-container {
+                left: 10px;
+                right: 10px;
+                top: 10px;
+            }
+
+            .toast {
+                min-width: auto;
+                width: 100%;
             }
         }
     </style>
@@ -2025,145 +2317,124 @@
                     </div>
                 </div>
 
-                <!-- Spotify -->
-                <div class="glass-dark rounded-2xl p-5 spotify-gradient">
+                <!-- Water Tracker -->
+                <div class="glass-dark rounded-2xl p-5">
                     <div class="flex items-center justify-between mb-4">
-                        <h3 class="title-font font-semibold"><i class="fab fa-spotify mr-2"></i>Spotify</h3>
-                        <div class="flex items-center gap-2">
-                            <div id="spotifyConnectionStatus" class="hidden items-center gap-1 text-xs">
-                                <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
-                                <span class="opacity-70">Online</span>
-                            </div>
-                            <button onclick="openSpotifySettings()" class="bg-white/20 hover:bg-white/30 w-8 h-8 rounded-full text-sm transition" title="Configurações">
-                                <i class="fas fa-cog"></i>
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <!-- Not Connected State -->
-                    <div id="spotifyNotConnected" class="text-center py-4">
-                        <div class="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-3">
-                            <i class="fab fa-spotify text-4xl"></i>
-                        </div>
-                        <p class="text-sm opacity-70 mb-3">Conecte sua conta do Spotify</p>
-                        <button onclick="connectSpotify()" class="bg-green-500 hover:bg-green-600 px-6 py-2 rounded-full text-sm font-medium transition">
-                            <i class="fas fa-link mr-2"></i>Conectar Conta
+                        <h3 class="title-font font-semibold"><i class="fas fa-tint mr-2 text-blue-400"></i>Água</h3>
+                        <button onclick="resetWater()" class="text-xs bg-white/20 hover:bg-white/30 px-2 py-1 rounded-lg transition">
+                            <i class="fas fa-redo"></i>
                         </button>
-                        
-                        <!-- Quick Reconnect Button -->
-                        <div id="quickReconnect" class="hidden mt-3">
-                            <p class="text-xs opacity-50 mb-2">Sessão expirada ou não conectado</p>
-                            <button onclick="quickReconnectSpotify()" class="quick-reconnect-btn bg-green-500/80 hover:bg-green-500 px-4 py-2 rounded-full text-xs font-medium transition">
-                                <i class="fas fa-sync-alt mr-1"></i>Reconectar com 1 clique
-                            </button>
-                        </div>
                     </div>
                     
-                    <!-- Token Expiring Warning -->
-                    <div id="spotifyExpiringWarning" class="hidden expiry-warning bg-yellow-500/20 border border-yellow-500/30 rounded-lg p-2 mb-3">
-                        <p class="text-xs text-yellow-300 text-center">
-                            <i class="fas fa-clock mr-1"></i>
-                            Sessão expira em <span id="tokenExpiryTime">--</span> min
-                            <button onclick="quickReconnectSpotify()" class="ml-2 underline hover:no-underline">Renovar</button>
-                        </p>
-                    </div>
-                    
-                    <div id="spotifyConnected" class="hidden">
-                        <div id="spotifyUserInfo" class="flex items-center gap-3 mb-4 bg-white/10 rounded-xl p-3">
-                            <img id="spotifyUserImage" src="" alt="User" class="w-10 h-10 rounded-full">
-                            <div class="flex-1 text-left">
-                                <p id="spotifyUserName" class="font-medium text-sm"></p>
-                                <p class="text-xs opacity-60">Conta conectada</p>
-                            </div>
-                            <button onclick="disconnectSpotify()" class="bg-white/20 hover:bg-red-500/50 px-2 py-1 rounded text-xs transition" title="Desconectar">
-                                <i class="fas fa-sign-out-alt"></i>
-                            </button>
-                        </div>
-                        
-                        <div id="nowPlaying" class="bg-white/10 rounded-xl p-4 mb-4">
-                            <div class="flex items-center gap-3">
-                                <img id="trackImage" src="" alt="Album" class="w-14 h-14 rounded-lg shadow-lg">
-                                <div class="flex-1 min-w-0">
-                                    <p id="trackName" class="font-medium text-sm truncate">Nenhuma música</p>
-                                    <p id="trackArtist" class="text-xs opacity-70 truncate">-</p>
-                                    <div class="flex items-center gap-2 mt-1">
-                                        <span id="trackProgress" class="text-xs opacity-50">0:00</span>
-                                        <div class="flex-1 h-1 bg-white/20 rounded-full overflow-hidden">
-                                            <div id="progressBar" class="h-full bg-green-500 rounded-full transition-all" style="width: 0%"></div>
-                                        </div>
-                                        <span id="trackDuration" class="text-xs opacity-50">0:00</span>
+                    <!-- Water Glass Animation -->
+                    <div class="flex justify-center mb-4">
+                        <div class="relative w-24 h-32">
+                            <!-- Glass Container -->
+                            <div class="absolute inset-0 border-4 border-white/30 rounded-b-3xl rounded-t-lg overflow-hidden">
+                                <!-- Water Fill -->
+                                <div id="waterFill" class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-blue-500 to-cyan-400 transition-all duration-500 ease-out" style="height: 0%;">
+                                    <!-- Water Waves -->
+                                    <div class="absolute top-0 left-0 right-0 h-3 overflow-hidden">
+                                        <div class="water-wave"></div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        
-                        <div class="flex items-center justify-center gap-3 mb-4">
-                            <button onclick="spotifyPrevious()" class="bg-white/20 hover:bg-white/30 w-10 h-10 rounded-full transition" title="Anterior">
-                                <i class="fas fa-step-backward"></i>
-                            </button>
-                            <button onclick="spotifyPlayPause()" id="playPauseBtn" class="bg-green-500 hover:bg-green-600 w-14 h-14 rounded-full transition text-xl" title="Play/Pause">
-                                <i class="fas fa-play" id="playPauseIcon"></i>
-                            </button>
-                            <button onclick="spotifyNext()" class="bg-white/20 hover:bg-white/30 w-10 h-10 rounded-full transition" title="Próxima">
-                                <i class="fas fa-step-forward"></i>
-                            </button>
-                        </div>
-                        
-                        <div class="flex items-center justify-center gap-4 mb-4">
-                            <button onclick="toggleShuffle()" id="shuffleBtn" class="opacity-50 hover:opacity-100 transition" title="Aleatório">
-                                <i class="fas fa-random"></i>
-                            </button>
-                            <div class="flex items-center gap-2">
-                                <i class="fas fa-volume-down text-sm opacity-70"></i>
-                                <input type="range" id="volumeSlider" min="0" max="100" value="50" 
-                                    class="w-20 h-1 accent-green-500 cursor-pointer" onchange="setVolume(this.value)">
-                            </div>
-                            <button onclick="toggleRepeat()" id="repeatBtn" class="opacity-50 hover:opacity-100 transition" title="Repetir">
-                                <i class="fas fa-redo"></i>
-                            </button>
-                        </div>
-                        
-                        <div class="border-t border-white/10 pt-3">
-                            <p class="text-xs opacity-60 mb-2">Suas Playlists:</p>
-                            <div id="userPlaylists" class="flex flex-wrap gap-1 justify-center max-h-24 overflow-y-auto">
-                            </div>
-                        </div>
-                        
-                        <!-- Player Status -->
-                        <div id="playerStatus" class="hidden text-xs text-center py-1 px-2 rounded mt-2 bg-green-500/30 text-green-300"></div>
-                        
-                        <!-- Device Info -->
-                        <div id="deviceInfo" class="mt-3 pt-3 border-t border-white/10">
-                            <div class="flex items-center justify-center gap-2 text-xs">
-                                <div id="soundWave" class="sound-wave paused">
-                                    <span></span>
-                                    <span></span>
-                                    <span></span>
-                                    <span></span>
-                                </div>
-                                <span class="opacity-70">Dispositivo:</span>
-                                <span id="activeDevice" class="text-green-400 font-medium">Nenhum ativo</span>
-                            </div>
-                            <p class="text-center text-[10px] opacity-40 mt-1">Abra o Spotify em um dispositivo para controlar daqui</p>
+                            <!-- Glass Shine -->
+                            <div class="absolute top-2 left-2 w-2 h-16 bg-white/20 rounded-full"></div>
                         </div>
                     </div>
                     
-                    <div id="spotifyEmbedSection" class="hidden">
-                        <div class="border-t border-white/10 pt-3 mt-3">
-                            <p class="text-xs opacity-60 mb-2">Ou cole um link:</p>
-                            <div class="flex gap-2">
-                                <input type="text" id="spotifyLink" placeholder="Link do Spotify..." 
-                                    class="flex-1 bg-white/20 border-none rounded-lg px-3 py-2 text-sm placeholder-white/50 outline-none">
-                                <button onclick="loadSpotifyEmbed()" class="bg-green-500/80 hover:bg-green-500 px-3 py-2 rounded-lg text-sm transition">
-                                    <i class="fas fa-play"></i>
-                                </button>
-                            </div>
-                            <iframe id="spotifyEmbed" class="hidden w-full rounded-xl mt-2" height="80" frameBorder="0" 
-                                allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy">
-                            </iframe>
+                    <!-- Water Count -->
+                    <div class="text-center mb-4">
+                        <span id="waterCount" class="text-4xl font-bold title-font text-blue-400">0</span>
+                        <span class="text-lg text-white/60"> / </span>
+                        <span id="waterGoal" class="text-lg text-white/60">8 copos</span>
+                    </div>
+                    
+                    <!-- Progress Bar -->
+                    <div class="h-2 bg-white/10 rounded-full mb-4 overflow-hidden">
+                        <div id="waterProgress" class="h-full bg-gradient-to-r from-blue-500 to-cyan-400 rounded-full transition-all duration-500" style="width: 0%;"></div>
+                    </div>
+                    
+                    <!-- Water Buttons -->
+                    <div class="grid grid-cols-4 gap-2">
+                        <button onclick="addWater(1)" class="water-btn bg-blue-500/30 hover:bg-blue-500/50 p-2 rounded-lg transition text-center">
+                            <i class="fas fa-plus text-xs"></i>
+                            <span class="block text-xs mt-1">1</span>
+                        </button>
+                        <button onclick="addWater(2)" class="water-btn bg-blue-500/30 hover:bg-blue-500/50 p-2 rounded-lg transition text-center">
+                            <i class="fas fa-plus text-xs"></i>
+                            <span class="block text-xs mt-1">2</span>
+                        </button>
+                        <button onclick="removeWater(1)" class="water-btn bg-red-500/30 hover:bg-red-500/50 p-2 rounded-lg transition text-center">
+                            <i class="fas fa-minus text-xs"></i>
+                            <span class="block text-xs mt-1">1</span>
+                        </button>
+                        <button onclick="setWaterGoal()" class="water-btn bg-white/20 hover:bg-white/30 p-2 rounded-lg transition text-center">
+                            <i class="fas fa-cog text-xs"></i>
+                            <span class="block text-xs mt-1">Meta</span>
+                        </button>
+                    </div>
+                    
+                    <!-- Hydration Message -->
+                    <div id="waterMessage" class="text-center mt-3 text-xs text-white/60">
+                        <span>💧 Mantenha-se hidratado!</span>
+                    </div>
+                </div>
+
+                <!-- Mood Tracker -->
+                <div class="glass-dark rounded-2xl p-5">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="title-font font-semibold"><i class="fas fa-heart mr-2 text-pink-400"></i>Humor</h3>
+                        <span id="moodDate" class="text-xs text-white/50"></span>
+                    </div>
+                    
+                    <!-- Current Mood Display -->
+                    <div id="currentMoodDisplay" class="text-center mb-4">
+                        <div id="currentMoodEmoji" class="text-6xl mb-2 mood-emoji">😊</div>
+                        <div id="currentMoodText" class="text-sm text-white/70">Como você está hoje?</div>
+                    </div>
+                    
+                    <!-- Mood Selection -->
+                    <div class="grid grid-cols-5 gap-2 mb-4">
+                        <button onclick="setMood('terrible')" class="mood-btn p-2 rounded-xl bg-white/10 hover:bg-red-500/30 transition flex flex-col items-center" data-mood="terrible">
+                            <span class="text-2xl">😢</span>
+                            <span class="text-[10px] mt-1 opacity-70">Péssimo</span>
+                        </button>
+                        <button onclick="setMood('bad')" class="mood-btn p-2 rounded-xl bg-white/10 hover:bg-orange-500/30 transition flex flex-col items-center" data-mood="bad">
+                            <span class="text-2xl">😔</span>
+                            <span class="text-[10px] mt-1 opacity-70">Mal</span>
+                        </button>
+                        <button onclick="setMood('okay')" class="mood-btn p-2 rounded-xl bg-white/10 hover:bg-yellow-500/30 transition flex flex-col items-center" data-mood="okay">
+                            <span class="text-2xl">😐</span>
+                            <span class="text-[10px] mt-1 opacity-70">Ok</span>
+                        </button>
+                        <button onclick="setMood('good')" class="mood-btn p-2 rounded-xl bg-white/10 hover:bg-green-500/30 transition flex flex-col items-center" data-mood="good">
+                            <span class="text-2xl">😊</span>
+                            <span class="text-[10px] mt-1 opacity-70">Bem</span>
+                        </button>
+                        <button onclick="setMood('great')" class="mood-btn p-2 rounded-xl bg-white/10 hover:bg-emerald-500/30 transition flex flex-col items-center" data-mood="great">
+                            <span class="text-2xl">🤩</span>
+                            <span class="text-[10px] mt-1 opacity-70">Ótimo</span>
+                        </button>
+                    </div>
+                    
+                    <!-- Mood Note -->
+                    <div class="relative">
+                        <input type="text" id="moodNote" placeholder="Adicione uma nota..." 
+                            onchange="saveMoodNote()"
+                            class="w-full bg-white/10 border border-white/20 rounded-lg px-3 py-2 text-sm outline-none focus:border-white/40 transition">
+                    </div>
+                    
+                    <!-- Mood History (last 7 days) -->
+                    <div class="mt-4">
+                        <p class="text-xs text-white/50 mb-2">Últimos 7 dias:</p>
+                        <div id="moodHistory" class="flex justify-between">
+                            <!-- Will be populated by JS -->
                         </div>
                     </div>
                 </div>
+
             </div>
 
             <!-- Kanban Section -->
@@ -2177,11 +2448,18 @@
                                 <span id="todoCount">0</span> a fazer | <span id="doingCount">0</span> fazendo | <span id="doneCount">0</span> feitas
                             </div>
                         </div>
-                        <div class="flex gap-2 w-full sm:w-auto">
-                            <button onclick="openAddColumnModal()" class="flex-1 sm:flex-none bg-white/20 hover:bg-white/30 px-3 sm:px-4 py-2 rounded-xl transition font-medium text-xs sm:text-sm">
+                        <div class="flex gap-2 w-full sm:w-auto flex-wrap justify-end">
+                            <button onclick="exportData()" class="bg-white/20 hover:bg-white/30 px-3 py-2 rounded-xl transition text-xs sm:text-sm" title="Exportar dados">
+                                <i class="fas fa-download"></i><span class="hidden md:inline ml-2">Exportar</span>
+                            </button>
+                            <button onclick="document.getElementById('importFile').click()" class="bg-white/20 hover:bg-white/30 px-3 py-2 rounded-xl transition text-xs sm:text-sm" title="Importar dados">
+                                <i class="fas fa-upload"></i><span class="hidden md:inline ml-2">Importar</span>
+                            </button>
+                            <input type="file" id="importFile" accept=".json" onchange="importData(event)" class="hidden">
+                            <button onclick="openAddColumnModal()" class="bg-white/20 hover:bg-white/30 px-3 sm:px-4 py-2 rounded-xl transition font-medium text-xs sm:text-sm">
                                 <i class="fas fa-plus mr-1 sm:mr-2"></i><span class="hidden sm:inline">Nova </span>Coluna
                             </button>
-                            <button onclick="openAddNoteModal()" class="flex-1 sm:flex-none bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 px-3 sm:px-4 py-2 rounded-xl transition font-medium text-xs sm:text-sm">
+                            <button onclick="openAddNoteModal()" class="bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 px-3 sm:px-4 py-2 rounded-xl transition font-medium text-xs sm:text-sm">
                                 <i class="fas fa-plus mr-1 sm:mr-2"></i><span class="hidden sm:inline">Nova </span>Tarefa
                             </button>
                         </div>
@@ -2365,95 +2643,92 @@
         </div>
     </div>
 
-    <!-- Spotify Settings Modal -->
-    <div id="spotifySettingsModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm hidden items-center justify-center z-50">
-        <div class="glass-dark rounded-2xl p-6 w-full max-w-lg mx-4 max-h-[90vh] overflow-y-auto">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="title-font text-xl font-bold"><i class="fab fa-spotify mr-2 text-green-500"></i>Configurar Spotify</h3>
-                <button onclick="closeSpotifySettings()" class="bg-white/20 hover:bg-white/30 w-8 h-8 rounded-full transition">
-                    <i class="fas fa-times"></i>
-                </button>
+    <!-- Edit Note Modal -->
+    <div id="editNoteModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm hidden items-center justify-center z-50">
+        <div class="glass-dark rounded-2xl p-6 w-full max-w-md mx-4 max-h-[90vh] overflow-y-auto">
+            <h3 class="title-font text-xl font-bold mb-4"><i class="fas fa-edit mr-2"></i>Editar Tarefa</h3>
+            <input type="hidden" id="editNoteId">
+            <input type="text" id="editNoteTitle" placeholder="Título da tarefa" 
+                class="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 mb-3 outline-none focus:border-white/40 transition">
+            <textarea id="editNoteContent" placeholder="Descrição..." rows="3"
+                class="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 mb-3 outline-none focus:border-white/40 transition resize-none"></textarea>
+            
+            <!-- Column Selection -->
+            <div class="mb-3">
+                <p class="text-sm text-white/60 mb-2">Coluna:</p>
+                <select id="editNoteColumn" class="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 outline-none cursor-pointer">
+                </select>
             </div>
             
-            <div class="space-y-4 text-sm">
-                <!-- Diagnóstico -->
-                <div id="spotifyDiagnostic" class="bg-blue-500/20 border border-blue-500/30 rounded-xl p-4">
-                    <h4 class="font-semibold mb-2 text-blue-400"><i class="fas fa-stethoscope mr-2"></i>Diagnóstico</h4>
-                    <div class="text-xs space-y-1" id="diagnosticInfo">
-                        <p>URL atual: <code id="diagUrl" class="bg-black/30 px-1 rounded text-green-300 break-all"></code></p>
-                        <p>Client ID salvo: <code id="diagClientId" class="bg-black/30 px-1 rounded"></code></p>
-                        <p>Token salvo: <code id="diagToken" class="bg-black/30 px-1 rounded"></code></p>
-                        <p>Token válido: <code id="diagTokenValid" class="bg-black/30 px-1 rounded"></code></p>
-                    </div>
-                </div>
-                
-                <div class="bg-white/10 rounded-xl p-4">
-                    <h4 class="font-semibold mb-2 text-green-400"><i class="fas fa-info-circle mr-2"></i>Passo a Passo</h4>
-                    <ol class="list-decimal list-inside space-y-2 opacity-80">
-                        <li>Acesse <a href="https://developer.spotify.com/dashboard" target="_blank" class="text-green-400 underline hover:text-green-300">developer.spotify.com/dashboard</a></li>
-                        <li>Faça login com sua conta do Spotify</li>
-                        <li>Clique em <strong>"Create App"</strong></li>
-                        <li>Preencha os campos:
-                            <ul class="list-disc list-inside ml-4 mt-1 opacity-70">
-                                <li>App name: <strong>Meu Dashboard</strong></li>
-                                <li>App description: <strong>Dashboard pessoal</strong></li>
-                                <li>Marque <strong>"Web API"</strong></li>
-                            </ul>
-                        </li>
-                        <li>Em <strong>Redirect URIs</strong>, adicione:</li>
-                    </ol>
-                    <div class="mt-2 bg-black/30 rounded-lg p-3 flex items-center gap-2">
-                        <code id="redirectUri" class="text-green-400 text-xs break-all flex-1 select-all"></code>
-                        <button onclick="copyRedirectUri()" class="bg-green-500/50 hover:bg-green-500 px-2 py-1 rounded text-xs transition">
-                            <i class="fas fa-copy"></i> Copiar
-                        </button>
-                    </div>
-                    <p class="text-xs text-yellow-400 mt-2"><i class="fas fa-exclamation-triangle mr-1"></i>A URL acima deve ser EXATAMENTE igual no Spotify!</p>
-                    <ol class="list-decimal list-inside space-y-2 opacity-80 mt-3" start="6">
-                        <li>Clique em <strong>"Save"</strong> para salvar o app</li>
-                        <li>Na página do app, copie o <strong>"Client ID"</strong></li>
-                        <li>Cole abaixo e clique em "Salvar e Conectar"</li>
-                    </ol>
-                </div>
-                
-                <div>
-                    <label class="block text-white/70 mb-2">Client ID do Spotify:</label>
-                    <input type="text" id="spotifyClientId" placeholder="Ex: 1a2b3c4d5e6f7g8h9i0j..." 
-                        class="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 outline-none focus:border-green-500 transition font-mono text-xs">
-                    <p class="text-xs opacity-50 mt-1">São 32 caracteres (letras e números)</p>
-                </div>
-                
-                <div class="bg-yellow-500/20 border border-yellow-500/30 rounded-xl p-4">
-                    <h4 class="font-semibold mb-2 text-yellow-400"><i class="fas fa-exclamation-triangle mr-2"></i>Problemas Comuns</h4>
-                    <ul class="list-disc list-inside space-y-1 opacity-80 text-xs">
-                        <li><strong>Redirect URI mismatch</strong>: A URL no Spotify deve ser EXATA</li>
-                        <li><strong>INVALID_CLIENT</strong>: Client ID incorreto ou app não salvo</li>
-                        <li><strong>Página em branco</strong>: Aguarde alguns segundos após criar o app</li>
-                        <li><strong>Não toca</strong>: Abra o Spotify em outro dispositivo primeiro</li>
-                    </ul>
-                </div>
-                
-                <div id="spotifyStatus" class="hidden bg-green-500/20 border border-green-500/30 rounded-xl p-4">
-                    <p class="text-green-400"><i class="fas fa-check-circle mr-2"></i>Configurado com sucesso!</p>
-                </div>
-                
-                <div id="spotifyError" class="hidden bg-red-500/20 border border-red-500/30 rounded-xl p-4">
-                    <p class="text-red-400"><i class="fas fa-times-circle mr-2"></i><span id="spotifyErrorMsg"></span></p>
+            <!-- Category -->
+            <div class="mb-3">
+                <p class="text-sm text-white/60 mb-2">Categoria:</p>
+                <select id="editNoteCategory" class="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 outline-none cursor-pointer">
+                    <option value="outros">📌 Outros</option>
+                    <option value="trabalho">💼 Trabalho</option>
+                    <option value="pessoal">🏠 Pessoal</option>
+                    <option value="estudos">📚 Estudos</option>
+                    <option value="saude">❤️ Saúde</option>
+                    <option value="financeiro">💰 Financeiro</option>
+                </select>
+            </div>
+            
+            <!-- Priority -->
+            <div class="mb-3">
+                <p class="text-sm text-white/60 mb-2">Prioridade:</p>
+                <div class="flex gap-2">
+                    <button type="button" onclick="selectEditPriority('low')" class="flex-1 py-2 rounded-lg transition edit-priority-btn bg-white/10 hover:bg-green-500/50" data-priority="low">
+                        🟢 Baixa
+                    </button>
+                    <button type="button" onclick="selectEditPriority('medium')" class="flex-1 py-2 rounded-lg transition edit-priority-btn bg-white/10 hover:bg-yellow-500/50" data-priority="medium">
+                        🟡 Média
+                    </button>
+                    <button type="button" onclick="selectEditPriority('high')" class="flex-1 py-2 rounded-lg transition edit-priority-btn bg-white/10 hover:bg-red-500/50" data-priority="high">
+                        🔴 Alta
+                    </button>
                 </div>
             </div>
             
-            <div class="flex gap-3 mt-6">
-                <button onclick="closeSpotifySettings()" class="flex-1 bg-white/20 hover:bg-white/30 py-3 rounded-lg transition">Cancelar</button>
-                <button onclick="saveSpotifySettings()" class="flex-1 bg-green-500 hover:bg-green-600 py-3 rounded-lg transition font-medium">
-                    <i class="fas fa-save mr-2"></i>Salvar e Conectar
-                </button>
+            <!-- Due Date -->
+            <div class="mb-3">
+                <p class="text-sm text-white/60 mb-2">Data de Vencimento:</p>
+                <input type="date" id="editNoteDueDate" 
+                    class="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 outline-none focus:border-white/40 transition text-white">
             </div>
             
-            <!-- Teste de conexão -->
-            <div class="mt-4 pt-4 border-t border-white/10">
-                <button onclick="testSpotifyConnection()" class="w-full bg-blue-500/50 hover:bg-blue-500 py-2 rounded-lg transition text-sm">
-                    <i class="fas fa-vial mr-2"></i>Testar Conexão Atual
-                </button>
+            <!-- Color -->
+            <div class="mb-4">
+                <p class="text-sm text-white/60 mb-2">Cor do post-it:</p>
+                <div class="flex gap-2">
+                    <button onclick="selectEditNoteColor('yellow')" class="w-8 h-8 rounded-full bg-yellow-300 border-2 border-transparent hover:border-white edit-color-btn" data-color="yellow"></button>
+                    <button onclick="selectEditNoteColor('pink')" class="w-8 h-8 rounded-full bg-pink-300 border-2 border-transparent hover:border-white edit-color-btn" data-color="pink"></button>
+                    <button onclick="selectEditNoteColor('blue')" class="w-8 h-8 rounded-full bg-blue-300 border-2 border-transparent hover:border-white edit-color-btn" data-color="blue"></button>
+                    <button onclick="selectEditNoteColor('green')" class="w-8 h-8 rounded-full bg-green-300 border-2 border-transparent hover:border-white edit-color-btn" data-color="green"></button>
+                    <button onclick="selectEditNoteColor('orange')" class="w-8 h-8 rounded-full bg-orange-300 border-2 border-transparent hover:border-white edit-color-btn" data-color="orange"></button>
+                    <button onclick="selectEditNoteColor('purple')" class="w-8 h-8 rounded-full bg-purple-300 border-2 border-transparent hover:border-white edit-color-btn" data-color="purple"></button>
+                </div>
+            </div>
+            <div class="flex gap-3">
+                <button onclick="closeEditNoteModal()" class="flex-1 bg-white/20 hover:bg-white/30 py-3 rounded-lg transition">Cancelar</button>
+                <button onclick="saveEditedNote()" class="flex-1 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 py-3 rounded-lg transition font-medium">Salvar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <!-- Confirm Modal -->
+    <div id="confirmModal" class="confirm-modal">
+        <div class="confirm-modal-content">
+            <div class="confirm-icon">
+                <i class="fas fa-trash"></i>
+            </div>
+            <h3 class="confirm-title">Confirmar Exclusão</h3>
+            <p class="confirm-message" id="confirmMessage">Tem certeza que deseja excluir este item?</p>
+            <div class="confirm-buttons">
+                <button class="confirm-btn confirm-btn-cancel" onclick="closeConfirmModal()">Cancelar</button>
+                <button class="confirm-btn confirm-btn-confirm" id="confirmBtn" onclick="executeConfirmAction()">Excluir</button>
             </div>
         </div>
     </div>
@@ -2551,26 +2826,27 @@
 
         // ===== PARALLAX EFFECT =====
         function initParallax() {
-            let ticking = false;
+            const parallaxBg = document.getElementById('parallaxBg');
+            let currentX = 0;
+            let currentY = 0;
+            let targetX = 0;
+            let targetY = 0;
             
-            window.addEventListener('scroll', () => {
-                if (!ticking) {
-                    window.requestAnimationFrame(() => {
-                        const scrolled = window.pageYOffset;
-                        const parallaxBg = document.getElementById('parallaxBg');
-                        parallaxBg.style.transform = `translateY(${scrolled * 0.5}px)`;
-                        ticking = false;
-                    });
-                    ticking = true;
-                }
-            });
-
+            // Efeito suave de parallax com o mouse (muito sutil para não quebrar o fundo)
             window.addEventListener('mousemove', (e) => {
-                const parallaxBg = document.getElementById('parallaxBg');
-                const moveX = (e.clientX - window.innerWidth / 2) * 0.01;
-                const moveY = (e.clientY - window.innerHeight / 2) * 0.01;
-                parallaxBg.style.transform = `translate(${moveX}px, ${moveY}px)`;
+                targetX = (e.clientX - window.innerWidth / 2) * 0.005;
+                targetY = (e.clientY - window.innerHeight / 2) * 0.005;
             });
+            
+            // Animação suave
+            function animateParallax() {
+                currentX += (targetX - currentX) * 0.05;
+                currentY += (targetY - currentY) * 0.05;
+                parallaxBg.style.transform = `translate(${currentX}px, ${currentY}px) scale(1.02)`;
+                requestAnimationFrame(animateParallax);
+            }
+            
+            animateParallax();
         }
 
         // ===== POMODORO VARIABLES =====
@@ -2580,6 +2856,28 @@
         let pomodoroRunning = false;
         let pomodoroSessions = parseInt(localStorage.getItem('pomodoroSessions')) || 0;
         let isBreak = false;
+
+        // ===== WATER TRACKER VARIABLES =====
+        let waterCount = parseInt(localStorage.getItem('waterCount')) || 0;
+        let waterGoal = parseInt(localStorage.getItem('waterGoal')) || 8;
+        let waterDate = localStorage.getItem('waterDate') || '';
+
+        // ===== MOOD TRACKER VARIABLES =====
+        let moodHistory = JSON.parse(localStorage.getItem('moodHistory')) || [];
+        const moodEmojis = {
+            terrible: '😢',
+            bad: '😔',
+            okay: '😐',
+            good: '😊',
+            great: '🤩'
+        };
+        const moodTexts = {
+            terrible: 'Dia difícil... 💙',
+            bad: 'Não está fácil, mas vai passar!',
+            okay: 'Um dia normal',
+            good: 'Dia bom! Continue assim!',
+            great: 'Dia incrível! 🎉'
+        };
 
         // ===== BACKGROUND IMAGES =====
         const backgrounds = {
@@ -2676,14 +2974,78 @@
 
         function getWeatherIconHtml(type) {
             const icons = {
-                'clear': `<div class="weather-sun"></div>`,
-                'night': `<div class="weather-night"><div class="stars"><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div></div><div class="moon"></div></div>`,
-                'partly-cloudy': `<div class="weather-partly-cloudy"><div class="weather-sun"></div><div class="weather-cloud"></div></div>`,
-                'cloudy': `<div class="weather-cloudy"><div class="cloud-back"></div><div class="weather-cloud"></div></div>`,
-                'rain': `<div class="weather-rain"><div class="weather-cloud"></div><div class="rain-drops"><div class="drop"></div><div class="drop"></div><div class="drop"></div><div class="drop"></div><div class="drop"></div><div class="drop"></div></div></div>`,
-                'storm': `<div class="weather-storm"><div class="weather-cloud"></div><div class="lightning"></div><div class="rain-drops"><div class="drop"></div><div class="drop"></div><div class="drop"></div><div class="drop"></div><div class="drop"></div><div class="drop"></div></div></div>`,
-                'snow': `<div class="weather-snow"><div class="weather-cloud"></div><div class="snowflakes"><div class="flake"></div><div class="flake"></div><div class="flake"></div><div class="flake"></div><div class="flake"></div><div class="flake"></div></div></div>`,
-                'mist': `<div class="weather-mist"><div class="fog-line"></div><div class="fog-line"></div><div class="fog-line"></div><div class="fog-line"></div></div>`
+                'clear': `<div class="weather-sun">
+                    <div class="sun-rays"></div>
+                    <div class="sun-core"></div>
+                </div>`,
+                'night': `<div class="weather-night">
+                    <div class="stars">
+                        <div class="star"></div>
+                        <div class="star"></div>
+                        <div class="star"></div>
+                        <div class="star"></div>
+                        <div class="star"></div>
+                    </div>
+                    <div class="moon">
+                        <div class="moon-inner"></div>
+                    </div>
+                </div>`,
+                'partly-cloudy': `<div class="weather-partly-cloudy">
+                    <div class="weather-sun">
+                        <div class="sun-rays"></div>
+                        <div class="sun-core"></div>
+                    </div>
+                    <div class="weather-cloud">
+                        <div class="cloud-scan"></div>
+                    </div>
+                </div>`,
+                'cloudy': `<div class="weather-cloudy">
+                    <div class="cloud-back"></div>
+                    <div class="weather-cloud">
+                        <div class="cloud-scan"></div>
+                    </div>
+                </div>`,
+                'rain': `<div class="weather-rain">
+                    <div class="weather-cloud"></div>
+                    <div class="rain-drops">
+                        <div class="drop"></div>
+                        <div class="drop"></div>
+                        <div class="drop"></div>
+                        <div class="drop"></div>
+                        <div class="drop"></div>
+                        <div class="drop"></div>
+                    </div>
+                </div>`,
+                'storm': `<div class="weather-storm">
+                    <div class="weather-cloud"></div>
+                    <div class="lightning"></div>
+                    <div class="rain-drops">
+                        <div class="drop"></div>
+                        <div class="drop"></div>
+                        <div class="drop"></div>
+                        <div class="drop"></div>
+                        <div class="drop"></div>
+                        <div class="drop"></div>
+                    </div>
+                </div>`,
+                'snow': `<div class="weather-snow">
+                    <div class="weather-cloud"></div>
+                    <div class="snowflakes">
+                        <div class="flake"></div>
+                        <div class="flake"></div>
+                        <div class="flake"></div>
+                        <div class="flake"></div>
+                        <div class="flake"></div>
+                        <div class="flake"></div>
+                    </div>
+                </div>`,
+                'mist': `<div class="weather-mist">
+                    <div class="fog-circle"></div>
+                    <div class="fog-line"></div>
+                    <div class="fog-line"></div>
+                    <div class="fog-line"></div>
+                    <div class="fog-line"></div>
+                </div>`
             };
             return icons[type] || icons['clear'];
         }
@@ -2757,8 +3119,7 @@
                     <a href="${link.url}" target="_blank" class="link-item glass rounded-xl p-3 text-center group relative"
                         draggable="true" ondragstart="dragLinkStart(event, ${originalIndex})" ondragend="dragLinkEnd(event)"
                         ondragover="dragLinkOver(event)" ondrop="dropLink(event, ${originalIndex})">
-                        ${faviconUrl ? `<img src="${faviconUrl}" class="w-6 h-6 mx-auto mb-1 rounded" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">` : ''}
-                        <i class="${link.icon || 'fas fa-link'} text-2xl mb-1 ${faviconUrl ? 'hidden' : 'block'}"></i>
+                        <img src="${faviconUrl}" class="w-6 h-6 mx-auto mb-1 rounded" onerror="this.style.display='none';">
                         <span class="text-xs truncate block">${link.name}</span>
                         ${link.folder ? `<span class="text-[10px] text-white/40 block truncate">📁 ${link.folder}</span>` : ''}
                         <button onclick="event.preventDefault(); deleteLink(${originalIndex})" 
@@ -2845,12 +3206,23 @@
                 links.push({ name, url, icon: 'fas fa-link', folder });
                 renderLinks();
                 closeLinkModal();
+                showToast('success', 'Link adicionado', `"${name}" foi salvo nos favoritos`);
+            } else {
+                showToast('error', 'Erro', 'Nome e URL são obrigatórios');
             }
         }
 
         function deleteLink(index) {
-            links.splice(index, 1);
-            renderLinks();
+            const link = links[index];
+            showConfirmModal(
+                'Excluir Link',
+                `Tem certeza que deseja excluir "${link?.name || 'este link'}"?`,
+                () => {
+                    links.splice(index, 1);
+                    renderLinks();
+                    showToast('success', 'Link excluído', 'O link foi removido com sucesso');
+                }
+            );
         }
 
         function saveLinks() {
@@ -3018,17 +3390,23 @@
                     ondragstart="cardDragStart(event, '${note.id}')"
                     ondragend="cardDragEnd(event)"
                     ondblclick="toggleNoteComplete('${note.id}')">
-                    <button onclick="deleteNote('${note.id}')" 
-                        class="absolute top-1 right-1 w-5 h-5 bg-black/20 hover:bg-black/40 rounded-full text-xs transition opacity-0 hover:opacity-100">
-                        <i class="fas fa-times"></i>
-                    </button>
+                    <div class="absolute top-1 right-1 flex gap-1 opacity-0 hover:opacity-100 transition">
+                        <button onclick="event.stopPropagation(); openEditNoteModal('${note.id}')" 
+                            class="w-5 h-5 bg-blue-500/70 hover:bg-blue-500 rounded-full text-xs transition text-white">
+                            <i class="fas fa-pen text-[8px]"></i>
+                        </button>
+                        <button onclick="event.stopPropagation(); deleteNote('${note.id}')" 
+                            class="w-5 h-5 bg-black/20 hover:bg-red-500 rounded-full text-xs transition">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
                     
                     <div class="flex items-center gap-1 mb-1 flex-wrap">
                         <span class="category-tag">${categoryEmojis[note.category] || '📌'}</span>
                         ${dueStatus.text ? `<span class="text-[10px] ${dueStatus.class === 'overdue' ? 'text-red-600 font-bold' : 'opacity-70'}">${dueStatus.text}</span>` : ''}
                     </div>
                     
-                    <h4 class="card-title font-bold text-sm mb-1 pr-4 ${isCompleted ? 'line-through opacity-60' : ''}">${highlightSearchTerm(note.title)}</h4>
+                    <h4 class="card-title font-bold text-sm mb-1 pr-8 cursor-pointer ${isCompleted ? 'line-through opacity-60' : ''}" onclick="event.stopPropagation(); openEditNoteModal('${note.id}')">${highlightSearchTerm(note.title)}</h4>
                     ${note.content ? `<p class="text-xs opacity-70 line-clamp-2 ${isCompleted ? 'line-through opacity-40' : ''}">${highlightSearchTerm(note.content)}</p>` : ''}
                     
                     <div class="flex items-center justify-between mt-2 text-[10px] opacity-50">
@@ -3262,12 +3640,23 @@
                 });
                 renderKanban();
                 closeNoteModal();
+                showToast('success', 'Tarefa criada', `"${title}" foi adicionada ao quadro`);
+            } else {
+                showToast('error', 'Erro', 'O título é obrigatório');
             }
         }
 
         function deleteNote(noteId) {
-            notes = notes.filter(n => n.id !== noteId);
-            renderKanban();
+            const note = notes.find(n => n.id === noteId);
+            showConfirmModal(
+                'Excluir Tarefa',
+                `Tem certeza que deseja excluir "${note?.title || 'esta tarefa'}"?`,
+                () => {
+                    notes = notes.filter(n => n.id !== noteId);
+                    renderKanban();
+                    showToast('success', 'Tarefa excluída', 'A tarefa foi removida com sucesso');
+                }
+            );
         }
 
         function toggleNoteComplete(noteId) {
@@ -3280,6 +3669,9 @@
                     if (doneColumn) {
                         note.columnId = 'done';
                     }
+                    showToast('success', 'Tarefa concluída! 🎉', `"${note.title}" foi marcada como feita`);
+                } else if (!note.completed) {
+                    showToast('info', 'Tarefa reaberta', `"${note.title}" foi marcada como pendente`);
                 }
                 renderKanban();
             }
@@ -3384,621 +3776,428 @@
             }
         }
 
-        // ===== SPOTIFY API =====
-        const SPOTIFY_SCOPES = [
-            'user-read-private',
-            'user-read-email',
-            'user-read-playback-state',
-            'user-modify-playback-state',
-            'user-read-currently-playing',
-            'playlist-read-private',
-            'playlist-read-collaborative',
-            'streaming'
-        ].join(' ');
-        
-        let spotifyAccessToken = localStorage.getItem('spotifyAccessToken');
-        let spotifyTokenExpiry = localStorage.getItem('spotifyTokenExpiry');
-        let spotifyClientId = localStorage.getItem('spotifyClientId');
-        let currentPlaybackState = null;
-        let playbackInterval = null;
-        let tokenCheckInterval = null;
-
-        function getRedirectUri() {
-            // Remove trailing slash and hash
-            let uri = window.location.origin + window.location.pathname;
-            // Remove trailing slash if present
-            uri = uri.replace(/\/$/, '');
-            // For local files, return as-is
-            return uri;
-        }
-
-        function copyRedirectUri() {
-            const uri = getRedirectUri();
-            navigator.clipboard.writeText(uri).then(() => {
-                const btn = event.target.closest('button');
-                const originalText = btn.innerHTML;
-                btn.innerHTML = '<i class="fas fa-check"></i> Copiado!';
-                btn.classList.add('bg-green-500');
-                setTimeout(() => {
-                    btn.innerHTML = originalText;
-                    btn.classList.remove('bg-green-500');
-                }, 2000);
-            }).catch(() => {
-                // Fallback for older browsers
-                prompt('Copie esta URL:', uri);
-            });
-        }
-
-        function updateDiagnostics() {
-            const diagUrl = document.getElementById('diagUrl');
-            const diagClientId = document.getElementById('diagClientId');
-            const diagToken = document.getElementById('diagToken');
-            const diagTokenValid = document.getElementById('diagTokenValid');
-            
-            if (diagUrl) diagUrl.textContent = getRedirectUri();
-            if (diagClientId) diagClientId.textContent = spotifyClientId ? `${spotifyClientId.substring(0, 8)}...` : 'Não configurado';
-            if (diagToken) diagToken.textContent = spotifyAccessToken ? `${spotifyAccessToken.substring(0, 15)}...` : 'Nenhum';
-            if (diagTokenValid) {
-                const isValid = isSpotifyConnected();
-                diagTokenValid.textContent = isValid ? 'Sim ✓' : 'Não ✗';
-                diagTokenValid.className = `bg-black/30 px-1 rounded ${isValid ? 'text-green-400' : 'text-red-400'}`;
+        // ===== WATER TRACKER =====
+        function checkWaterDate() {
+            const today = new Date().toDateString();
+            if (waterDate !== today) {
+                waterCount = 0;
+                waterDate = today;
+                localStorage.setItem('waterCount', waterCount);
+                localStorage.setItem('waterDate', waterDate);
             }
         }
 
-        function showSpotifyError(message) {
-            const errorDiv = document.getElementById('spotifyError');
-            const errorMsg = document.getElementById('spotifyErrorMsg');
-            if (errorDiv && errorMsg) {
-                errorMsg.textContent = message;
-                errorDiv.classList.remove('hidden');
+        function updateWaterDisplay() {
+            const fill = document.getElementById('waterFill');
+            const count = document.getElementById('waterCount');
+            const goal = document.getElementById('waterGoal');
+            const progress = document.getElementById('waterProgress');
+            const message = document.getElementById('waterMessage');
+            
+            const percentage = Math.min((waterCount / waterGoal) * 100, 100);
+            
+            fill.style.height = percentage + '%';
+            count.textContent = waterCount;
+            goal.textContent = waterGoal + ' copos';
+            progress.style.width = percentage + '%';
+            
+            // Update message based on progress
+            if (waterCount === 0) {
+                message.innerHTML = '💧 Hora de beber água!';
+            } else if (waterCount < waterGoal / 2) {
+                message.innerHTML = '💪 Continue assim!';
+            } else if (waterCount < waterGoal) {
+                message.innerHTML = '🌊 Quase lá!';
+            } else if (waterCount === waterGoal) {
+                message.innerHTML = '🎉 Meta atingida! Parabéns!';
+            } else {
+                message.innerHTML = '⭐ Você está super hidratado!';
             }
-            console.error('[Spotify Error]', message);
         }
 
-        function openSpotifySettings() {
-            document.getElementById('spotifySettingsModal').classList.remove('hidden');
-            document.getElementById('spotifySettingsModal').classList.add('flex');
-            document.getElementById('redirectUri').textContent = getRedirectUri();
-            document.getElementById('spotifyError')?.classList.add('hidden');
-            if (spotifyClientId) {
-                document.getElementById('spotifyClientId').value = spotifyClientId;
+        function addWater(amount) {
+            waterCount += amount;
+            localStorage.setItem('waterCount', waterCount);
+            
+            // Animation
+            const fill = document.getElementById('waterFill');
+            fill.classList.add('water-splash');
+            setTimeout(() => fill.classList.remove('water-splash'), 500);
+            
+            updateWaterDisplay();
+            
+            // Celebration at goal
+            if (waterCount === waterGoal) {
+                confettiCelebration();
             }
-            updateDiagnostics();
         }
 
-        function closeSpotifySettings() {
-            document.getElementById('spotifySettingsModal').classList.add('hidden');
-            document.getElementById('spotifySettingsModal').classList.remove('flex');
+        function removeWater(amount) {
+            waterCount = Math.max(0, waterCount - amount);
+            localStorage.setItem('waterCount', waterCount);
+            updateWaterDisplay();
         }
 
-        function saveSpotifySettings() {
-            const clientId = document.getElementById('spotifyClientId').value.trim();
-            
-            // Validate Client ID format (should be 32 hex characters)
-            if (!clientId) {
-                showSpotifyError('Por favor, insira o Client ID!');
-                return;
+        function resetWater() {
+            if (confirm('Resetar contador de água?')) {
+                waterCount = 0;
+                localStorage.setItem('waterCount', waterCount);
+                updateWaterDisplay();
             }
-            
-            if (clientId.length !== 32) {
-                showSpotifyError(`Client ID deve ter 32 caracteres (você inseriu ${clientId.length})`);
-                return;
+        }
+
+        function setWaterGoal() {
+            const newGoal = prompt('Defina sua meta diária de copos:', waterGoal);
+            if (newGoal && !isNaN(newGoal) && parseInt(newGoal) > 0) {
+                waterGoal = parseInt(newGoal);
+                localStorage.setItem('waterGoal', waterGoal);
+                updateWaterDisplay();
             }
-            
-            if (!/^[a-f0-9]+$/i.test(clientId)) {
-                showSpotifyError('Client ID deve conter apenas letras (a-f) e números');
-                return;
-            }
-            
-            localStorage.setItem('spotifyClientId', clientId);
-            spotifyClientId = clientId;
-            
-            document.getElementById('spotifyError')?.classList.add('hidden');
-            document.getElementById('spotifyStatus').classList.remove('hidden');
-            
-            console.log('[Spotify] Client ID salvo:', clientId);
-            console.log('[Spotify] Redirect URI:', getRedirectUri());
-            
+        }
+
+        function confettiCelebration() {
+            // Simple celebration effect
+            const message = document.getElementById('waterMessage');
+            message.innerHTML = '🎉✨🎊 META ATINGIDA! 🎊✨🎉';
+            message.style.transform = 'scale(1.1)';
             setTimeout(() => {
-                closeSpotifySettings();
-                connectSpotify();
+                message.style.transform = 'scale(1)';
             }, 1000);
         }
 
-        async function testSpotifyConnection() {
-            updateDiagnostics();
+        // ===== MOOD TRACKER =====
+        function getTodayString() {
+            return new Date().toISOString().split('T')[0];
+        }
+
+        function initMoodTracker() {
+            const today = getTodayString();
+            document.getElementById('moodDate').textContent = new Date().toLocaleDateString('pt-BR', { weekday: 'short', day: 'numeric', month: 'short' });
             
-            if (!spotifyClientId) {
-                showSpotifyError('Client ID não configurado');
+            // Check if mood was set today
+            const todayMood = moodHistory.find(m => m.date === today);
+            if (todayMood) {
+                updateMoodDisplay(todayMood.mood);
+                document.getElementById('moodNote').value = todayMood.note || '';
+                highlightMoodButton(todayMood.mood);
+            }
+            
+            renderMoodHistory();
+        }
+
+        function setMood(mood) {
+            const today = getTodayString();
+            const note = document.getElementById('moodNote').value;
+            
+            // Remove today's entry if exists
+            moodHistory = moodHistory.filter(m => m.date !== today);
+            
+            // Add new entry
+            moodHistory.push({
+                date: today,
+                mood: mood,
+                note: note,
+                timestamp: Date.now()
+            });
+            
+            // Keep only last 30 days
+            moodHistory = moodHistory.slice(-30);
+            
+            localStorage.setItem('moodHistory', JSON.stringify(moodHistory));
+            
+            updateMoodDisplay(mood);
+            highlightMoodButton(mood);
+            renderMoodHistory();
+        }
+
+        function updateMoodDisplay(mood) {
+            const emojiEl = document.getElementById('currentMoodEmoji');
+            const textEl = document.getElementById('currentMoodText');
+            
+            emojiEl.textContent = moodEmojis[mood];
+            textEl.textContent = moodTexts[mood];
+            
+            // Bounce animation
+            emojiEl.classList.remove('bounce');
+            void emojiEl.offsetWidth;
+            emojiEl.classList.add('bounce');
+        }
+
+        function highlightMoodButton(mood) {
+            document.querySelectorAll('.mood-btn').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            document.querySelector(`.mood-btn[data-mood="${mood}"]`)?.classList.add('selected');
+        }
+
+        function saveMoodNote() {
+            const today = getTodayString();
+            const note = document.getElementById('moodNote').value;
+            
+            const todayMood = moodHistory.find(m => m.date === today);
+            if (todayMood) {
+                todayMood.note = note;
+                localStorage.setItem('moodHistory', JSON.stringify(moodHistory));
+            }
+        }
+
+        function renderMoodHistory() {
+            const container = document.getElementById('moodHistory');
+            const days = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'];
+            const today = new Date();
+            
+            let html = '';
+            
+            for (let i = 6; i >= 0; i--) {
+                const date = new Date(today);
+                date.setDate(date.getDate() - i);
+                const dateStr = date.toISOString().split('T')[0];
+                const dayOfWeek = days[date.getDay()];
+                
+                const moodEntry = moodHistory.find(m => m.date === dateStr);
+                const emoji = moodEntry ? moodEmojis[moodEntry.mood] : '·';
+                const isToday = i === 0;
+                const tooltip = moodEntry ? moodEntry.note || moodTexts[moodEntry.mood] : 'Sem registro';
+                
+                html += `
+                    <div class="flex flex-col items-center" title="${tooltip}">
+                        <span class="text-[10px] text-white/40 mb-1">${dayOfWeek}</span>
+                        <div class="mood-history-dot ${isToday ? 'today' : ''}">${emoji}</div>
+                    </div>
+                `;
+            }
+            
+            container.innerHTML = html;
+        }
+
+        // ===== TOAST NOTIFICATIONS =====
+        function showToast(type, title, message, duration = 4000) {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            
+            const icons = {
+                success: 'fa-check',
+                error: 'fa-times',
+                warning: 'fa-exclamation',
+                info: 'fa-info'
+            };
+            
+            toast.innerHTML = `
+                <div class="toast-icon"><i class="fas ${icons[type]}"></i></div>
+                <div class="toast-content">
+                    <div class="toast-title">${title}</div>
+                    ${message ? `<div class="toast-message">${message}</div>` : ''}
+                </div>
+                <button class="toast-close" onclick="this.parentElement.remove()">
+                    <i class="fas fa-times"></i>
+                </button>
+                <div class="toast-progress"></div>
+            `;
+            
+            container.appendChild(toast);
+            
+            // Auto remove
+            setTimeout(() => {
+                toast.classList.add('hiding');
+                setTimeout(() => toast.remove(), 300);
+            }, duration);
+        }
+
+        // ===== CONFIRM MODAL =====
+        let confirmCallback = null;
+
+        function showConfirmModal(title, message, callback) {
+            const modal = document.getElementById('confirmModal');
+            document.querySelector('.confirm-title').textContent = title;
+            document.getElementById('confirmMessage').textContent = message;
+            confirmCallback = callback;
+            modal.classList.add('active');
+        }
+
+        function closeConfirmModal() {
+            const modal = document.getElementById('confirmModal');
+            modal.classList.remove('active');
+            confirmCallback = null;
+        }
+
+        function executeConfirmAction() {
+            if (confirmCallback) {
+                confirmCallback();
+            }
+            closeConfirmModal();
+        }
+
+        // ===== EDIT NOTE =====
+        let editNoteColor = 'yellow';
+        let editNotePriority = 'medium';
+
+        function openEditNoteModal(noteId) {
+            const note = notes.find(n => n.id === noteId);
+            if (!note) return;
+            
+            document.getElementById('editNoteId').value = noteId;
+            document.getElementById('editNoteTitle').value = note.title || '';
+            document.getElementById('editNoteContent').value = note.content || '';
+            document.getElementById('editNoteDueDate').value = note.dueDate || '';
+            document.getElementById('editNoteCategory').value = note.category || 'outros';
+            
+            // Update column options
+            const columnSelect = document.getElementById('editNoteColumn');
+            columnSelect.innerHTML = columns.map(col => 
+                `<option value="${col.id}" ${col.id === note.columnId ? 'selected' : ''}>${col.name}</option>`
+            ).join('');
+            
+            // Select color
+            editNoteColor = note.color || 'yellow';
+            selectEditNoteColor(editNoteColor);
+            
+            // Select priority
+            editNotePriority = note.priority || 'medium';
+            selectEditPriority(editNotePriority);
+            
+            document.getElementById('editNoteModal').classList.remove('hidden');
+            document.getElementById('editNoteModal').classList.add('flex');
+        }
+
+        function closeEditNoteModal() {
+            document.getElementById('editNoteModal').classList.add('hidden');
+            document.getElementById('editNoteModal').classList.remove('flex');
+        }
+
+        function selectEditNoteColor(color) {
+            editNoteColor = color;
+            document.querySelectorAll('.edit-color-btn').forEach(btn => {
+                btn.classList.remove('border-white');
+                btn.classList.add('border-transparent');
+            });
+            document.querySelector(`.edit-color-btn[data-color="${color}"]`)?.classList.remove('border-transparent');
+            document.querySelector(`.edit-color-btn[data-color="${color}"]`)?.classList.add('border-white');
+        }
+
+        function selectEditPriority(priority) {
+            editNotePriority = priority;
+            document.querySelectorAll('.edit-priority-btn').forEach(btn => {
+                btn.classList.remove('ring-2', 'ring-white');
+            });
+            document.querySelector(`.edit-priority-btn[data-priority="${priority}"]`)?.classList.add('ring-2', 'ring-white');
+        }
+
+        function saveEditedNote() {
+            const noteId = document.getElementById('editNoteId').value;
+            const note = notes.find(n => n.id === noteId);
+            if (!note) return;
+            
+            const title = document.getElementById('editNoteTitle').value.trim();
+            if (!title) {
+                showToast('error', 'Erro', 'O título é obrigatório');
                 return;
             }
             
-            if (!spotifyAccessToken) {
-                showSpotifyError('Nenhum token de acesso. Clique em "Salvar e Conectar"');
-                return;
-            }
+            note.title = title;
+            note.content = document.getElementById('editNoteContent').value.trim();
+            note.category = document.getElementById('editNoteCategory').value;
+            note.dueDate = document.getElementById('editNoteDueDate').value;
+            note.columnId = document.getElementById('editNoteColumn').value;
+            note.color = editNoteColor;
+            note.priority = editNotePriority;
+            note.completed = note.columnId === 'done';
             
-            if (!isSpotifyConnected()) {
-                showSpotifyError('Token expirado. Reconecte sua conta.');
-                return;
-            }
+            renderKanban();
+            closeEditNoteModal();
+            showToast('success', 'Tarefa atualizada', 'As alterações foram salvas');
+        }
+
+        // ===== EXPORT / IMPORT DATA =====
+        function exportData() {
+            const data = {
+                version: '1.0',
+                exportDate: new Date().toISOString(),
+                notes: notes,
+                columns: columns,
+                links: links,
+                folders: folders,
+                waterCount: waterCount,
+                waterGoal: waterGoal,
+                moodHistory: moodHistory,
+                pomodoroSessions: pomodoroSessions
+            };
             
-            // Test API call
-            try {
-                const response = await fetch('https://api.spotify.com/v1/me', {
-                    headers: { 'Authorization': `Bearer ${spotifyAccessToken}` }
-                });
-                
-                if (response.ok) {
-                    const user = await response.json();
-                    document.getElementById('spotifyError')?.classList.add('hidden');
-                    document.getElementById('spotifyStatus').classList.remove('hidden');
-                    document.getElementById('spotifyStatus').innerHTML = `
-                        <p class="text-green-400"><i class="fas fa-check-circle mr-2"></i>Conectado como: ${user.display_name || user.id}</p>
-                    `;
-                } else {
-                    const error = await response.json();
-                    showSpotifyError(`Erro ${response.status}: ${error.error?.message || 'Desconhecido'}`);
-                }
-            } catch (e) {
-                showSpotifyError(`Erro de rede: ${e.message}`);
-            }
-        }
-
-        function connectSpotify(showDialog = true) {
-            if (!spotifyClientId) {
-                openSpotifySettings();
-                return;
-            }
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `dashboard-backup-${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
             
-            const redirectUri = getRedirectUri();
-            console.log('[Spotify] Iniciando conexão...');
-            console.log('[Spotify] Client ID:', spotifyClientId);
-            console.log('[Spotify] Redirect URI:', redirectUri);
-            console.log('[Spotify] Scopes:', SPOTIFY_SCOPES);
+            showToast('success', 'Backup criado', 'Seus dados foram exportados com sucesso');
+        }
+
+        function importData(event) {
+            const file = event.target.files[0];
+            if (!file) return;
             
-            const authUrl = new URL('https://accounts.spotify.com/authorize');
-            authUrl.searchParams.append('client_id', spotifyClientId);
-            authUrl.searchParams.append('response_type', 'token');
-            authUrl.searchParams.append('redirect_uri', redirectUri);
-            authUrl.searchParams.append('scope', SPOTIFY_SCOPES);
-            authUrl.searchParams.append('show_dialog', showDialog ? 'true' : 'false');
-            
-            console.log('[Spotify] Auth URL:', authUrl.toString());
-            
-            window.location.href = authUrl.toString();
-        }
-
-        // Quick reconnect without showing Spotify login dialog
-        function quickReconnectSpotify() {
-            if (spotifyClientId) {
-                connectSpotify(false); // Don't show dialog, just refresh token
-            } else {
-                openSpotifySettings();
-            }
-        }
-
-        function disconnectSpotify() {
-            localStorage.removeItem('spotifyAccessToken');
-            localStorage.removeItem('spotifyTokenExpiry');
-            spotifyAccessToken = null;
-            spotifyTokenExpiry = null;
-            if (playbackInterval) clearInterval(playbackInterval);
-            if (tokenCheckInterval) clearInterval(tokenCheckInterval);
-            if (spotifyPlayer) {
-                spotifyPlayer.disconnect();
-                spotifyPlayer = null;
-                deviceId = null;
-            }
-            updateSpotifyUI();
-        }
-
-        function handleSpotifyCallback() {
-            const hash = window.location.hash;
-            const urlParams = new URLSearchParams(window.location.search);
-            
-            console.log('[Spotify] Verificando callback...');
-            console.log('[Spotify] Hash:', hash);
-            console.log('[Spotify] Search params:', window.location.search);
-            
-            // Check for errors in URL
-            const error = urlParams.get('error');
-            if (error) {
-                console.error('[Spotify] Erro no callback:', error);
-                const errorDesc = urlParams.get('error_description') || error;
-                
-                // Clear URL
-                window.history.replaceState({}, document.title, window.location.pathname);
-                
-                // Show error to user
-                setTimeout(() => {
-                    alert(`Erro do Spotify: ${errorDesc}\n\nVerifique se:\n1. O Redirect URI está correto no Spotify Developer\n2. O Client ID está correto`);
-                    openSpotifySettings();
-                }, 500);
-                return;
-            }
-            
-            // Check for access token in hash
-            if (hash && hash.includes('access_token')) {
-                console.log('[Spotify] Token encontrado no hash!');
-                
-                const params = new URLSearchParams(hash.substring(1));
-                const accessToken = params.get('access_token');
-                const expiresIn = params.get('expires_in');
-                const tokenType = params.get('token_type');
-                
-                console.log('[Spotify] Token type:', tokenType);
-                console.log('[Spotify] Expires in:', expiresIn, 'segundos');
-                
-                if (accessToken) {
-                    spotifyAccessToken = accessToken;
-                    spotifyTokenExpiry = Date.now() + (parseInt(expiresIn) * 1000);
-                    localStorage.setItem('spotifyAccessToken', accessToken);
-                    localStorage.setItem('spotifyTokenExpiry', spotifyTokenExpiry);
-                    
-                    console.log('[Spotify] Token salvo com sucesso!');
-                    console.log('[Spotify] Expira em:', new Date(spotifyTokenExpiry).toLocaleString());
-                    
-                    // Clear hash from URL
-                    window.history.replaceState({}, document.title, window.location.pathname);
-                    
-                    // Initialize player
-                    initSpotifyPlayer();
-                } else {
-                    console.error('[Spotify] Token vazio no callback');
-                }
-            } else {
-                console.log('[Spotify] Nenhum token no callback');
-            }
-        }
-
-        function isSpotifyConnected() {
-            return spotifyAccessToken && spotifyTokenExpiry && Date.now() < parseInt(spotifyTokenExpiry);
-        }
-
-        // Check token expiry and show warning
-        function checkTokenExpiry() {
-            if (!spotifyAccessToken || !spotifyTokenExpiry) return;
-            
-            const timeLeft = parseInt(spotifyTokenExpiry) - Date.now();
-            const minutesLeft = Math.floor(timeLeft / 60000);
-            
-            const warningEl = document.getElementById('spotifyExpiringWarning');
-            const expiryTimeEl = document.getElementById('tokenExpiryTime');
-            const quickReconnectEl = document.getElementById('quickReconnect');
-            const connectionStatusEl = document.getElementById('spotifyConnectionStatus');
-            
-            if (timeLeft <= 0) {
-                // Token expired
-                warningEl.classList.add('hidden');
-                connectionStatusEl.classList.add('hidden');
-                quickReconnectEl.classList.remove('hidden');
-                disconnectSpotify();
-                
-                // Show quick reconnect option
-                document.getElementById('spotifyNotConnected').classList.remove('hidden');
-                document.getElementById('spotifyConnected').classList.add('hidden');
-            } else if (minutesLeft <= 10) {
-                // Show warning when less than 10 minutes left
-                warningEl.classList.remove('hidden');
-                expiryTimeEl.textContent = minutesLeft;
-                connectionStatusEl.classList.add('hidden');
-            } else {
-                warningEl.classList.add('hidden');
-                connectionStatusEl.classList.remove('hidden');
-                connectionStatusEl.classList.add('flex');
-                quickReconnectEl.classList.add('hidden');
-            }
-        }
-
-        // Check if we have a saved Client ID for quick reconnect
-        function hasSpotifyConfig() {
-            return !!localStorage.getItem('spotifyClientId');
-        }
-
-        async function spotifyApiCall(endpoint, method = 'GET', body = null) {
-            console.log(`[Spotify API] ${method} ${endpoint}`);
-            
-            if (!isSpotifyConnected()) {
-                console.warn('[Spotify API] Não conectado');
-                if (hasSpotifyConfig()) {
-                    document.getElementById('quickReconnect')?.classList.remove('hidden');
-                }
-                disconnectSpotify();
-                return null;
-            }
-            
-            try {
-                const options = {
-                    method,
-                    headers: {
-                        'Authorization': `Bearer ${spotifyAccessToken}`,
-                        'Content-Type': 'application/json'
-                    }
-                };
-                if (body) options.body = JSON.stringify(body);
-                
-                const response = await fetch(`https://api.spotify.com/v1${endpoint}`, options);
-                console.log(`[Spotify API] Response status: ${response.status}`);
-                
-                if (response.status === 401) {
-                    console.error('[Spotify API] Token inválido (401)');
-                    if (hasSpotifyConfig()) {
-                        document.getElementById('quickReconnect')?.classList.remove('hidden');
-                    }
-                    disconnectSpotify();
-                    return { error: 'unauthorized' };
-                }
-                
-                if (response.status === 403) {
-                    console.error('[Spotify API] Acesso negado (403) - verifique scopes');
-                    return { error: 'forbidden' };
-                }
-                
-                if (response.status === 404) {
-                    console.warn('[Spotify API] Nenhum dispositivo ativo (404)');
-                    return { error: 'no_device' };
-                }
-                
-                if (response.status === 204) {
-                    console.log('[Spotify API] Sucesso (204 No Content)');
-                    return {};
-                }
-                
-                if (!response.ok) {
-                    const errorData = await response.json().catch(() => ({}));
-                    console.error('[Spotify API] Erro:', response.status, errorData);
-                    return { error: errorData.error?.message || `HTTP ${response.status}` };
-                }
-                
-                const data = await response.json();
-                return data;
-                
-            } catch (error) {
-                console.error('[Spotify API] Erro de rede:', error);
-                return { error: error.message };
-            }
-        }
-
-        async function fetchUserProfile() {
-            const user = await spotifyApiCall('/me');
-            if (user && !user.error) {
-                console.log('[Spotify] Usuário:', user.display_name || user.id);
-                document.getElementById('spotifyUserName').textContent = user.display_name || user.id;
-                document.getElementById('spotifyUserImage').src = user.images?.[0]?.url || 'https://via.placeholder.com/40/1DB954/ffffff?text=♪';
-                return true;
-            }
-            console.error('[Spotify] Erro ao buscar perfil:', user);
-            return false;
-        }
-
-        async function fetchUserPlaylists() {
-            const data = await spotifyApiCall('/me/playlists?limit=10');
-            if (data && data.items) {
-                const container = document.getElementById('userPlaylists');
-                container.innerHTML = data.items.map(playlist => `
-                    <button onclick="playPlaylist('${playlist.uri}')" 
-                        class="bg-white/10 hover:bg-white/20 px-2 py-1 rounded text-xs transition truncate max-w-[120px]" 
-                        title="${playlist.name}">
-                        📋 ${playlist.name}
-                    </button>
-                `).join('');
-            }
-        }
-
-        async function fetchCurrentPlayback() {
-            const data = await spotifyApiCall('/me/player');
-            const soundWave = document.getElementById('soundWave');
-            const activeDevice = document.getElementById('activeDevice');
-            
-            if (data && data.item) {
-                currentPlaybackState = data;
-                updateNowPlaying(data);
-                
-                // Update device info
-                if (data.device) {
-                    activeDevice.textContent = `${data.device.name}`;
-                    if (soundWave) {
-                        soundWave.classList.toggle('paused', !data.is_playing);
-                    }
-                }
-            } else if (data && data.device) {
-                // Device active but no track
-                activeDevice.textContent = `${data.device.name}`;
-                document.getElementById('trackName').textContent = 'Nenhuma música';
-                document.getElementById('trackArtist').textContent = 'Selecione uma música no Spotify';
-                currentPlaybackState = data;
-            } else {
-                document.getElementById('trackName').textContent = 'Nenhuma música';
-                document.getElementById('trackArtist').textContent = 'Abra o Spotify em algum dispositivo';
-                document.getElementById('trackImage').src = 'https://via.placeholder.com/56/1DB954/ffffff?text=♪';
-                document.getElementById('progressBar').style.width = '0%';
-                document.getElementById('trackProgress').textContent = '0:00';
-                document.getElementById('trackDuration').textContent = '0:00';
-                activeDevice.textContent = 'Nenhum ativo';
-                if (soundWave) soundWave.classList.add('paused');
-                currentPlaybackState = null;
-            }
-        }
-
-        function updateNowPlaying(data) {
-            const track = data.item;
-            document.getElementById('trackName').textContent = track.name;
-            document.getElementById('trackArtist').textContent = track.artists.map(a => a.name).join(', ');
-            document.getElementById('trackImage').src = track.album.images[0]?.url || 'https://via.placeholder.com/56/1DB954/ffffff?text=♪';
-            const progress = data.progress_ms || 0;
-            const duration = track.duration_ms;
-            document.getElementById('progressBar').style.width = `${(progress / duration) * 100}%`;
-            document.getElementById('trackProgress').textContent = formatTime(progress);
-            document.getElementById('trackDuration').textContent = formatTime(duration);
-            document.getElementById('playPauseIcon').className = data.is_playing ? 'fas fa-pause' : 'fas fa-play';
-            document.getElementById('shuffleBtn').classList.toggle('text-green-400', data.shuffle_state);
-            document.getElementById('repeatBtn').classList.toggle('text-green-400', data.repeat_state !== 'off');
-            if (data.device) document.getElementById('volumeSlider').value = data.device.volume_percent;
-        }
-
-        function formatTime(ms) {
-            const seconds = Math.floor(ms / 1000);
-            return `${Math.floor(seconds / 60)}:${(seconds % 60).toString().padStart(2, '0')}`;
-        }
-
-        async function spotifyPlayPause() {
-            const endpoint = currentPlaybackState?.is_playing ? '/me/player/pause' : '/me/player/play';
-            await spotifyApiCall(endpoint, 'PUT');
-            setTimeout(fetchCurrentPlayback, 300);
-        }
-
-        async function spotifyNext() {
-            await spotifyApiCall('/me/player/next', 'POST');
-            setTimeout(fetchCurrentPlayback, 300);
-        }
-
-        async function spotifyPrevious() {
-            await spotifyApiCall('/me/player/previous', 'POST');
-            setTimeout(fetchCurrentPlayback, 300);
-        }
-
-        async function toggleShuffle() {
-            await spotifyApiCall(`/me/player/shuffle?state=${!currentPlaybackState?.shuffle_state}`, 'PUT');
-            setTimeout(fetchCurrentPlayback, 300);
-        }
-
-        async function toggleRepeat() {
-            const states = ['off', 'context', 'track'];
-            const newState = states[(states.indexOf(currentPlaybackState?.repeat_state || 'off') + 1) % 3];
-            await spotifyApiCall(`/me/player/repeat?state=${newState}`, 'PUT');
-            setTimeout(fetchCurrentPlayback, 300);
-        }
-
-        async function setVolume(value) {
-            await spotifyApiCall(`/me/player/volume?volume_percent=${value}`, 'PUT');
-        }
-
-        async function playPlaylist(uri) {
-            await spotifyApiCall('/me/player/play', 'PUT', { context_uri: uri });
-            setTimeout(fetchCurrentPlayback, 500);
-        }
-
-        function updateSpotifyUI() {
-            const connected = isSpotifyConnected();
-            const hasConfig = hasSpotifyConfig();
-            
-            document.getElementById('spotifyNotConnected').classList.toggle('hidden', connected);
-            document.getElementById('spotifyConnected').classList.toggle('hidden', !connected);
-            document.getElementById('spotifyEmbedSection').classList.toggle('hidden', connected);
-            
-            // Show quick reconnect if we have config but not connected
-            if (!connected && hasConfig) {
-                document.getElementById('quickReconnect').classList.remove('hidden');
-            } else {
-                document.getElementById('quickReconnect').classList.add('hidden');
-            }
-            
-            // Update connection status
-            const connectionStatusEl = document.getElementById('spotifyConnectionStatus');
-            if (connected) {
-                connectionStatusEl.classList.remove('hidden');
-                connectionStatusEl.classList.add('flex');
-            } else {
-                connectionStatusEl.classList.add('hidden');
-            }
-        }
-
-        async function initSpotifyPlayer() {
-            console.log('[Spotify] Inicializando player...');
-            console.log('[Spotify] Token exists:', !!spotifyAccessToken);
-            console.log('[Spotify] Is connected:', isSpotifyConnected());
-            
-            updateSpotifyUI();
-            
-            if (isSpotifyConnected()) {
-                showPlayerStatus('Conectando...', 'warning');
-                
+            const reader = new FileReader();
+            reader.onload = (e) => {
                 try {
-                    console.log('[Spotify] Buscando perfil do usuário...');
-                    const profileOk = await fetchUserProfile();
+                    const data = JSON.parse(e.target.result);
                     
-                    if (profileOk === false) {
-                        console.error('[Spotify] Falha ao buscar perfil');
-                        showPlayerStatus('Erro ao conectar. Tente novamente.', 'error');
-                        return;
-                    }
-                    
-                    console.log('[Spotify] Buscando playlists...');
-                    await fetchUserPlaylists();
-                    
-                    console.log('[Spotify] Buscando estado de reprodução...');
-                    await fetchCurrentPlayback();
-                    
-                    showPlayerStatus('Conectado com sucesso! 🎵', 'success');
-                    console.log('[Spotify] Player inicializado com sucesso!');
-                    
-                    // Set up playback polling
-                    if (playbackInterval) clearInterval(playbackInterval);
-                    playbackInterval = setInterval(fetchCurrentPlayback, 2000);
-                    
-                    // Set up token expiry checking
-                    if (tokenCheckInterval) clearInterval(tokenCheckInterval);
-                    tokenCheckInterval = setInterval(checkTokenExpiry, 30000);
-                    checkTokenExpiry();
-                    
+                    showConfirmModal(
+                        'Importar Dados',
+                        'Isso substituirá todos os dados atuais. Deseja continuar?',
+                        () => {
+                            if (data.notes) {
+                                notes = data.notes;
+                                localStorage.setItem('dashboardNotes', JSON.stringify(notes));
+                            }
+                            if (data.columns) {
+                                columns = data.columns;
+                                localStorage.setItem('kanbanColumns', JSON.stringify(columns));
+                            }
+                            if (data.links) {
+                                links = data.links;
+                                localStorage.setItem('dashboardLinks', JSON.stringify(links));
+                            }
+                            if (data.folders) {
+                                folders = data.folders;
+                                localStorage.setItem('dashboardFolders', JSON.stringify(folders));
+                            }
+                            if (data.waterCount !== undefined) {
+                                waterCount = data.waterCount;
+                                localStorage.setItem('waterCount', waterCount);
+                            }
+                            if (data.waterGoal !== undefined) {
+                                waterGoal = data.waterGoal;
+                                localStorage.setItem('waterGoal', waterGoal);
+                            }
+                            if (data.moodHistory) {
+                                moodHistory = data.moodHistory;
+                                localStorage.setItem('moodHistory', JSON.stringify(moodHistory));
+                            }
+                            if (data.pomodoroSessions !== undefined) {
+                                pomodoroSessions = data.pomodoroSessions;
+                                localStorage.setItem('pomodoroSessions', pomodoroSessions);
+                            }
+                            
+                            // Refresh UI
+                            renderLinks();
+                            renderKanban();
+                            updateWaterDisplay();
+                            initMoodTracker();
+                            document.getElementById('pomodoroCount').textContent = `Sessões: ${pomodoroSessions}`;
+                            
+                            showToast('success', 'Dados importados', 'Seus dados foram restaurados com sucesso');
+                        }
+                    );
                 } catch (error) {
-                    console.error('[Spotify] Erro ao inicializar:', error);
-                    showPlayerStatus('Erro: ' + error.message, 'error');
+                    showToast('error', 'Erro na importação', 'O arquivo não é válido');
                 }
-            } else {
-                console.log('[Spotify] Não conectado, mostrando UI de login');
-            }
-        }
-        
-        function showPlayerStatus(message, type) {
-            const statusDiv = document.getElementById('playerStatus');
-            if (statusDiv) {
-                statusDiv.textContent = message;
-                statusDiv.className = `text-xs text-center py-1 px-2 rounded mt-2 ${
-                    type === 'success' ? 'bg-green-500/30 text-green-300' :
-                    type === 'error' ? 'bg-red-500/30 text-red-300' :
-                    'bg-yellow-500/30 text-yellow-300'
-                }`;
-                statusDiv.classList.remove('hidden');
-                
-                if (type === 'success') {
-                    setTimeout(() => statusDiv.classList.add('hidden'), 3000);
-                }
-            }
-        }
-
-        function extractSpotifyId(url) {
-            const match = url.match(/spotify\.com\/(track|playlist|album|artist|episode|show)\/([a-zA-Z0-9]+)/);
-            return match ? { type: match[1], id: match[2] } : null;
-        }
-
-        function loadSpotifyEmbed() {
-            const link = document.getElementById('spotifyLink').value.trim();
-            const data = extractSpotifyId(link);
-            if (!data) return alert('Link inválido!');
-            const embed = document.getElementById('spotifyEmbed');
-            embed.src = `https://open.spotify.com/embed/${data.type}/${data.id}?utm_source=generator&theme=0`;
-            embed.classList.remove('hidden');
-        }
-
-        function initSpotify() {
-            console.log('[Spotify] ========== INICIALIZANDO ==========');
-            console.log('[Spotify] URL atual:', window.location.href);
-            console.log('[Spotify] Client ID salvo:', spotifyClientId ? 'Sim' : 'Não');
-            console.log('[Spotify] Token salvo:', spotifyAccessToken ? 'Sim' : 'Não');
-            console.log('[Spotify] Token válido:', isSpotifyConnected() ? 'Sim' : 'Não');
-            
-            handleSpotifyCallback();
-            initSpotifyPlayer();
-            
-            // If we have a saved client ID but no valid token, show quick reconnect option
-            if (hasSpotifyConfig() && !isSpotifyConnected()) {
-                console.log('[Spotify] Mostrando botão de reconexão rápida');
-                document.getElementById('quickReconnect')?.classList.remove('hidden');
-            }
-            
-            console.log('[Spotify] ========== PRONTO ==========');
+            };
+            reader.readAsText(file);
+            event.target.value = '';
         }
 
         // ===== PWA & SERVICE WORKER =====
@@ -4033,9 +4232,15 @@
             migrateNotes();
             renderKanban();
             updatePomodoroDisplay();
-            initSpotify();
 
             document.getElementById('pomodoroCount').textContent = `Sessões: ${pomodoroSessions}`;
+
+            // Water Tracker
+            checkWaterDate();
+            updateWaterDisplay();
+
+            // Mood Tracker
+            initMoodTracker();
         }
 
         init();
