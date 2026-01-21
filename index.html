@@ -15,12 +15,130 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        :root {
+            --accent-primary: #22d3ee;
+            --accent-secondary: #06b6d4;
+        }
+
         * {
             font-family: 'Inter', sans-serif;
         }
         
         .title-font {
             font-family: 'Space Grotesk', sans-serif;
+        }
+
+        /* ===== LIGHT THEME ===== */
+        .light-theme {
+            color: #1f2937;
+        }
+
+        .light-theme .glass-dark {
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            color: #1f2937;
+        }
+
+        .light-theme .glass {
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .light-theme .parallax-overlay {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .light-theme .text-white {
+            color: #1f2937;
+        }
+
+        .light-theme .text-white\/80 {
+            color: rgba(31, 41, 55, 0.8);
+        }
+
+        .light-theme .text-white\/70 {
+            color: rgba(31, 41, 55, 0.7);
+        }
+
+        .light-theme .text-white\/60 {
+            color: rgba(31, 41, 55, 0.6);
+        }
+
+        .light-theme .text-white\/50 {
+            color: rgba(31, 41, 55, 0.5);
+        }
+
+        .light-theme .text-white\/40 {
+            color: rgba(31, 41, 55, 0.4);
+        }
+
+        .light-theme .bg-white\/10 {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .light-theme .bg-white\/20 {
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        .light-theme .hover\:bg-white\/30:hover {
+            background: rgba(0, 0, 0, 0.15);
+        }
+
+        .light-theme .border-white\/20 {
+            border-color: rgba(0, 0, 0, 0.1);
+        }
+
+        .light-theme .border-white\/10 {
+            border-color: rgba(0, 0, 0, 0.05);
+        }
+
+        .light-theme input,
+        .light-theme select,
+        .light-theme textarea {
+            color: #1f2937;
+        }
+
+        .light-theme input::placeholder {
+            color: rgba(31, 41, 55, 0.5);
+        }
+
+        .light-theme ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .light-theme ::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .light-theme .kanban-column {
+            background: rgba(0, 0, 0, 0.03);
+        }
+
+        .light-theme .toast {
+            background: rgba(255, 255, 255, 0.95);
+            color: #1f2937;
+        }
+
+        .light-theme .confirm-modal-content {
+            background: rgba(255, 255, 255, 0.95);
+            color: #1f2937;
+        }
+
+        /* Accent color application */
+        .accent-text {
+            color: var(--accent-primary);
+        }
+
+        .accent-bg {
+            background: var(--accent-primary);
+        }
+
+        .accent-border {
+            border-color: var(--accent-primary);
+        }
+
+        .accent-gradient {
+            background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
         }
 
         /* ===== JARVIS SPLASH SCREEN ===== */
@@ -1328,6 +1446,84 @@
             box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
         }
 
+        /* Mood Report Styles */
+        .mood-chart-bar {
+            background: linear-gradient(to top, rgba(236, 72, 153, 0.3), rgba(236, 72, 153, 0.6));
+            border-radius: 4px 4px 0 0;
+            transition: all 0.3s ease;
+            position: relative;
+            min-width: 20px;
+        }
+
+        .mood-chart-bar:hover {
+            transform: scaleY(1.05);
+            background: linear-gradient(to top, rgba(236, 72, 153, 0.5), rgba(236, 72, 153, 0.8));
+        }
+
+        .mood-chart-bar::after {
+            content: attr(data-emoji);
+            position: absolute;
+            top: -24px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 14px;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .mood-chart-bar:hover::after {
+            opacity: 1;
+        }
+
+        .mood-chart-bar.terrible { background: linear-gradient(to top, rgba(239, 68, 68, 0.3), rgba(239, 68, 68, 0.7)); }
+        .mood-chart-bar.bad { background: linear-gradient(to top, rgba(249, 115, 22, 0.3), rgba(249, 115, 22, 0.7)); }
+        .mood-chart-bar.okay { background: linear-gradient(to top, rgba(234, 179, 8, 0.3), rgba(234, 179, 8, 0.7)); }
+        .mood-chart-bar.good { background: linear-gradient(to top, rgba(34, 197, 94, 0.3), rgba(34, 197, 94, 0.7)); }
+        .mood-chart-bar.great { background: linear-gradient(to top, rgba(16, 185, 129, 0.3), rgba(16, 185, 129, 0.7)); }
+        .mood-chart-bar.empty { background: rgba(255, 255, 255, 0.1); }
+
+        .mood-dist-bar {
+            height: 8px;
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        .mood-trend-up {
+            color: #22c55e;
+        }
+
+        .mood-trend-down {
+            color: #ef4444;
+        }
+
+        .mood-trend-stable {
+            color: #eab308;
+        }
+
+        .report-period-btn.active {
+            background: rgba(236, 72, 153, 0.4) !important;
+        }
+
+        .insight-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            padding: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+        }
+
+        .insight-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 12px;
+        }
+
         /* ===== KANBAN STYLES ===== */
         .kanban-column {
             min-width: 300px;
@@ -1873,7 +2069,237 @@
             }
         }
 
-        /* ===== TOAST NOTIFICATIONS ===== */
+        /* ===== FOCUS MODE ===== */
+        .focus-mode-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 8000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        .focus-mode-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .focus-mode-content {
+            text-align: center;
+            max-width: 500px;
+            padding: 40px;
+        }
+
+        .focus-timer {
+            font-size: 8rem;
+            font-weight: 700;
+            font-family: 'Space Grotesk', sans-serif;
+            background: linear-gradient(135deg, #22d3ee 0%, #3b82f6 50%, #a855f7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 60px rgba(34, 211, 238, 0.5);
+            line-height: 1;
+        }
+
+        .focus-task {
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin: 20px 0;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .focus-message {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.5);
+            margin-bottom: 30px;
+        }
+
+        .focus-controls {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .focus-btn {
+            padding: 15px 30px;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .focus-btn-pause {
+            background: rgba(234, 179, 8, 0.3);
+            color: #fbbf24;
+        }
+
+        .focus-btn-pause:hover {
+            background: rgba(234, 179, 8, 0.5);
+        }
+
+        .focus-btn-stop {
+            background: rgba(239, 68, 68, 0.3);
+            color: #f87171;
+        }
+
+        .focus-btn-stop:hover {
+            background: rgba(239, 68, 68, 0.5);
+        }
+
+        .focus-progress-ring {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 400px;
+            height: 400px;
+            opacity: 0.3;
+        }
+
+        .focus-progress-ring circle {
+            fill: none;
+            stroke-width: 4;
+            stroke-linecap: round;
+        }
+
+        .focus-breathing {
+            position: absolute;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .breathing-circle {
+            width: 20px;
+            height: 20px;
+            background: rgba(34, 211, 238, 0.5);
+            border-radius: 50%;
+            margin: 0 auto 10px;
+            animation: breathe 4s ease-in-out infinite;
+        }
+
+        @keyframes breathe {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.5); opacity: 1; }
+        }
+
+        /* ===== KEYBOARD SHORTCUTS HELP ===== */
+        .shortcuts-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 9500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+
+        .shortcuts-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .shortcuts-content {
+            background: rgba(30, 30, 50, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .shortcut-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .shortcut-item:last-child {
+            border-bottom: none;
+        }
+
+        .shortcut-key {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .shortcut-key kbd {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 5px 10px;
+            border-radius: 6px;
+            font-family: 'Space Grotesk', monospace;
+            font-size: 0.85rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 2px 0 rgba(0, 0, 0, 0.3);
+        }
+
+        /* ===== WATER REMINDER ===== */
+        .water-reminder-popup {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-100px);
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.9) 0%, rgba(59, 130, 246, 0.9) 100%);
+            padding: 20px 30px;
+            border-radius: 16px;
+            z-index: 9600;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 10px 40px rgba(6, 182, 212, 0.4);
+            transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .water-reminder-popup.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .water-reminder-popup .water-icon {
+            font-size: 2.5rem;
+            animation: waterBounce 0.5s ease infinite;
+        }
+
+        @keyframes waterBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .water-reminder-popup button {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            color: white;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .water-reminder-popup button:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* ===== TOAST NOTIFICATIONS =====
         .toast-container {
             position: fixed;
             top: 20px;
@@ -2074,6 +2500,65 @@
             background: #dc2626;
         }
 
+        /* ===== FORECAST MODAL ===== */
+        .forecast-day {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            transition: all 0.2s ease;
+        }
+
+        .forecast-day:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(5px);
+        }
+
+        .forecast-day-name {
+            font-weight: 500;
+            min-width: 80px;
+        }
+
+        .forecast-day-icon {
+            font-size: 1.5rem;
+            min-width: 40px;
+            text-align: center;
+        }
+
+        .forecast-day-desc {
+            flex: 1;
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.6);
+            text-align: center;
+        }
+
+        .forecast-day-temps {
+            display: flex;
+            gap: 8px;
+            font-weight: 600;
+            min-width: 80px;
+            justify-content: flex-end;
+        }
+
+        .forecast-temp-max {
+            color: #fbbf24;
+        }
+
+        .forecast-temp-min {
+            color: #60a5fa;
+        }
+
+        .forecast-rain {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.7rem;
+            color: rgba(96, 165, 250, 0.8);
+            min-width: 45px;
+        }
+
         /* Mobile Toast */
         @media (max-width: 480px) {
             .toast-container {
@@ -2198,12 +2683,23 @@
 
     <!-- Main Container -->
     <div id="mainContent" class="main-content min-h-screen p-4 md:p-6">
-        <!-- Motivational Quote -->
-        <div class="flex justify-center mb-3">
+        <!-- Top Bar with Settings -->
+        <div class="flex justify-between items-center mb-3 px-2">
+            <button onclick="openShortcutsModal()" class="text-white/50 hover:text-white/80 transition text-sm">
+                <i class="fas fa-keyboard mr-1"></i>
+                <span class="hidden sm:inline">Atalhos</span>
+            </button>
+            
+            <!-- Motivational Quote -->
             <div id="quoteContainer" class="glass-dark rounded-xl px-6 py-2 text-center max-w-2xl">
                 <p id="quoteText" class="text-sm italic text-white/80 quote-fade">"Carregando frase..."</p>
                 <p id="quoteAuthor" class="text-xs text-white/50 mt-1"></p>
             </div>
+            
+            <button onclick="openSettingsModal()" class="text-white/50 hover:text-white/80 transition text-sm">
+                <i class="fas fa-cog mr-1"></i>
+                <span class="hidden sm:inline">Configurações</span>
+            </button>
         </div>
 
         <!-- Search Bar -->
@@ -2260,24 +2756,61 @@
                 <div class="glass-dark rounded-2xl p-5">
                     <div class="flex items-center justify-between mb-3">
                         <h3 class="title-font font-semibold"><i class="fas fa-cloud-sun mr-2"></i>Clima</h3>
-                        <span class="text-sm text-white/60">Itatiaiuçu</span>
+                        <div class="flex items-center gap-2">
+                            <span class="text-sm text-white/60">Itatiaiuçu</span>
+                            <button id="weatherRefreshBtn" onclick="fetchWeather()" class="text-xs bg-white/20 hover:bg-white/30 px-2 py-1 rounded-lg transition hidden" title="Atualizar clima">
+                                <i class="fas fa-sync-alt"></i>
+                            </button>
+                        </div>
                     </div>
                     <div id="weatherInfo" class="text-center">
-                        <div id="weatherIconContainer" class="weather-icon mb-4">
-                            <div class="weather-sun"></div>
-                        </div>
-                        <div id="temperature" class="text-4xl font-bold title-font">--°C</div>
-                        <div id="weatherDesc" class="text-white/70 capitalize mt-1">Carregando...</div>
-                        <div class="grid grid-cols-2 gap-2 mt-4 text-sm">
-                            <div class="bg-white/10 rounded-lg p-2">
-                                <i class="fas fa-tint text-blue-300"></i>
-                                <span id="humidity" class="ml-1">--%</span>
+                        <!-- Loading State -->
+                        <div id="weatherLoading" class="hidden">
+                            <div class="weather-icon mb-4 flex items-center justify-center">
+                                <i class="fas fa-spinner fa-spin text-3xl text-white/50"></i>
                             </div>
-                            <div class="bg-white/10 rounded-lg p-2">
-                                <i class="fas fa-wind text-gray-300"></i>
-                                <span id="wind" class="ml-1">-- km/h</span>
+                            <div class="text-white/50">Carregando clima...</div>
+                        </div>
+                        
+                        <!-- Error State -->
+                        <div id="weatherError" class="hidden">
+                            <div class="weather-icon mb-4 flex items-center justify-center">
+                                <i class="fas fa-exclamation-triangle text-3xl text-yellow-400"></i>
+                            </div>
+                            <div class="text-white/70 mb-2">Não foi possível carregar o clima</div>
+                            <button onclick="fetchWeather()" class="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg text-sm transition">
+                                <i class="fas fa-redo mr-2"></i>Tentar novamente
+                            </button>
+                            <div id="weatherErrorDetails" class="text-xs text-white/40 mt-2"></div>
+                        </div>
+                        
+                        <!-- Success State -->
+                        <div id="weatherContent">
+                            <div id="weatherIconContainer" class="weather-icon mb-4">
+                                <div class="weather-sun"></div>
+                            </div>
+                            <div id="temperature" class="text-4xl font-bold title-font">--°C</div>
+                            <div id="weatherDesc" class="text-white/70 capitalize mt-1">Carregando...</div>
+                            <div class="grid grid-cols-2 gap-2 mt-4 text-sm">
+                                <div class="bg-white/10 rounded-lg p-2">
+                                    <i class="fas fa-tint text-blue-300"></i>
+                                    <span id="humidity" class="ml-1">--%</span>
+                                </div>
+                                <div class="bg-white/10 rounded-lg p-2">
+                                    <i class="fas fa-wind text-gray-300"></i>
+                                    <span id="wind" class="ml-1">-- km/h</span>
+                                </div>
                             </div>
                         </div>
+                        
+                        <!-- Last Update -->
+                        <div id="weatherLastUpdate" class="text-[10px] text-white/30 mt-3"></div>
+                        
+                        <!-- Forecast Button -->
+                        <button onclick="openForecastModal()" class="mt-3 w-full bg-white/10 hover:bg-white/20 py-2 rounded-lg text-sm transition flex items-center justify-center gap-2">
+                            <i class="fas fa-calendar-week"></i>
+                            <span>Ver previsão 5 dias</span>
+                        </button>
                     </div>
                 </div>
 
@@ -2386,7 +2919,12 @@
                 <div class="glass-dark rounded-2xl p-5">
                     <div class="flex items-center justify-between mb-4">
                         <h3 class="title-font font-semibold"><i class="fas fa-heart mr-2 text-pink-400"></i>Humor</h3>
-                        <span id="moodDate" class="text-xs text-white/50"></span>
+                        <div class="flex items-center gap-2">
+                            <button onclick="openMoodReportModal()" class="text-xs bg-white/20 hover:bg-white/30 px-2 py-1 rounded-lg transition" title="Ver relatório semanal">
+                                <i class="fas fa-chart-line"></i>
+                            </button>
+                            <span id="moodDate" class="text-xs text-white/50"></span>
+                        </div>
                     </div>
                     
                     <!-- Current Mood Display -->
@@ -2428,9 +2966,21 @@
                     
                     <!-- Mood History (last 7 days) -->
                     <div class="mt-4">
-                        <p class="text-xs text-white/50 mb-2">Últimos 7 dias:</p>
+                        <div class="flex items-center justify-between mb-2">
+                            <p class="text-xs text-white/50">Últimos 7 dias:</p>
+                            <div id="moodTrend" class="text-xs"></div>
+                        </div>
                         <div id="moodHistory" class="flex justify-between">
                             <!-- Will be populated by JS -->
+                        </div>
+                    </div>
+                    
+                    <!-- Weekly Average Mini -->
+                    <div id="moodWeeklyMini" class="mt-3 pt-3 border-t border-white/10 text-center">
+                        <div class="flex items-center justify-center gap-2">
+                            <span class="text-xs text-white/50">Média semanal:</span>
+                            <span id="moodAvgEmoji" class="text-lg">😊</span>
+                            <span id="moodAvgScore" class="text-xs font-semibold text-white/70"></span>
                         </div>
                     </div>
                 </div>
@@ -2733,6 +3283,339 @@
         </div>
     </div>
 
+    <!-- Focus Mode Overlay -->
+    <div id="focusModeOverlay" class="focus-mode-overlay">
+        <svg class="focus-progress-ring">
+            <circle cx="200" cy="200" r="180" stroke="rgba(34, 211, 238, 0.2)"/>
+            <circle id="focusProgressCircle" cx="200" cy="200" r="180" stroke="#22d3ee" 
+                stroke-dasharray="1131" stroke-dashoffset="0"/>
+        </svg>
+        <div class="focus-mode-content">
+            <div id="focusTimer" class="focus-timer">25:00</div>
+            <div id="focusTask" class="focus-task">
+                <i class="fas fa-bullseye mr-2"></i>
+                <span>Foco total!</span>
+            </div>
+            <div class="focus-message">Mantenha o foco. Você consegue! 💪</div>
+            <div class="focus-controls">
+                <button class="focus-btn focus-btn-pause" onclick="pausePomodoro()">
+                    <i class="fas fa-pause mr-2"></i>Pausar
+                </button>
+                <button class="focus-btn focus-btn-stop" onclick="exitFocusMode()">
+                    <i class="fas fa-times mr-2"></i>Sair do Foco
+                </button>
+            </div>
+        </div>
+        <div class="focus-breathing">
+            <div class="breathing-circle"></div>
+            <span>Respire...</span>
+        </div>
+    </div>
+
+    <!-- Keyboard Shortcuts Modal -->
+    <div id="shortcutsModal" class="shortcuts-modal" onclick="if(event.target === this) closeShortcutsModal()">
+        <div class="shortcuts-content">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="title-font text-xl font-bold"><i class="fas fa-keyboard mr-2"></i>Atalhos de Teclado</h3>
+                <button onclick="closeShortcutsModal()" class="text-white/60 hover:text-white">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <div class="space-y-1">
+                <div class="shortcut-item">
+                    <span>Nova Tarefa</span>
+                    <span class="shortcut-key"><kbd>N</kbd></span>
+                </div>
+                <div class="shortcut-item">
+                    <span>Pesquisar</span>
+                    <span class="shortcut-key"><kbd>Ctrl</kbd> + <kbd>K</kbd></span>
+                </div>
+                <div class="shortcut-item">
+                    <span>Iniciar/Pausar Pomodoro</span>
+                    <span class="shortcut-key"><kbd>Espaço</kbd></span>
+                </div>
+                <div class="shortcut-item">
+                    <span>Modo Foco</span>
+                    <span class="shortcut-key"><kbd>F</kbd></span>
+                </div>
+                <div class="shortcut-item">
+                    <span>Adicionar Água</span>
+                    <span class="shortcut-key"><kbd>W</kbd></span>
+                </div>
+                <div class="shortcut-item">
+                    <span>Exportar Dados</span>
+                    <span class="shortcut-key"><kbd>Ctrl</kbd> + <kbd>S</kbd></span>
+                </div>
+                <div class="shortcut-item">
+                    <span>Mostrar Atalhos</span>
+                    <span class="shortcut-key"><kbd>?</kbd></span>
+                </div>
+                <div class="shortcut-item">
+                    <span>Fechar Modal</span>
+                    <span class="shortcut-key"><kbd>Esc</kbd></span>
+                </div>
+            </div>
+            <p class="text-white/40 text-sm mt-6 text-center">
+                Pressione <kbd class="bg-white/10 px-2 py-1 rounded">?</kbd> a qualquer momento para ver esta ajuda
+            </p>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settingsModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm hidden items-center justify-center z-50">
+        <div class="glass-dark rounded-2xl p-6 w-full max-w-md mx-4 max-h-[90vh] overflow-y-auto">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="title-font text-xl font-bold"><i class="fas fa-cog mr-2"></i>Configurações</h3>
+                <button onclick="closeSettingsModal()" class="text-white/60 hover:text-white">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <!-- User Name -->
+            <div class="mb-6">
+                <label class="block text-sm text-white/60 mb-2"><i class="fas fa-user mr-2"></i>Seu Nome</label>
+                <input type="text" id="settingsUserName" placeholder="Digite seu nome" 
+                    class="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 outline-none focus:border-white/40 transition">
+            </div>
+            
+            <!-- Theme -->
+            <div class="mb-6">
+                <label class="block text-sm text-white/60 mb-2"><i class="fas fa-moon mr-2"></i>Tema</label>
+                <div class="grid grid-cols-2 gap-3">
+                    <button onclick="setTheme('dark')" id="themeDarkBtn" class="theme-btn p-4 rounded-xl bg-gray-900 border-2 border-transparent hover:border-white/30 transition flex flex-col items-center gap-2">
+                        <i class="fas fa-moon text-2xl"></i>
+                        <span class="text-sm">Escuro</span>
+                    </button>
+                    <button onclick="setTheme('light')" id="themeLightBtn" class="theme-btn p-4 rounded-xl bg-gray-100 text-gray-800 border-2 border-transparent hover:border-white/30 transition flex flex-col items-center gap-2">
+                        <i class="fas fa-sun text-2xl"></i>
+                        <span class="text-sm">Claro</span>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Accent Color -->
+            <div class="mb-6">
+                <label class="block text-sm text-white/60 mb-2"><i class="fas fa-palette mr-2"></i>Cor de Destaque</label>
+                <div class="flex gap-3 flex-wrap">
+                    <button onclick="setAccentColor('cyan')" class="accent-btn w-10 h-10 rounded-full bg-cyan-500 border-2 border-transparent hover:scale-110 transition" data-color="cyan"></button>
+                    <button onclick="setAccentColor('blue')" class="accent-btn w-10 h-10 rounded-full bg-blue-500 border-2 border-transparent hover:scale-110 transition" data-color="blue"></button>
+                    <button onclick="setAccentColor('purple')" class="accent-btn w-10 h-10 rounded-full bg-purple-500 border-2 border-transparent hover:scale-110 transition" data-color="purple"></button>
+                    <button onclick="setAccentColor('pink')" class="accent-btn w-10 h-10 rounded-full bg-pink-500 border-2 border-transparent hover:scale-110 transition" data-color="pink"></button>
+                    <button onclick="setAccentColor('green')" class="accent-btn w-10 h-10 rounded-full bg-green-500 border-2 border-transparent hover:scale-110 transition" data-color="green"></button>
+                    <button onclick="setAccentColor('orange')" class="accent-btn w-10 h-10 rounded-full bg-orange-500 border-2 border-transparent hover:scale-110 transition" data-color="orange"></button>
+                    <button onclick="setAccentColor('red')" class="accent-btn w-10 h-10 rounded-full bg-red-500 border-2 border-transparent hover:scale-110 transition" data-color="red"></button>
+                </div>
+            </div>
+            
+            <!-- Focus Mode Settings -->
+            <div class="mb-6">
+                <label class="block text-sm text-white/60 mb-2"><i class="fas fa-bullseye mr-2"></i>Modo Foco</label>
+                <label class="flex items-center gap-3 cursor-pointer">
+                    <input type="checkbox" id="autoFocusModeToggle" class="w-5 h-5 rounded" onchange="toggleAutoFocusMode()">
+                    <span class="text-sm">Ativar automaticamente com Pomodoro</span>
+                </label>
+            </div>
+            
+            <!-- Water Reminder Settings -->
+            <div class="mb-6">
+                <label class="block text-sm text-white/60 mb-2"><i class="fas fa-tint mr-2"></i>Lembretes de Água</label>
+                <label class="flex items-center gap-3 cursor-pointer">
+                    <input type="checkbox" id="waterReminderToggle" class="w-5 h-5 rounded" onchange="toggleWaterReminders()">
+                    <span class="text-sm">Lembrar a cada 1 hora</span>
+                </label>
+            </div>
+            
+            <!-- Save Button -->
+            <button onclick="saveSettings()" class="w-full bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 py-3 rounded-xl transition font-medium">
+                <i class="fas fa-save mr-2"></i>Salvar Configurações
+            </button>
+        </div>
+    </div>
+
+    <!-- Water Reminder Popup -->
+    <div id="waterReminderPopup" class="water-reminder-popup">
+        <span class="water-icon">💧</span>
+        <div>
+            <div class="font-semibold">Hora de beber água!</div>
+            <div class="text-sm opacity-80">Mantenha-se hidratado</div>
+        </div>
+        <button onclick="addWater(1); hideWaterReminder()">
+            <i class="fas fa-plus mr-1"></i>Bebi!
+        </button>
+        <button onclick="hideWaterReminder()">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+
+    <!-- Weather Forecast Modal -->
+    <div id="forecastModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm hidden items-center justify-center z-50">
+        <div class="glass-dark rounded-2xl p-6 w-full max-w-lg mx-4 max-h-[90vh] overflow-y-auto">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="title-font text-xl font-bold"><i class="fas fa-calendar-week mr-2 text-blue-400"></i>Previsão 5 Dias</h3>
+                <button onclick="closeForecastModal()" class="text-white/60 hover:text-white transition">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <!-- Location -->
+            <div class="flex items-center gap-2 mb-4 text-white/60">
+                <i class="fas fa-map-marker-alt"></i>
+                <span>Itatiaiuçu, MG</span>
+            </div>
+            
+            <!-- Forecast Loading -->
+            <div id="forecastLoading" class="text-center py-8">
+                <i class="fas fa-spinner fa-spin text-3xl text-white/50 mb-4"></i>
+                <p class="text-white/50">Carregando previsão...</p>
+            </div>
+            
+            <!-- Forecast Error -->
+            <div id="forecastError" class="hidden text-center py-8">
+                <i class="fas fa-exclamation-triangle text-3xl text-yellow-400 mb-4"></i>
+                <p class="text-white/70 mb-4">Não foi possível carregar a previsão</p>
+                <button onclick="fetchForecast()" class="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg text-sm transition">
+                    <i class="fas fa-redo mr-2"></i>Tentar novamente
+                </button>
+            </div>
+            
+            <!-- Forecast Content -->
+            <div id="forecastContent" class="hidden">
+                <!-- Today Summary -->
+                <div id="forecastToday" class="bg-white/10 rounded-xl p-4 mb-4">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h4 class="font-semibold text-lg">Hoje</h4>
+                            <p id="forecastTodayDesc" class="text-white/70 text-sm"></p>
+                        </div>
+                        <div class="text-right">
+                            <div id="forecastTodayTemp" class="text-3xl font-bold title-font"></div>
+                            <div id="forecastTodayMinMax" class="text-xs text-white/50"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 5 Day Forecast -->
+                <div id="forecastDays" class="space-y-2">
+                    <!-- Days will be populated by JS -->
+                </div>
+                
+                <!-- Additional Info -->
+                <div class="mt-4 grid grid-cols-2 gap-3">
+                    <div class="bg-white/10 rounded-lg p-3 text-center">
+                        <i class="fas fa-sun text-yellow-400 mb-1"></i>
+                        <div class="text-xs text-white/50">Nascer do Sol</div>
+                        <div id="forecastSunrise" class="font-semibold">--:--</div>
+                    </div>
+                    <div class="bg-white/10 rounded-lg p-3 text-center">
+                        <i class="fas fa-moon text-blue-300 mb-1"></i>
+                        <div class="text-xs text-white/50">Pôr do Sol</div>
+                        <div id="forecastSunset" class="font-semibold">--:--</div>
+                    </div>
+                </div>
+                
+                <!-- Last Update -->
+                <div id="forecastLastUpdate" class="text-center text-[10px] text-white/30 mt-4"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mood Report Modal -->
+    <div id="moodReportModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm hidden items-center justify-center z-50">
+        <div class="glass-dark rounded-2xl p-6 w-full max-w-lg mx-4 max-h-[90vh] overflow-y-auto">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="title-font text-xl font-bold"><i class="fas fa-chart-line mr-2 text-pink-400"></i>Relatório de Humor</h3>
+                <button onclick="closeMoodReportModal()" class="text-white/60 hover:text-white transition">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <!-- Period Selector -->
+            <div class="flex gap-2 mb-6">
+                <button onclick="setReportPeriod(7)" class="report-period-btn flex-1 py-2 rounded-lg bg-pink-500/30 text-sm font-medium transition" data-period="7">
+                    7 dias
+                </button>
+                <button onclick="setReportPeriod(14)" class="report-period-btn flex-1 py-2 rounded-lg bg-white/10 hover:bg-white/20 text-sm font-medium transition" data-period="14">
+                    14 dias
+                </button>
+                <button onclick="setReportPeriod(30)" class="report-period-btn flex-1 py-2 rounded-lg bg-white/10 hover:bg-white/20 text-sm font-medium transition" data-period="30">
+                    30 dias
+                </button>
+            </div>
+            
+            <!-- Summary Cards -->
+            <div class="grid grid-cols-3 gap-3 mb-6">
+                <div class="bg-white/10 rounded-xl p-3 text-center">
+                    <div id="reportAvgEmoji" class="text-3xl mb-1">😊</div>
+                    <div class="text-xs text-white/50">Média</div>
+                    <div id="reportAvgText" class="text-sm font-semibold">Bom</div>
+                </div>
+                <div class="bg-white/10 rounded-xl p-3 text-center">
+                    <div id="reportBestEmoji" class="text-3xl mb-1">🤩</div>
+                    <div class="text-xs text-white/50">Melhor Dia</div>
+                    <div id="reportBestDay" class="text-sm font-semibold">--</div>
+                </div>
+                <div class="bg-white/10 rounded-xl p-3 text-center">
+                    <div id="reportWorstEmoji" class="text-3xl mb-1">😐</div>
+                    <div class="text-xs text-white/50">Pior Dia</div>
+                    <div id="reportWorstDay" class="text-sm font-semibold">--</div>
+                </div>
+            </div>
+            
+            <!-- Mood Chart -->
+            <div class="bg-white/5 rounded-xl p-4 mb-6">
+                <h4 class="text-sm font-semibold mb-4 text-white/70"><i class="fas fa-chart-bar mr-2"></i>Gráfico de Humor</h4>
+                <div id="moodChart" class="flex items-end justify-between gap-1 h-32">
+                    <!-- Chart bars will be populated by JS -->
+                </div>
+                <div id="moodChartLabels" class="flex justify-between mt-2 text-[10px] text-white/40">
+                    <!-- Labels will be populated by JS -->
+                </div>
+            </div>
+            
+            <!-- Mood Distribution -->
+            <div class="bg-white/5 rounded-xl p-4 mb-6">
+                <h4 class="text-sm font-semibold mb-4 text-white/70"><i class="fas fa-pie-chart mr-2"></i>Distribuição</h4>
+                <div id="moodDistribution" class="space-y-2">
+                    <!-- Distribution bars will be populated by JS -->
+                </div>
+            </div>
+            
+            <!-- Trend & Insights -->
+            <div class="bg-white/5 rounded-xl p-4 mb-6">
+                <h4 class="text-sm font-semibold mb-3 text-white/70"><i class="fas fa-lightbulb mr-2"></i>Insights</h4>
+                <div id="moodInsights" class="space-y-2 text-sm">
+                    <!-- Insights will be populated by JS -->
+                </div>
+            </div>
+            
+            <!-- Statistics -->
+            <div class="grid grid-cols-2 gap-3 mb-4">
+                <div class="bg-white/10 rounded-lg p-3">
+                    <div class="flex items-center gap-2">
+                        <i class="fas fa-calendar-check text-green-400"></i>
+                        <span class="text-xs text-white/50">Dias registrados</span>
+                    </div>
+                    <div id="reportDaysLogged" class="text-xl font-bold mt-1">0</div>
+                </div>
+                <div class="bg-white/10 rounded-lg p-3">
+                    <div class="flex items-center gap-2">
+                        <i class="fas fa-fire text-orange-400"></i>
+                        <span class="text-xs text-white/50">Sequência atual</span>
+                    </div>
+                    <div id="reportStreak" class="text-xl font-bold mt-1">0 dias</div>
+                </div>
+            </div>
+            
+            <!-- Notes Section -->
+            <div class="bg-white/5 rounded-xl p-4">
+                <h4 class="text-sm font-semibold mb-3 text-white/70"><i class="fas fa-sticky-note mr-2"></i>Notas Recentes</h4>
+                <div id="moodNotes" class="space-y-2 max-h-32 overflow-y-auto text-sm">
+                    <!-- Notes will be populated by JS -->
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         // ===== DATA STORAGE =====
         let links = JSON.parse(localStorage.getItem('dashboardLinks')) || [
@@ -2923,32 +3806,174 @@
 
         // ===== WEATHER =====
         let currentWeather = 'clear';
+        let weatherCache = JSON.parse(localStorage.getItem('weatherCache')) || null;
+        let isWeatherLoading = false;
         
         async function fetchWeather() {
+            // Prevent multiple simultaneous requests
+            if (isWeatherLoading) {
+                console.log('[Clima] Já está carregando, ignorando...');
+                return;
+            }
+            
+            isWeatherLoading = true;
+            console.log('[Clima] Iniciando busca de dados...');
+            
+            const loadingEl = document.getElementById('weatherLoading');
+            const errorEl = document.getElementById('weatherError');
+            const contentEl = document.getElementById('weatherContent');
+            const refreshBtn = document.getElementById('weatherRefreshBtn');
+            const lastUpdateEl = document.getElementById('weatherLastUpdate');
+            
+            // Show loading state
+            loadingEl?.classList.remove('hidden');
+            errorEl?.classList.add('hidden');
+            contentEl?.classList.add('hidden');
+            
             try {
-                const response = await fetch('https://api.open-meteo.com/v1/forecast?latitude=-20.2&longitude=-44.4&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&timezone=America/Sao_Paulo');
+                // Create AbortController for timeout
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => {
+                    controller.abort();
+                    console.log('[Clima] Timeout após 10 segundos');
+                }, 10000); // 10 second timeout
+                
+                console.log('[Clima] Fazendo requisição para API...');
+                const response = await fetch(
+                    'https://api.open-meteo.com/v1/forecast?latitude=-20.2&longitude=-44.4&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&timezone=America/Sao_Paulo',
+                    { signal: controller.signal }
+                );
+                
+                clearTimeout(timeoutId);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
                 const data = await response.json();
+                console.log('[Clima] Dados recebidos:', data);
+                
+                if (!data.current) {
+                    throw new Error('Dados inválidos recebidos da API');
+                }
                 
                 const temp = Math.round(data.current.temperature_2m);
                 const humidity = data.current.relative_humidity_2m;
                 const windSpeed = Math.round(data.current.wind_speed_10m);
                 const weatherCode = data.current.weather_code;
                 
-                document.getElementById('temperature').textContent = `${temp}°C`;
-                document.getElementById('humidity').textContent = `${humidity}%`;
-                document.getElementById('wind').textContent = `${windSpeed} km/h`;
+                // Save to cache
+                weatherCache = {
+                    temp,
+                    humidity,
+                    windSpeed,
+                    weatherCode,
+                    timestamp: Date.now()
+                };
+                localStorage.setItem('weatherCache', JSON.stringify(weatherCache));
+                console.log('[Clima] Dados salvos no cache');
                 
-                const weatherInfo = getWeatherInfo(weatherCode);
-                document.getElementById('weatherIconContainer').innerHTML = weatherInfo.iconHtml;
-                document.getElementById('weatherDesc').textContent = weatherInfo.desc;
-                currentWeather = weatherInfo.type;
+                // Update UI
+                updateWeatherUI(temp, humidity, windSpeed, weatherCode);
                 
-                updateBackground();
+                // Show success state
+                loadingEl?.classList.add('hidden');
+                errorEl?.classList.add('hidden');
+                contentEl?.classList.remove('hidden');
+                refreshBtn?.classList.add('hidden');
+                
+                // Show last update time
+                if (lastUpdateEl) {
+                    lastUpdateEl.textContent = `Atualizado: ${new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}`;
+                }
+                
+                console.log('[Clima] ✅ Dados carregados com sucesso');
+                
             } catch (error) {
-                console.error('Error fetching weather:', error);
-                document.getElementById('weatherDesc').textContent = 'Erro ao carregar';
+                console.error('[Clima] ❌ Erro:', error.message);
+                
+                // Try to use cache
+                if (weatherCache && weatherCache.temp !== undefined) {
+                    console.log('[Clima] Usando dados do cache...');
+                    updateWeatherUI(weatherCache.temp, weatherCache.humidity, weatherCache.windSpeed, weatherCache.weatherCode);
+                    
+                    loadingEl?.classList.add('hidden');
+                    errorEl?.classList.add('hidden');
+                    contentEl?.classList.remove('hidden');
+                    refreshBtn?.classList.remove('hidden');
+                    
+                    const cacheAge = Math.round((Date.now() - weatherCache.timestamp) / 60000);
+                    if (lastUpdateEl) {
+                        lastUpdateEl.textContent = `Dados em cache (${cacheAge} min atrás)`;
+                    }
+                    
+                    showToast('warning', 'Usando cache', 'Não foi possível atualizar o clima, mostrando dados salvos');
+                } else {
+                    // Show error state
+                    loadingEl?.classList.add('hidden');
+                    errorEl?.classList.remove('hidden');
+                    contentEl?.classList.add('hidden');
+                    
+                    const errorDetails = document.getElementById('weatherErrorDetails');
+                    if (errorDetails) {
+                        let errorMsg = error.message;
+                        if (error.name === 'AbortError') {
+                            errorMsg = 'Tempo limite excedido (10s)';
+                        } else if (error.message.includes('Failed to fetch')) {
+                            errorMsg = 'Sem conexão com a internet';
+                        }
+                        errorDetails.textContent = errorMsg;
+                    }
+                }
+                
                 updateBackground();
+            } finally {
+                isWeatherLoading = false;
             }
+        }
+        
+        function updateWeatherUI(temp, humidity, windSpeed, weatherCode) {
+            document.getElementById('temperature').textContent = `${temp}°C`;
+            document.getElementById('humidity').textContent = `${humidity}%`;
+            document.getElementById('wind').textContent = `${windSpeed} km/h`;
+            
+            const weatherInfo = getWeatherInfo(weatherCode);
+            document.getElementById('weatherIconContainer').innerHTML = weatherInfo.iconHtml;
+            document.getElementById('weatherDesc').textContent = weatherInfo.desc;
+            currentWeather = weatherInfo.type;
+            
+            updateBackground();
+        }
+        
+        function initWeather() {
+            console.log('[Clima] Inicializando...');
+            
+            const loadingEl = document.getElementById('weatherLoading');
+            const errorEl = document.getElementById('weatherError');
+            const contentEl = document.getElementById('weatherContent');
+            const lastUpdateEl = document.getElementById('weatherLastUpdate');
+            
+            // If we have cache, show it immediately
+            if (weatherCache && weatherCache.temp !== undefined) {
+                const cacheAge = (Date.now() - weatherCache.timestamp) / 60000; // in minutes
+                console.log(`[Clima] Cache encontrado (${cacheAge.toFixed(1)} min atrás)`);
+                
+                // If cache is less than 30 minutes old, show it
+                if (cacheAge < 30) {
+                    updateWeatherUI(weatherCache.temp, weatherCache.humidity, weatherCache.windSpeed, weatherCache.weatherCode);
+                    
+                    loadingEl?.classList.add('hidden');
+                    errorEl?.classList.add('hidden');
+                    contentEl?.classList.remove('hidden');
+                    
+                    if (lastUpdateEl) {
+                        lastUpdateEl.textContent = `Cache: ${Math.round(cacheAge)} min atrás`;
+                    }
+                }
+            }
+            
+            // Fetch fresh data in background
+            fetchWeather();
         }
 
         function getWeatherInfo(code) {
@@ -3715,10 +4740,33 @@
         function startPomodoro() {
             if (!pomodoroRunning) {
                 pomodoroRunning = true;
+                
+                // Ask to enter focus mode if not in break and not already in focus mode
+                if (!isBreak && !focusModeActive) {
+                    const enterFocus = localStorage.getItem('autoFocusMode') !== 'false';
+                    if (enterFocus) {
+                        setTimeout(() => enterFocusMode(), 500);
+                    }
+                }
+                
                 pomodoroInterval = setInterval(() => {
                     if (pomodoroTime > 0) {
                         pomodoroTime--;
                         updatePomodoroDisplay();
+                        
+                        // Update focus mode timer if active
+                        if (focusModeActive) {
+                            const minutes = Math.floor(pomodoroTime / 60);
+                            const seconds = pomodoroTime % 60;
+                            document.getElementById('focusTimer').textContent = 
+                                `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+                            
+                            // Update progress circle
+                            const circle = document.getElementById('focusProgressCircle');
+                            const circumference = 1131;
+                            const progress = pomodoroTime / pomodoroInitialTime;
+                            circle.style.strokeDashoffset = circumference * (1 - progress);
+                        }
                     } else {
                         clearInterval(pomodoroInterval);
                         pomodoroRunning = false;
@@ -3759,20 +4807,28 @@
         }
 
         function playNotification() {
-            try {
-                const audio = new AudioContext();
-                const oscillator = audio.createOscillator();
-                const gain = audio.createGain();
-                oscillator.connect(gain);
-                gain.connect(audio.destination);
-                oscillator.frequency.value = 800;
-                gain.gain.value = 0.3;
-                oscillator.start();
-                setTimeout(() => oscillator.stop(), 500);
-            } catch (e) {}
+            // Use improved sound
+            playPomodoroEndSound();
             
+            // Exit focus mode when timer ends
+            if (focusModeActive) {
+                exitFocusMode();
+            }
+            
+            // Show toast
+            if (isBreak) {
+                showToast('success', '🎉 Tempo de Foco Concluído!', 'Hora de um descanso merecido.');
+            } else {
+                showToast('info', '☕ Descanso Terminado!', 'Pronto para mais uma sessão?');
+            }
+            
+            // Browser notification
             if (Notification.permission === 'granted') {
-                new Notification('Pomodoro', { body: isBreak ? 'Hora do descanso!' : 'Hora de focar!' });
+                new Notification(isBreak ? '🎉 Pomodoro Concluído!' : '☕ Descanso Terminado!', { 
+                    body: isBreak ? 'Hora de um descanso merecido.' : 'Pronto para focar novamente?',
+                    icon: '🍅',
+                    tag: 'pomodoro'
+                });
             }
         }
 
@@ -3968,6 +5024,295 @@
             }
             
             container.innerHTML = html;
+            
+            // Update trend and weekly average
+            updateMoodTrendAndAverage();
+        }
+
+        function updateMoodTrendAndAverage() {
+            const today = new Date();
+            const last7Days = [];
+            
+            for (let i = 6; i >= 0; i--) {
+                const date = new Date(today);
+                date.setDate(date.getDate() - i);
+                const dateStr = date.toISOString().split('T')[0];
+                const moodEntry = moodHistory.find(m => m.date === dateStr);
+                if (moodEntry) {
+                    last7Days.push(moodEntry);
+                }
+            }
+            
+            // Calculate average
+            const moodValues = { terrible: 1, bad: 2, okay: 3, good: 4, great: 5 };
+            const moodFromValue = { 1: 'terrible', 2: 'bad', 3: 'okay', 4: 'good', 5: 'great' };
+            
+            if (last7Days.length > 0) {
+                const sum = last7Days.reduce((acc, m) => acc + moodValues[m.mood], 0);
+                const avg = sum / last7Days.length;
+                const avgMood = moodFromValue[Math.round(avg)];
+                
+                document.getElementById('moodAvgEmoji').textContent = moodEmojis[avgMood];
+                document.getElementById('moodAvgScore').textContent = `${avg.toFixed(1)}/5`;
+                
+                // Calculate trend (comparing first half vs second half of week)
+                if (last7Days.length >= 4) {
+                    const firstHalf = last7Days.slice(0, Math.floor(last7Days.length / 2));
+                    const secondHalf = last7Days.slice(Math.floor(last7Days.length / 2));
+                    
+                    const firstAvg = firstHalf.reduce((acc, m) => acc + moodValues[m.mood], 0) / firstHalf.length;
+                    const secondAvg = secondHalf.reduce((acc, m) => acc + moodValues[m.mood], 0) / secondHalf.length;
+                    
+                    const trendEl = document.getElementById('moodTrend');
+                    if (secondAvg > firstAvg + 0.3) {
+                        trendEl.innerHTML = '<i class="fas fa-arrow-up mood-trend-up"></i> <span class="mood-trend-up">Melhorando</span>';
+                    } else if (secondAvg < firstAvg - 0.3) {
+                        trendEl.innerHTML = '<i class="fas fa-arrow-down mood-trend-down"></i> <span class="mood-trend-down">Piorando</span>';
+                    } else {
+                        trendEl.innerHTML = '<i class="fas fa-minus mood-trend-stable"></i> <span class="mood-trend-stable">Estável</span>';
+                    }
+                }
+            } else {
+                document.getElementById('moodAvgEmoji').textContent = '❓';
+                document.getElementById('moodAvgScore').textContent = '--';
+                document.getElementById('moodTrend').textContent = '';
+            }
+        }
+
+        // ===== MOOD REPORT =====
+        let reportPeriod = 7;
+
+        function openMoodReportModal() {
+            document.getElementById('moodReportModal').classList.remove('hidden');
+            document.getElementById('moodReportModal').classList.add('flex');
+            setReportPeriod(7);
+        }
+
+        function closeMoodReportModal() {
+            document.getElementById('moodReportModal').classList.add('hidden');
+            document.getElementById('moodReportModal').classList.remove('flex');
+        }
+
+        function setReportPeriod(days) {
+            reportPeriod = days;
+            
+            // Update button states
+            document.querySelectorAll('.report-period-btn').forEach(btn => {
+                btn.classList.remove('active', 'bg-pink-500/30');
+                btn.classList.add('bg-white/10');
+            });
+            document.querySelector(`.report-period-btn[data-period="${days}"]`)?.classList.add('active', 'bg-pink-500/30');
+            document.querySelector(`.report-period-btn[data-period="${days}"]`)?.classList.remove('bg-white/10');
+            
+            generateMoodReport();
+        }
+
+        function generateMoodReport() {
+            const today = new Date();
+            const moodValues = { terrible: 1, bad: 2, okay: 3, good: 4, great: 5 };
+            const moodFromValue = { 1: 'terrible', 2: 'bad', 3: 'okay', 4: 'good', 5: 'great' };
+            const moodLabels = { terrible: 'Péssimo', bad: 'Mal', okay: 'Ok', good: 'Bom', great: 'Ótimo' };
+            const moodColors = { terrible: '#ef4444', bad: '#f97316', okay: '#eab308', good: '#22c55e', great: '#10b981' };
+            
+            // Get data for the period
+            const periodData = [];
+            for (let i = reportPeriod - 1; i >= 0; i--) {
+                const date = new Date(today);
+                date.setDate(date.getDate() - i);
+                const dateStr = date.toISOString().split('T')[0];
+                const moodEntry = moodHistory.find(m => m.date === dateStr);
+                periodData.push({
+                    date: dateStr,
+                    dayOfWeek: date.toLocaleDateString('pt-BR', { weekday: 'short' }),
+                    dayNum: date.getDate(),
+                    mood: moodEntry?.mood || null,
+                    note: moodEntry?.note || null
+                });
+            }
+            
+            const loggedDays = periodData.filter(d => d.mood !== null);
+            
+            // Calculate statistics
+            if (loggedDays.length > 0) {
+                // Average
+                const sum = loggedDays.reduce((acc, d) => acc + moodValues[d.mood], 0);
+                const avg = sum / loggedDays.length;
+                const avgMood = moodFromValue[Math.round(avg)];
+                
+                document.getElementById('reportAvgEmoji').textContent = moodEmojis[avgMood];
+                document.getElementById('reportAvgText').textContent = moodLabels[avgMood];
+                
+                // Best and worst days
+                const sortedByMood = [...loggedDays].sort((a, b) => moodValues[b.mood] - moodValues[a.mood]);
+                const bestDay = sortedByMood[0];
+                const worstDay = sortedByMood[sortedByMood.length - 1];
+                
+                document.getElementById('reportBestEmoji').textContent = moodEmojis[bestDay.mood];
+                document.getElementById('reportBestDay').textContent = `${bestDay.dayNum}/${new Date(bestDay.date).getMonth() + 1}`;
+                
+                document.getElementById('reportWorstEmoji').textContent = moodEmojis[worstDay.mood];
+                document.getElementById('reportWorstDay').textContent = `${worstDay.dayNum}/${new Date(worstDay.date).getMonth() + 1}`;
+            } else {
+                document.getElementById('reportAvgEmoji').textContent = '❓';
+                document.getElementById('reportAvgText').textContent = 'Sem dados';
+                document.getElementById('reportBestEmoji').textContent = '❓';
+                document.getElementById('reportBestDay').textContent = '--';
+                document.getElementById('reportWorstEmoji').textContent = '❓';
+                document.getElementById('reportWorstDay').textContent = '--';
+            }
+            
+            // Days logged
+            document.getElementById('reportDaysLogged').textContent = `${loggedDays.length}/${reportPeriod}`;
+            
+            // Calculate streak
+            let streak = 0;
+            for (let i = 0; i < periodData.length; i++) {
+                const d = periodData[periodData.length - 1 - i];
+                if (d.mood !== null) {
+                    streak++;
+                } else if (i > 0) {
+                    break;
+                }
+            }
+            document.getElementById('reportStreak').textContent = `${streak} dias`;
+            
+            // Generate chart
+            const chartContainer = document.getElementById('moodChart');
+            const labelsContainer = document.getElementById('moodChartLabels');
+            
+            const maxBars = reportPeriod <= 7 ? reportPeriod : (reportPeriod <= 14 ? 14 : 15);
+            const step = reportPeriod <= 14 ? 1 : 2;
+            
+            let chartHtml = '';
+            let labelsHtml = '';
+            
+            for (let i = 0; i < periodData.length; i += step) {
+                const d = periodData[i];
+                const height = d.mood ? (moodValues[d.mood] / 5) * 100 : 10;
+                const moodClass = d.mood || 'empty';
+                const emoji = d.mood ? moodEmojis[d.mood] : '';
+                
+                chartHtml += `<div class="mood-chart-bar ${moodClass} flex-1" style="height: ${height}%;" data-emoji="${emoji}" title="${d.dayOfWeek} ${d.dayNum}: ${d.mood ? moodLabels[d.mood] : 'Sem registro'}"></div>`;
+                
+                if (i % (reportPeriod <= 7 ? 1 : (reportPeriod <= 14 ? 2 : 4)) === 0) {
+                    labelsHtml += `<span>${d.dayNum}</span>`;
+                }
+            }
+            
+            chartContainer.innerHTML = chartHtml;
+            labelsContainer.innerHTML = labelsHtml;
+            
+            // Generate distribution
+            const distribution = { terrible: 0, bad: 0, okay: 0, good: 0, great: 0 };
+            loggedDays.forEach(d => distribution[d.mood]++);
+            
+            const distContainer = document.getElementById('moodDistribution');
+            const total = loggedDays.length || 1;
+            
+            let distHtml = '';
+            Object.entries(distribution).reverse().forEach(([mood, count]) => {
+                const percentage = (count / total) * 100;
+                distHtml += `
+                    <div class="flex items-center gap-2">
+                        <span class="w-6 text-center">${moodEmojis[mood]}</span>
+                        <span class="text-xs w-14 text-white/60">${moodLabels[mood]}</span>
+                        <div class="flex-1 bg-white/10 rounded-full h-2 overflow-hidden">
+                            <div class="mood-dist-bar h-full" style="width: ${percentage}%; background: ${moodColors[mood]};"></div>
+                        </div>
+                        <span class="text-xs w-8 text-right text-white/60">${count}</span>
+                    </div>
+                `;
+            });
+            distContainer.innerHTML = distHtml;
+            
+            // Generate insights
+            const insightsContainer = document.getElementById('moodInsights');
+            let insights = [];
+            
+            if (loggedDays.length === 0) {
+                insights.push({ icon: '📝', color: 'bg-blue-500/30', text: 'Comece a registrar seu humor para ver insights personalizados!' });
+            } else {
+                // Consistency insight
+                const consistency = (loggedDays.length / reportPeriod) * 100;
+                if (consistency >= 80) {
+                    insights.push({ icon: '🏆', color: 'bg-yellow-500/30', text: `Excelente! Você registrou ${consistency.toFixed(0)}% dos dias.` });
+                } else if (consistency >= 50) {
+                    insights.push({ icon: '👍', color: 'bg-green-500/30', text: `Bom progresso! ${consistency.toFixed(0)}% dos dias registrados.` });
+                } else {
+                    insights.push({ icon: '💪', color: 'bg-orange-500/30', text: `Tente registrar mais! Apenas ${consistency.toFixed(0)}% dos dias registrados.` });
+                }
+                
+                // Mood trend insight
+                if (loggedDays.length >= 3) {
+                    const firstHalf = loggedDays.slice(0, Math.floor(loggedDays.length / 2));
+                    const secondHalf = loggedDays.slice(Math.floor(loggedDays.length / 2));
+                    const firstAvg = firstHalf.reduce((acc, d) => acc + moodValues[d.mood], 0) / firstHalf.length;
+                    const secondAvg = secondHalf.reduce((acc, d) => acc + moodValues[d.mood], 0) / secondHalf.length;
+                    
+                    if (secondAvg > firstAvg + 0.5) {
+                        insights.push({ icon: '📈', color: 'bg-green-500/30', text: 'Seu humor está melhorando! Continue assim!' });
+                    } else if (secondAvg < firstAvg - 0.5) {
+                        insights.push({ icon: '💙', color: 'bg-blue-500/30', text: 'Seu humor caiu um pouco. Cuide-se e faça algo relaxante.' });
+                    }
+                }
+                
+                // Most common mood
+                const mostCommon = Object.entries(distribution).sort((a, b) => b[1] - a[1])[0];
+                if (mostCommon[1] > 1) {
+                    insights.push({ icon: moodEmojis[mostCommon[0]], color: 'bg-pink-500/30', text: `Seu humor mais frequente: ${moodLabels[mostCommon[0]]} (${mostCommon[1]}x)` });
+                }
+                
+                // Weekend vs weekday
+                const weekendDays = loggedDays.filter(d => {
+                    const day = new Date(d.date).getDay();
+                    return day === 0 || day === 6;
+                });
+                const weekdayDays = loggedDays.filter(d => {
+                    const day = new Date(d.date).getDay();
+                    return day !== 0 && day !== 6;
+                });
+                
+                if (weekendDays.length >= 2 && weekdayDays.length >= 2) {
+                    const weekendAvg = weekendDays.reduce((acc, d) => acc + moodValues[d.mood], 0) / weekendDays.length;
+                    const weekdayAvg = weekdayDays.reduce((acc, d) => acc + moodValues[d.mood], 0) / weekdayDays.length;
+                    
+                    if (weekendAvg > weekdayAvg + 0.5) {
+                        insights.push({ icon: '🎉', color: 'bg-purple-500/30', text: 'Você é mais feliz nos finais de semana!' });
+                    } else if (weekdayAvg > weekendAvg + 0.5) {
+                        insights.push({ icon: '💼', color: 'bg-cyan-500/30', text: 'Você é mais feliz durante a semana!' });
+                    }
+                }
+                
+                // Streak insight
+                if (streak >= 7) {
+                    insights.push({ icon: '🔥', color: 'bg-orange-500/30', text: `Incrível! ${streak} dias seguidos registrando humor!` });
+                }
+            }
+            
+            insightsContainer.innerHTML = insights.map(i => `
+                <div class="insight-item">
+                    <div class="insight-icon ${i.color}">${i.icon}</div>
+                    <span class="text-white/80">${i.text}</span>
+                </div>
+            `).join('');
+            
+            // Generate notes
+            const notesContainer = document.getElementById('moodNotes');
+            const notesWithContent = loggedDays.filter(d => d.note).slice(-5).reverse();
+            
+            if (notesWithContent.length > 0) {
+                notesContainer.innerHTML = notesWithContent.map(d => `
+                    <div class="flex items-start gap-2 p-2 bg-white/5 rounded-lg">
+                        <span>${moodEmojis[d.mood]}</span>
+                        <div class="flex-1">
+                            <div class="text-white/80">${d.note}</div>
+                            <div class="text-[10px] text-white/40 mt-1">${new Date(d.date).toLocaleDateString('pt-BR', { weekday: 'short', day: 'numeric', month: 'short' })}</div>
+                        </div>
+                    </div>
+                `).join('');
+            } else {
+                notesContainer.innerHTML = '<p class="text-white/40 text-center py-2">Nenhuma nota registrada neste período.</p>';
+            }
         }
 
         // ===== TOAST NOTIFICATIONS =====
@@ -4200,6 +5545,567 @@
             event.target.value = '';
         }
 
+        // ===== SETTINGS & CUSTOMIZATION =====
+        let userSettings = JSON.parse(localStorage.getItem('userSettings')) || {
+            userName: 'Filipe',
+            theme: 'dark',
+            accentColor: 'cyan',
+            autoFocusMode: true,
+            waterReminders: true
+        };
+
+        function openSettingsModal() {
+            document.getElementById('settingsModal').classList.remove('hidden');
+            document.getElementById('settingsModal').classList.add('flex');
+            
+            // Load current settings
+            document.getElementById('settingsUserName').value = userSettings.userName;
+            document.getElementById('autoFocusModeToggle').checked = userSettings.autoFocusMode;
+            document.getElementById('waterReminderToggle').checked = userSettings.waterReminders;
+            
+            // Highlight current theme
+            document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.remove('border-white'));
+            document.getElementById(userSettings.theme === 'dark' ? 'themeDarkBtn' : 'themeLightBtn').classList.add('border-white');
+            
+            // Highlight current accent color
+            document.querySelectorAll('.accent-btn').forEach(btn => btn.classList.remove('border-white', 'scale-110'));
+            document.querySelector(`.accent-btn[data-color="${userSettings.accentColor}"]`)?.classList.add('border-white', 'scale-110');
+        }
+
+        function closeSettingsModal() {
+            document.getElementById('settingsModal').classList.add('hidden');
+            document.getElementById('settingsModal').classList.remove('flex');
+        }
+
+        function setTheme(theme) {
+            userSettings.theme = theme;
+            document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.remove('border-white'));
+            document.getElementById(theme === 'dark' ? 'themeDarkBtn' : 'themeLightBtn').classList.add('border-white');
+            applyTheme(theme);
+        }
+
+        function applyTheme(theme) {
+            const root = document.documentElement;
+            if (theme === 'light') {
+                root.classList.add('light-theme');
+            } else {
+                root.classList.remove('light-theme');
+            }
+        }
+
+        function setAccentColor(color) {
+            userSettings.accentColor = color;
+            document.querySelectorAll('.accent-btn').forEach(btn => btn.classList.remove('border-white', 'scale-110'));
+            document.querySelector(`.accent-btn[data-color="${color}"]`)?.classList.add('border-white', 'scale-110');
+            applyAccentColor(color);
+        }
+
+        function applyAccentColor(color) {
+            const colors = {
+                cyan: { primary: '#22d3ee', secondary: '#06b6d4' },
+                blue: { primary: '#3b82f6', secondary: '#2563eb' },
+                purple: { primary: '#a855f7', secondary: '#9333ea' },
+                pink: { primary: '#ec4899', secondary: '#db2777' },
+                green: { primary: '#22c55e', secondary: '#16a34a' },
+                orange: { primary: '#f97316', secondary: '#ea580c' },
+                red: { primary: '#ef4444', secondary: '#dc2626' }
+            };
+            
+            const root = document.documentElement;
+            root.style.setProperty('--accent-primary', colors[color].primary);
+            root.style.setProperty('--accent-secondary', colors[color].secondary);
+        }
+
+        function toggleAutoFocusMode() {
+            userSettings.autoFocusMode = document.getElementById('autoFocusModeToggle').checked;
+            localStorage.setItem('autoFocusMode', userSettings.autoFocusMode);
+        }
+
+        function toggleWaterReminders() {
+            userSettings.waterReminders = document.getElementById('waterReminderToggle').checked;
+            localStorage.setItem('waterRemindersEnabled', userSettings.waterReminders);
+            if (userSettings.waterReminders) {
+                startWaterReminder();
+            } else if (waterReminderInterval) {
+                clearInterval(waterReminderInterval);
+            }
+        }
+
+        function saveSettings() {
+            userSettings.userName = document.getElementById('settingsUserName').value || 'Filipe';
+            localStorage.setItem('userSettings', JSON.stringify(userSettings));
+            
+            // Update splash screen name
+            document.querySelector('.splash-name').textContent = userSettings.userName.toUpperCase();
+            
+            showToast('success', 'Configurações Salvas', 'Suas preferências foram atualizadas!');
+            closeSettingsModal();
+        }
+
+        function loadSettings() {
+            applyTheme(userSettings.theme);
+            applyAccentColor(userSettings.accentColor);
+            
+            // Update name in splash screen
+            const splashName = document.querySelector('.splash-name');
+            if (splashName) {
+                splashName.textContent = userSettings.userName.toUpperCase();
+            }
+            
+            // Set localStorage values
+            localStorage.setItem('autoFocusMode', userSettings.autoFocusMode);
+            localStorage.setItem('waterRemindersEnabled', userSettings.waterReminders);
+        }
+
+        // ===== FOCUS MODE =====
+        let focusModeActive = false;
+        let focusModeTask = null;
+
+        function enterFocusMode(taskTitle = null) {
+            focusModeActive = true;
+            focusModeTask = taskTitle;
+            
+            const overlay = document.getElementById('focusModeOverlay');
+            const taskDisplay = document.getElementById('focusTask');
+            
+            if (taskTitle) {
+                taskDisplay.innerHTML = `<i class="fas fa-bullseye mr-2"></i><span>${taskTitle}</span>`;
+            } else {
+                taskDisplay.innerHTML = `<i class="fas fa-bullseye mr-2"></i><span>Foco total!</span>`;
+            }
+            
+            overlay.classList.add('active');
+            updateFocusTimer();
+            
+            // Start pomodoro if not running
+            if (!pomodoroRunning) {
+                startPomodoro();
+            }
+            
+            showToast('info', 'Modo Foco Ativado', 'Concentre-se na tarefa. Você consegue! 💪');
+        }
+
+        function exitFocusMode() {
+            focusModeActive = false;
+            focusModeTask = null;
+            document.getElementById('focusModeOverlay').classList.remove('active');
+        }
+
+        function updateFocusTimer() {
+            if (!focusModeActive) return;
+            
+            const minutes = Math.floor(pomodoroTime / 60);
+            const seconds = pomodoroTime % 60;
+            document.getElementById('focusTimer').textContent = 
+                `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+            
+            // Update progress circle
+            const circle = document.getElementById('focusProgressCircle');
+            const circumference = 1131;
+            const progress = pomodoroTime / pomodoroInitialTime;
+            circle.style.strokeDashoffset = circumference * (1 - progress);
+            
+            requestAnimationFrame(() => {
+                if (focusModeActive) {
+                    setTimeout(updateFocusTimer, 100);
+                }
+            });
+        }
+
+        // ===== KEYBOARD SHORTCUTS =====
+        function initKeyboardShortcuts() {
+            document.addEventListener('keydown', (e) => {
+                // Don't trigger shortcuts when typing in input/textarea
+                if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+                    if (e.key === 'Escape') {
+                        e.target.blur();
+                    }
+                    return;
+                }
+                
+                // ? - Show shortcuts help
+                if (e.key === '?' || (e.shiftKey && e.key === '/')) {
+                    e.preventDefault();
+                    openShortcutsModal();
+                }
+                
+                // N - New task
+                if (e.key === 'n' || e.key === 'N') {
+                    e.preventDefault();
+                    openAddNoteModal();
+                }
+                
+                // Space - Toggle Pomodoro
+                if (e.key === ' ' && !e.ctrlKey && !e.metaKey) {
+                    e.preventDefault();
+                    if (pomodoroRunning) {
+                        pausePomodoro();
+                        showToast('info', 'Pomodoro Pausado', 'Pressione Espaço para continuar');
+                    } else {
+                        startPomodoro();
+                        showToast('success', 'Pomodoro Iniciado', 'Foco! 🍅');
+                    }
+                }
+                
+                // F - Focus Mode
+                if (e.key === 'f' || e.key === 'F') {
+                    e.preventDefault();
+                    if (focusModeActive) {
+                        exitFocusMode();
+                    } else {
+                        enterFocusMode();
+                    }
+                }
+                
+                // W - Add Water
+                if (e.key === 'w' || e.key === 'W') {
+                    e.preventDefault();
+                    addWater(1);
+                    showToast('success', 'Água Adicionada', `${waterCount}/${waterGoal} copos 💧`);
+                }
+                
+                // Ctrl+K - Search
+                if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                    e.preventDefault();
+                    document.getElementById('searchInput').focus();
+                }
+                
+                // Ctrl+S - Export
+                if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+                    e.preventDefault();
+                    exportData();
+                }
+                
+                // Escape - Close modals
+                if (e.key === 'Escape') {
+                    closeAllModals();
+                }
+            });
+        }
+
+        function openShortcutsModal() {
+            document.getElementById('shortcutsModal').classList.add('active');
+        }
+
+        function closeShortcutsModal() {
+            document.getElementById('shortcutsModal').classList.remove('active');
+        }
+
+        function closeAllModals() {
+            // Close all modals
+            document.getElementById('shortcutsModal')?.classList.remove('active');
+            document.getElementById('focusModeOverlay')?.classList.remove('active');
+            closeLinkModal();
+            closeFolderModal();
+            closeNoteModal();
+            closeColumnModal();
+            closeEditNoteModal();
+            closeConfirmModal();
+            closeMoodReportModal();
+            
+            focusModeActive = false;
+        }
+
+        // ===== WATER REMINDER =====
+        let waterReminderInterval = null;
+        const WATER_REMINDER_INTERVAL = 60 * 60 * 1000; // 1 hour
+
+        function initWaterReminder() {
+            // Check if reminders are enabled
+            const remindersEnabled = localStorage.getItem('waterRemindersEnabled') !== 'false';
+            
+            if (remindersEnabled) {
+                startWaterReminder();
+            }
+        }
+
+        function startWaterReminder() {
+            // Clear existing interval
+            if (waterReminderInterval) {
+                clearInterval(waterReminderInterval);
+            }
+            
+            // Set reminder every hour
+            waterReminderInterval = setInterval(() => {
+                // Only show if not at goal yet
+                if (waterCount < waterGoal) {
+                    showWaterReminder();
+                }
+            }, WATER_REMINDER_INTERVAL);
+            
+            // Also request notification permission
+            if ('Notification' in window && Notification.permission === 'default') {
+                Notification.requestPermission();
+            }
+        }
+
+        function showWaterReminder() {
+            const popup = document.getElementById('waterReminderPopup');
+            popup.classList.add('show');
+            
+            // Play sound
+            playWaterSound();
+            
+            // Send browser notification
+            if (Notification.permission === 'granted') {
+                new Notification('💧 Hora de beber água!', {
+                    body: `Você bebeu ${waterCount}/${waterGoal} copos hoje.`,
+                    icon: '💧',
+                    tag: 'water-reminder'
+                });
+            }
+            
+            // Auto-hide after 10 seconds
+            setTimeout(hideWaterReminder, 10000);
+        }
+
+        function hideWaterReminder() {
+            document.getElementById('waterReminderPopup').classList.remove('show');
+        }
+
+        function playWaterSound() {
+            try {
+                const audio = new AudioContext();
+                const oscillator = audio.createOscillator();
+                const gain = audio.createGain();
+                oscillator.connect(gain);
+                gain.connect(audio.destination);
+                oscillator.frequency.value = 600;
+                oscillator.type = 'sine';
+                gain.gain.setValueAtTime(0.3, audio.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audio.currentTime + 0.5);
+                oscillator.start();
+                oscillator.stop(audio.currentTime + 0.5);
+            } catch (e) {}
+        }
+
+        // ===== IMPROVED POMODORO SOUND =====
+        function playPomodoroEndSound() {
+            try {
+                const audio = new AudioContext();
+                const frequencies = [523, 659, 784, 1047]; // C5, E5, G5, C6 (victory chord)
+                
+                frequencies.forEach((freq, i) => {
+                    const oscillator = audio.createOscillator();
+                    const gain = audio.createGain();
+                    oscillator.connect(gain);
+                    gain.connect(audio.destination);
+                    oscillator.frequency.value = freq;
+                    oscillator.type = 'sine';
+                    gain.gain.setValueAtTime(0, audio.currentTime + (i * 0.1));
+                    gain.gain.linearRampToValueAtTime(0.3, audio.currentTime + (i * 0.1) + 0.1);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audio.currentTime + (i * 0.1) + 1);
+                    oscillator.start(audio.currentTime + (i * 0.1));
+                    oscillator.stop(audio.currentTime + (i * 0.1) + 1);
+                });
+            } catch (e) {}
+        }
+
+        // ===== TASK DUE DATE NOTIFICATIONS =====
+        function checkDueDateNotifications() {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            
+            notes.forEach(note => {
+                if (!note.dueDate || note.completed) return;
+                
+                const due = new Date(note.dueDate + 'T00:00:00');
+                const diffDays = Math.ceil((due - today) / (1000 * 60 * 60 * 24));
+                
+                // Notify for tasks due today or tomorrow
+                if (diffDays === 0) {
+                    const notified = localStorage.getItem(`notified_${note.id}_today`);
+                    if (!notified) {
+                        showToast('warning', 'Tarefa vence HOJE!', note.title);
+                        localStorage.setItem(`notified_${note.id}_today`, 'true');
+                        
+                        if (Notification.permission === 'granted') {
+                            new Notification('⚠️ Tarefa vence HOJE!', {
+                                body: note.title,
+                                tag: `task-${note.id}`
+                            });
+                        }
+                    }
+                } else if (diffDays === 1) {
+                    const notified = localStorage.getItem(`notified_${note.id}_tomorrow`);
+                    if (!notified) {
+                        showToast('info', 'Tarefa vence amanhã', note.title);
+                        localStorage.setItem(`notified_${note.id}_tomorrow`, 'true');
+                    }
+                } else if (diffDays < 0) {
+                    const notified = localStorage.getItem(`notified_${note.id}_overdue`);
+                    if (!notified) {
+                        showToast('error', 'Tarefa ATRASADA!', note.title);
+                        localStorage.setItem(`notified_${note.id}_overdue`, 'true');
+                    }
+                }
+            });
+        }
+
+        // ===== FORECAST (5 DAYS) =====
+        let forecastCache = JSON.parse(localStorage.getItem('forecastCache')) || null;
+
+        function openForecastModal() {
+            document.getElementById('forecastModal').classList.remove('hidden');
+            document.getElementById('forecastModal').classList.add('flex');
+            fetchForecast();
+        }
+
+        function closeForecastModal() {
+            document.getElementById('forecastModal').classList.add('hidden');
+            document.getElementById('forecastModal').classList.remove('flex');
+        }
+
+        async function fetchForecast() {
+            const loadingEl = document.getElementById('forecastLoading');
+            const errorEl = document.getElementById('forecastError');
+            const contentEl = document.getElementById('forecastContent');
+            
+            loadingEl.classList.remove('hidden');
+            errorEl.classList.add('hidden');
+            contentEl.classList.add('hidden');
+            
+            try {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 10000);
+                
+                const response = await fetch(
+                    'https://api.open-meteo.com/v1/forecast?latitude=-20.2&longitude=-44.4&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,sunrise,sunset&timezone=America/Sao_Paulo&forecast_days=6',
+                    { signal: controller.signal }
+                );
+                
+                clearTimeout(timeoutId);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                if (!data.daily) {
+                    throw new Error('Dados inválidos');
+                }
+                
+                // Save to cache
+                forecastCache = {
+                    data: data.daily,
+                    timestamp: Date.now()
+                };
+                localStorage.setItem('forecastCache', JSON.stringify(forecastCache));
+                
+                renderForecast(data.daily);
+                
+                loadingEl.classList.add('hidden');
+                errorEl.classList.add('hidden');
+                contentEl.classList.remove('hidden');
+                
+            } catch (error) {
+                console.error('[Previsão] Erro:', error.message);
+                
+                // Try cache
+                if (forecastCache && forecastCache.data) {
+                    renderForecast(forecastCache.data);
+                    loadingEl.classList.add('hidden');
+                    errorEl.classList.add('hidden');
+                    contentEl.classList.remove('hidden');
+                    showToast('warning', 'Usando cache', 'Mostrando previsão salva anteriormente');
+                } else {
+                    loadingEl.classList.add('hidden');
+                    errorEl.classList.remove('hidden');
+                    contentEl.classList.add('hidden');
+                }
+            }
+        }
+
+        function renderForecast(daily) {
+            const daysOfWeek = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
+            const today = new Date();
+            
+            // Today summary
+            document.getElementById('forecastTodayTemp').textContent = `${Math.round(daily.temperature_2m_max[0])}°C`;
+            document.getElementById('forecastTodayMinMax').textContent = `Min: ${Math.round(daily.temperature_2m_min[0])}°C`;
+            document.getElementById('forecastTodayDesc').textContent = getWeatherDescription(daily.weather_code[0]);
+            
+            // Sunrise/Sunset
+            if (daily.sunrise && daily.sunrise[0]) {
+                const sunrise = new Date(daily.sunrise[0]);
+                document.getElementById('forecastSunrise').textContent = sunrise.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+            }
+            if (daily.sunset && daily.sunset[0]) {
+                const sunset = new Date(daily.sunset[0]);
+                document.getElementById('forecastSunset').textContent = sunset.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+            }
+            
+            // 5 days forecast (skip today, show next 5)
+            const forecastDays = document.getElementById('forecastDays');
+            let html = '';
+            
+            for (let i = 1; i <= 5 && i < daily.time.length; i++) {
+                const date = new Date(daily.time[i] + 'T12:00:00');
+                const dayName = i === 1 ? 'Amanhã' : daysOfWeek[date.getDay()];
+                const weatherCode = daily.weather_code[i];
+                const maxTemp = Math.round(daily.temperature_2m_max[i]);
+                const minTemp = Math.round(daily.temperature_2m_min[i]);
+                const rainProb = daily.precipitation_probability_max ? daily.precipitation_probability_max[i] : 0;
+                const emoji = getWeatherEmoji(weatherCode);
+                const desc = getWeatherDescription(weatherCode);
+                
+                html += `
+                    <div class="forecast-day">
+                        <div class="forecast-day-name">${dayName}</div>
+                        <div class="forecast-day-icon">${emoji}</div>
+                        <div class="forecast-day-desc">${desc}</div>
+                        ${rainProb > 0 ? `
+                            <div class="forecast-rain">
+                                <i class="fas fa-tint"></i>
+                                <span>${rainProb}%</span>
+                            </div>
+                        ` : '<div class="forecast-rain"></div>'}
+                        <div class="forecast-day-temps">
+                            <span class="forecast-temp-max">${maxTemp}°</span>
+                            <span class="forecast-temp-min">${minTemp}°</span>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            forecastDays.innerHTML = html;
+            
+            // Last update
+            document.getElementById('forecastLastUpdate').textContent = 
+                `Atualizado: ${new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}`;
+        }
+
+        function getWeatherEmoji(code) {
+            if (code === 0) return '☀️';
+            if (code <= 3) return '⛅';
+            if (code <= 48) return '☁️';
+            if (code <= 57) return '🌫️';
+            if (code <= 67) return '🌧️';
+            if (code <= 77) return '🌨️';
+            if (code <= 82) return '🌧️';
+            if (code <= 86) return '🌨️';
+            if (code <= 99) return '⛈️';
+            return '☀️';
+        }
+
+        function getWeatherDescription(code) {
+            if (code === 0) return 'Céu limpo';
+            if (code <= 3) return 'Parcialmente nublado';
+            if (code <= 48) return 'Nublado';
+            if (code <= 49) return 'Neblina';
+            if (code <= 55) return 'Chuvisco';
+            if (code <= 57) return 'Chuvisco gelado';
+            if (code <= 65) return 'Chuva';
+            if (code <= 67) return 'Chuva gelada';
+            if (code <= 75) return 'Neve';
+            if (code <= 77) return 'Granizo';
+            if (code <= 82) return 'Pancadas de chuva';
+            if (code <= 86) return 'Neve forte';
+            if (code <= 99) return 'Tempestade';
+            return 'Céu limpo';
+        }
+
         // ===== PWA & SERVICE WORKER =====
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
@@ -4211,6 +6117,9 @@
 
         // ===== INITIALIZATION =====
         function init() {
+            // Load user settings first
+            loadSettings();
+            
             showSplashScreen();
             initParallax();
             
@@ -4221,8 +6130,9 @@
             updateClock();
             setInterval(updateClock, 1000);
 
-            fetchWeather();
-            setInterval(fetchWeather, 600000);
+            // Weather: Show cache immediately if available, then fetch fresh data
+            initWeather();
+            setInterval(fetchWeather, 600000); // Update every 10 minutes
             setInterval(updateBackground, 60000);
 
             showRandomQuote();
@@ -4241,6 +6151,16 @@
 
             // Mood Tracker
             initMoodTracker();
+            
+            // Keyboard Shortcuts
+            initKeyboardShortcuts();
+            
+            // Water Reminders
+            initWaterReminder();
+            
+            // Check due date notifications
+            checkDueDateNotifications();
+            setInterval(checkDueDateNotifications, 60000 * 30); // Check every 30 minutes
         }
 
         init();
