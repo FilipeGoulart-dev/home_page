@@ -141,6 +141,122 @@
             background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
         }
 
+        /* Apply accent colors throughout the dashboard */
+        .jarvis-circle-1 {
+            border-color: rgba(var(--accent-rgb, 34, 211, 238), 0.3) !important;
+            border-top-color: var(--accent-primary) !important;
+            border-right-color: var(--accent-primary) !important;
+            box-shadow: 0 0 30px rgba(var(--accent-rgb, 34, 211, 238), 0.2), inset 0 0 30px rgba(var(--accent-rgb, 34, 211, 238), 0.1) !important;
+        }
+
+        .jarvis-circle-4 {
+            border-right-color: var(--accent-primary) !important;
+            border-bottom-color: var(--accent-primary) !important;
+        }
+
+        .jarvis-circle-5 {
+            border-color: var(--accent-primary) !important;
+            box-shadow: 0 0 40px rgba(var(--accent-rgb, 34, 211, 238), 0.4), inset 0 0 40px rgba(var(--accent-rgb, 34, 211, 238), 0.2) !important;
+        }
+
+        .splash-greeting {
+            color: var(--accent-primary) !important;
+            text-shadow: 0 0 20px var(--accent-primary) !important;
+        }
+
+        .splash-tagline {
+            color: var(--accent-primary) !important;
+        }
+
+        .jarvis-scan {
+            background: linear-gradient(90deg, transparent, var(--accent-primary), transparent) !important;
+            box-shadow: 0 0 20px var(--accent-primary) !important;
+        }
+
+        .data-point {
+            background: var(--accent-primary) !important;
+            box-shadow: 0 0 15px var(--accent-primary), 0 0 30px var(--accent-primary) !important;
+        }
+
+        .particle {
+            background: var(--accent-primary) !important;
+            box-shadow: 0 0 10px var(--accent-primary), 0 0 20px var(--accent-primary) !important;
+        }
+
+        .hud-corner {
+            border-color: var(--accent-primary) !important;
+        }
+
+        .loader-progress {
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary), #a855f7) !important;
+            box-shadow: 0 0 20px var(--accent-primary) !important;
+        }
+
+        .loader-percentage {
+            color: var(--accent-primary) !important;
+        }
+
+        .status-item {
+            color: var(--accent-primary) !important;
+        }
+
+        .connection-line {
+            background: linear-gradient(90deg, transparent, var(--accent-primary), transparent) !important;
+        }
+
+        .data-point::after {
+            border-color: var(--accent-primary) !important;
+        }
+
+        /* Pomodoro accent */
+        .focus-timer {
+            background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 50%, #a855f7 100%) !important;
+            -webkit-background-clip: text !important;
+            -webkit-text-fill-color: transparent !important;
+            text-shadow: 0 0 60px var(--accent-primary) !important;
+        }
+
+        #focusProgressCircle {
+            stroke: var(--accent-primary) !important;
+        }
+
+        .breathing-circle {
+            background: var(--accent-primary) !important;
+        }
+
+        /* Water tracker accent */
+        #waterFill {
+            background: linear-gradient(to top, var(--accent-secondary), var(--accent-primary)) !important;
+        }
+
+        #waterProgress {
+            background: linear-gradient(to right, var(--accent-secondary), var(--accent-primary)) !important;
+        }
+
+        #waterCount {
+            color: var(--accent-primary) !important;
+        }
+
+        /* Search bar focus accent */
+        .search-bar:focus-within {
+            box-shadow: 0 0 30px rgba(var(--accent-rgb, 34, 211, 238), 0.3) !important;
+        }
+
+        /* Links hover accent */
+        .link-item:hover {
+            box-shadow: 0 5px 20px rgba(var(--accent-rgb, 34, 211, 238), 0.2) !important;
+        }
+
+        /* Shortcuts kbd accent */
+        .shortcut-key kbd {
+            border-color: var(--accent-primary) !important;
+        }
+
+        /* Water reminder popup accent */
+        .water-reminder-popup {
+            background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%) !important;
+        }
+
         /* ===== JARVIS SPLASH SCREEN ===== */
         .splash-screen {
             position: fixed;
@@ -2259,16 +2375,17 @@
             position: fixed;
             top: 20px;
             left: 50%;
-            transform: translateX(-50%) translateY(-100px);
-            background: linear-gradient(135deg, rgba(6, 182, 212, 0.9) 0%, rgba(59, 130, 246, 0.9) 100%);
-            padding: 20px 30px;
+            transform: translateX(-50%) translateY(-150px);
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.95) 0%, rgba(59, 130, 246, 0.95) 100%);
+            padding: 16px 24px;
             border-radius: 16px;
             z-index: 9600;
-            display: flex;
+            display: none;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
             box-shadow: 0 10px 40px rgba(6, 182, 212, 0.4);
             transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            max-width: calc(100vw - 40px);
         }
 
         .water-reminder-popup.show {
@@ -2276,8 +2393,9 @@
         }
 
         .water-reminder-popup .water-icon {
-            font-size: 2.5rem;
-            animation: waterBounce 0.5s ease infinite;
+            font-size: 2rem;
+            animation: waterBounce 1s ease-in-out infinite;
+            flex-shrink: 0;
         }
 
         @keyframes waterBounce {
@@ -2286,20 +2404,60 @@
         }
 
         .water-reminder-popup button {
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.25);
             border: none;
-            padding: 8px 16px;
+            padding: 10px 16px;
             border-radius: 8px;
             color: white;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: all 0.2s;
+            font-weight: 500;
+            font-size: 0.9rem;
+            white-space: nowrap;
+            flex-shrink: 0;
         }
 
         .water-reminder-popup button:hover {
-            background: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.4);
+            transform: scale(1.05);
+        }
+        
+        .water-reminder-popup button:active {
+            transform: scale(0.95);
+        }
+        
+        @media (max-width: 640px) {
+            .water-reminder-popup {
+                top: auto;
+                bottom: 80px;
+                padding: 12px 16px;
+                gap: 10px;
+            }
+            
+            .water-reminder-popup .water-icon {
+                font-size: 1.5rem;
+            }
+            
+            .water-reminder-popup > div {
+                flex: 1;
+                min-width: 0;
+            }
+            
+            .water-reminder-popup > div .font-semibold {
+                font-size: 0.9rem;
+            }
+            
+            .water-reminder-popup > div .text-sm {
+                font-size: 0.75rem;
+            }
+            
+            .water-reminder-popup button {
+                padding: 8px 12px;
+                font-size: 0.8rem;
+            }
         }
 
-        /* ===== TOAST NOTIFICATIONS =====
+        /* ===== TOAST NOTIFICATIONS ===== */
         .toast-container {
             position: fixed;
             top: 20px;
@@ -2309,23 +2467,28 @@
             flex-direction: column;
             gap: 10px;
             pointer-events: none;
+            max-width: calc(100vw - 40px);
         }
 
         .toast {
-            background: rgba(0, 0, 0, 0.9);
+            background: rgba(0, 0, 0, 0.95);
             backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 14px 20px;
+            padding: 12px 16px;
             border-radius: 12px;
             display: flex;
             align-items: center;
-            gap: 12px;
-            min-width: 280px;
-            max-width: 400px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
-            transform: translateX(120%);
+            gap: 10px;
+            min-width: 250px;
+            max-width: 350px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            transform: translateX(0);
+            opacity: 0;
             animation: toastSlideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
             pointer-events: auto;
+            position: relative;
+            overflow: hidden;
         }
 
         .toast.hiding {
@@ -2333,18 +2496,30 @@
         }
 
         @keyframes toastSlideIn {
-            from { transform: translateX(120%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
+            from { 
+                transform: translateY(-20px) scale(0.95); 
+                opacity: 0; 
+            }
+            to { 
+                transform: translateY(0) scale(1); 
+                opacity: 1; 
+            }
         }
 
         @keyframes toastSlideOut {
-            from { transform: translateX(0); opacity: 1; }
-            to { transform: translateX(120%); opacity: 0; }
+            from { 
+                transform: translateY(0) scale(1); 
+                opacity: 1; 
+            }
+            to { 
+                transform: translateY(-20px) scale(0.95); 
+                opacity: 0; 
+            }
         }
 
         .toast-icon {
-            width: 24px;
-            height: 24px;
+            width: 28px;
+            height: 28px;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -2360,31 +2535,39 @@
 
         .toast-content {
             flex: 1;
+            min-width: 0;
         }
 
         .toast-title {
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 0.875rem;
             margin-bottom: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .toast-message {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             opacity: 0.8;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .toast-close {
             background: rgba(255, 255, 255, 0.1);
             border: none;
-            width: 24px;
-            height: 24px;
-            border-radius: 6px;
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: background 0.2s;
             color: white;
+            flex-shrink: 0;
         }
 
         .toast-close:hover {
@@ -2404,6 +2587,46 @@
         @keyframes toastProgress {
             from { width: 100%; }
             to { width: 0%; }
+        }
+
+        /* Mobile Toast Improvements */
+        @media (max-width: 640px) {
+            .toast-container {
+                top: auto;
+                bottom: 20px;
+                right: 10px;
+                left: 10px;
+                max-width: none;
+            }
+
+            .toast {
+                min-width: auto;
+                max-width: none;
+                width: 100%;
+                padding: 14px 16px;
+            }
+
+            @keyframes toastSlideIn {
+                from { 
+                    transform: translateY(100px) scale(0.95); 
+                    opacity: 0; 
+                }
+                to { 
+                    transform: translateY(0) scale(1); 
+                    opacity: 1; 
+                }
+            }
+
+            @keyframes toastSlideOut {
+                from { 
+                    transform: translateY(0) scale(1); 
+                    opacity: 1; 
+                }
+                to { 
+                    transform: translateY(100px) scale(0.95); 
+                    opacity: 0; 
+                }
+            }
         }
 
         /* ===== CONFIRM MODAL ===== */
@@ -2559,19 +2782,6 @@
             min-width: 45px;
         }
 
-        /* Mobile Toast */
-        @media (max-width: 480px) {
-            .toast-container {
-                left: 10px;
-                right: 10px;
-                top: 10px;
-            }
-
-            .toast {
-                min-width: auto;
-                width: 100%;
-            }
-        }
     </style>
 </head>
 <body class="min-h-screen text-white overflow-x-hidden">
@@ -3433,16 +3643,16 @@
     </div>
 
     <!-- Water Reminder Popup -->
-    <div id="waterReminderPopup" class="water-reminder-popup">
+    <div id="waterReminderPopup" class="water-reminder-popup" style="display: none;">
         <span class="water-icon">💧</span>
         <div>
             <div class="font-semibold">Hora de beber água!</div>
             <div class="text-sm opacity-80">Mantenha-se hidratado</div>
         </div>
-        <button onclick="addWater(1); hideWaterReminder()">
+        <button type="button" onclick="drinkWaterFromReminder()">
             <i class="fas fa-plus mr-1"></i>Bebi!
         </button>
-        <button onclick="hideWaterReminder()">
+        <button type="button" onclick="hideWaterReminder()">
             <i class="fas fa-times"></i>
         </button>
     </div>
@@ -5318,6 +5528,14 @@
         // ===== TOAST NOTIFICATIONS =====
         function showToast(type, title, message, duration = 4000) {
             const container = document.getElementById('toastContainer');
+            if (!container) return;
+            
+            // Limit to 3 toasts max on screen
+            const existingToasts = container.querySelectorAll('.toast');
+            if (existingToasts.length >= 3) {
+                existingToasts[0].remove();
+            }
+            
             const toast = document.createElement('div');
             toast.className = `toast toast-${type}`;
             
@@ -5328,25 +5546,73 @@
                 info: 'fa-info'
             };
             
+            // Truncate long messages on mobile
+            const isMobile = window.innerWidth <= 640;
+            const displayTitle = isMobile && title.length > 25 ? title.substring(0, 25) + '...' : title;
+            const displayMessage = message && isMobile && message.length > 40 ? message.substring(0, 40) + '...' : message;
+            
             toast.innerHTML = `
                 <div class="toast-icon"><i class="fas ${icons[type]}"></i></div>
                 <div class="toast-content">
-                    <div class="toast-title">${title}</div>
-                    ${message ? `<div class="toast-message">${message}</div>` : ''}
+                    <div class="toast-title">${displayTitle}</div>
+                    ${displayMessage ? `<div class="toast-message">${displayMessage}</div>` : ''}
                 </div>
-                <button class="toast-close" onclick="this.parentElement.remove()">
+                <button class="toast-close" onclick="event.stopPropagation(); this.parentElement.remove()">
                     <i class="fas fa-times"></i>
                 </button>
                 <div class="toast-progress"></div>
             `;
             
-            container.appendChild(toast);
-            
-            // Auto remove
-            setTimeout(() => {
+            // Click to dismiss on mobile
+            toast.addEventListener('click', () => {
                 toast.classList.add('hiding');
                 setTimeout(() => toast.remove(), 300);
-            }, duration);
+            });
+            
+            // Swipe to dismiss on mobile
+            let touchStartX = 0;
+            let touchStartY = 0;
+            
+            toast.addEventListener('touchstart', (e) => {
+                touchStartX = e.touches[0].clientX;
+                touchStartY = e.touches[0].clientY;
+            }, { passive: true });
+            
+            toast.addEventListener('touchend', (e) => {
+                const touchEndX = e.changedTouches[0].clientX;
+                const touchEndY = e.changedTouches[0].clientY;
+                const diffX = touchEndX - touchStartX;
+                const diffY = Math.abs(touchEndY - touchStartY);
+                
+                // Swipe right to dismiss
+                if (diffX > 50 && diffY < 50) {
+                    toast.style.transform = 'translateX(100%)';
+                    toast.style.opacity = '0';
+                    setTimeout(() => toast.remove(), 300);
+                }
+                // Swipe left to dismiss
+                else if (diffX < -50 && diffY < 50) {
+                    toast.style.transform = 'translateX(-100%)';
+                    toast.style.opacity = '0';
+                    setTimeout(() => toast.remove(), 300);
+                }
+            }, { passive: true });
+            
+            container.appendChild(toast);
+            
+            // Shorter duration on mobile
+            const actualDuration = isMobile ? Math.min(duration, 3000) : duration;
+            
+            // Auto remove
+            const timeoutId = setTimeout(() => {
+                if (toast.parentElement) {
+                    toast.classList.add('hiding');
+                    setTimeout(() => toast.remove(), 300);
+                }
+            }, actualDuration);
+            
+            // Clear timeout if manually dismissed
+            toast.addEventListener('click', () => clearTimeout(timeoutId));
         }
 
         // ===== CONFIRM MODAL =====
@@ -5602,18 +5868,31 @@
 
         function applyAccentColor(color) {
             const colors = {
-                cyan: { primary: '#22d3ee', secondary: '#06b6d4' },
-                blue: { primary: '#3b82f6', secondary: '#2563eb' },
-                purple: { primary: '#a855f7', secondary: '#9333ea' },
-                pink: { primary: '#ec4899', secondary: '#db2777' },
-                green: { primary: '#22c55e', secondary: '#16a34a' },
-                orange: { primary: '#f97316', secondary: '#ea580c' },
-                red: { primary: '#ef4444', secondary: '#dc2626' }
+                cyan: { primary: '#22d3ee', secondary: '#06b6d4', rgb: '34, 211, 238' },
+                blue: { primary: '#3b82f6', secondary: '#2563eb', rgb: '59, 130, 246' },
+                purple: { primary: '#a855f7', secondary: '#9333ea', rgb: '168, 85, 247' },
+                pink: { primary: '#ec4899', secondary: '#db2777', rgb: '236, 72, 153' },
+                green: { primary: '#22c55e', secondary: '#16a34a', rgb: '34, 197, 94' },
+                orange: { primary: '#f97316', secondary: '#ea580c', rgb: '249, 115, 22' },
+                red: { primary: '#ef4444', secondary: '#dc2626', rgb: '239, 68, 68' }
             };
             
             const root = document.documentElement;
             root.style.setProperty('--accent-primary', colors[color].primary);
             root.style.setProperty('--accent-secondary', colors[color].secondary);
+            root.style.setProperty('--accent-rgb', colors[color].rgb);
+            
+            // Update meta theme-color for mobile browsers
+            const metaTheme = document.querySelector('meta[name="theme-color"]');
+            if (metaTheme) {
+                metaTheme.setAttribute('content', colors[color].secondary);
+            }
+            
+            // Show toast only if settings modal is open (user changed it)
+            const settingsModal = document.getElementById('settingsModal');
+            if (settingsModal && !settingsModal.classList.contains('hidden')) {
+                showToast('success', 'Cor alterada', `Cor de destaque: ${color.charAt(0).toUpperCase() + color.slice(1)}`);
+            }
         }
 
         function toggleAutoFocusMode() {
@@ -5841,7 +6120,12 @@
 
         function showWaterReminder() {
             const popup = document.getElementById('waterReminderPopup');
-            popup.classList.add('show');
+            popup.style.display = 'flex';
+            
+            // Small delay to trigger animation
+            setTimeout(() => {
+                popup.classList.add('show');
+            }, 10);
             
             // Play sound
             playWaterSound();
@@ -5860,7 +6144,19 @@
         }
 
         function hideWaterReminder() {
-            document.getElementById('waterReminderPopup').classList.remove('show');
+            const popup = document.getElementById('waterReminderPopup');
+            popup.classList.remove('show');
+            
+            // Hide after animation
+            setTimeout(() => {
+                popup.style.display = 'none';
+            }, 500);
+        }
+        
+        function drinkWaterFromReminder() {
+            addWater(1);
+            hideWaterReminder();
+            showToast('success', 'Água adicionada! 💧', `${waterCount}/${waterGoal} copos`);
         }
 
         function playWaterSound() {
